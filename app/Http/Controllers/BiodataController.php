@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\User;
 use App\Models\Biodata;
-use App\Models\Province;
 use App\Models\Regency;
+use App\Models\Province;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Session as FacadesSession;
 
 class BiodataController extends Controller
 {
@@ -35,5 +41,44 @@ class BiodataController extends Controller
         ]);
 
         return redirect('/biodata');
+    }
+
+    public function show_password()
+    {
+        // dd(session::all('errors'));
+        $id = auth()->user()->id;
+        $user = User::find($id)->first();
+        
+        return view('password.index', compact('user'));    
+    }
+
+    public function store_password(Request $request)
+    {
+        // dd($request->all());
+        // $request->validate([
+        //     'old_password' => 'required',
+        //     'new_password' => 'required|min:8|confirmed',
+        // ]);
+        $id = auth()->user()->id;
+        $user = auth()->user();
+
+        // check password tersimpan dengan inputan
+        if (!Hash::check($request->oldpswd, $user->password)) {                        
+            return back()->with('wrong', 'Sandi lama Anda salah !');
+        }
+
+        if ($request->newpswd !== $request->newpswd2) {            
+            return back()->with('wrong', 'Password baru Anda tidak sama.');
+        } 
+
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        request()->session()->invalidate();
+
+        request()->session()->regenerateToken();
+    
+        return redirect()->route('/')->with('success', 'Silahkan masuk dengan sandi baru!');
     }
 }
