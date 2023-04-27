@@ -10,7 +10,7 @@
         <li class="dropdown"><a href="#" data-toggle="dropdown"
                 class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                 <img alt="image" src="{{ URL::to('') }}/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-                <div class="d-sm-none d-lg-inline-block">Hi, {{ Auth()->user()->name }}</div>
+                <div class="d-sm-none d-lg-inline-block">Hi, {{ Session::get('bio')->nama }} </div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 @php
@@ -20,6 +20,9 @@
                 <div class="dropdown-title">{{ \Carbon\Carbon::parse($date)->diffForHumans() }}</div>
                 <a href="{{ URL::to('biodata') }}" class="dropdown-item has-icon">
                     <i class="far fa-user"></i> Profile
+                </a>
+                <a href="{{ URL::to('ganti-password') }}" class="dropdown-item has-icon">
+                    <i class="fas fa-key"></i> Ganti Sandi
                 </a>
                 <div class="dropdown-divider"></div>
                 <form action="/logout" method="POST">

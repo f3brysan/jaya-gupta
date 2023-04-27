@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Biodata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -31,8 +33,9 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            
-
+            $user = auth()->user();
+            $bio = Biodata::where('id',$user->id)->first();
+            Session::put('bio', $bio);
             return redirect()->intended('/');
         }
         return back()->with('LoginError', 'Email atau Password Anda salah !');
