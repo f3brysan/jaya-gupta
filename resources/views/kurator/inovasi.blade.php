@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.css">
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
+    <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/izitoast/css/iziToast.min.css">
 @endpush
 
 @section('container')
@@ -79,7 +80,9 @@
                                                                     @csrf
                                                                     <input type="hidden" name="id" id="id"
                                                                         value="{{ $encryptUrl }}">
-                                                                    <button type="submit" class="btn btn-success m-1" id="status-trm" title="Terima Inovasi" name="status" value="terima"><i
+                                                                    <button type="submit" class="btn btn-success m-1"
+                                                                        id="status-trm" title="Terima Inovasi"
+                                                                        name="status" value="terima"><i
                                                                             class="fas fa-check"></i></button>
                                                                     <button type="submit" class="btn btn-danger m-1"
                                                                         title="Tolak Inovasi" name="submit"
@@ -142,9 +145,9 @@
                                                                 {{ $item->nilai->created_at }}</span>
                                                             <br>
                                                         @else
-                                                        <span class="badge badge-success">Telah disetujui oleh :
-                                                            {{ $item->nilai->owner->nama }} <br> Pada :
-                                                            {{ $item->nilai->created_at }}</span>
+                                                            <span class="badge badge-success">Telah disetujui oleh :
+                                                                {{ $item->nilai->owner->nama }} <br> Pada :
+                                                                {{ $item->nilai->created_at }}</span>
                                                             <br>
                                                         @endif
 
@@ -256,6 +259,7 @@
     </script>
     <script src="{{ URL::to('/') }}/assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
     <script src="{{ URL::to('/') }}/assets/modules/jquery-ui/jquery-ui.min.js"></script>
+    <script src="{{ URL::to('/') }}/assets/modules/izitoast/js/iziToast.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -268,23 +272,35 @@
             e.preventDefault();
             var form = $(this).parents('form');
             swal({
-                        title: 'Apakah Anda Yakin?',
-                        text: 'Data akan dihapus',
-                        icon: 'warning',
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                    .then((isConfirm) => {
-                        if (isConfirm) {
-                            swal('Data Telah dihapus', {
-                                icon: 'success',
-                            });
-                            console.log(form);
-                            if (isConfirm) form.submit();
-                        } else {
-                            swal('Tidak Ada perubahan');
-                        }
-                    });
+                    title: 'Apakah Anda Yakin?',
+                    text: 'Data akan dihapus',
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((isConfirm) => {
+                    if (isConfirm) {
+                        swal('Data Telah dihapus', {
+                            icon: 'success',
+                        });
+                        console.log(form);
+                        if (isConfirm) form.submit();
+                    } else {
+                        swal('Tidak Ada perubahan');
+                    }
+                });
         });
     </script>
+    @if (session()->has('success'))
+    <script>
+        $(document).ready(function() {
+            iziToast.success({
+                title: 'Berhasil !',
+                message: "{{ session('success') }}",
+                position: 'topRight'
+            });
+        });
+    </script>
+    @endif
+    
 @endpush

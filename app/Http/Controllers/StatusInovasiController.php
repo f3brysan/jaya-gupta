@@ -32,7 +32,7 @@ class StatusInovasiController extends Controller
         // dd($request->all());
         $id = Crypt::decrypt($request->id);
         $inovasi = Inovasi::where('id', $id)->first();
-        // dd($inovasi->id);
+        // dd($inovasi);
         if ($request->status == 'terima') {
             $status = 1;
         } else {
@@ -46,7 +46,11 @@ class StatusInovasiController extends Controller
         ]);
 
         if ($nilai) {
-            return redirect('kurator/inovasi');
+            if ($inovasi->jenis == 1) {
+                return redirect('kurator/inovasi')->with('success', 'Inovasi Praktik Baik berhasil dinilai.');
+            } else {
+                return redirect('kurator/aksi-nyata')->with('success', 'Aksi Nyata Praktik Baik berhasil dinilai.');
+            }                        
         }
     }
 
