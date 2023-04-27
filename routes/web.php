@@ -29,6 +29,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('biodata', [BiodataController::class, 'show']);
     Route::post('biodata/simpan', [BiodataController::class, 'store']);
+
+    Route::get('ganti-password', [BiodataController::class, 'show_password']);
+    Route::post('ganti-password/simpan', [BiodataController::class, 'store_password']);
 });
 
 Route::middleware(['auth', 'role:guru'])->group(function () {
