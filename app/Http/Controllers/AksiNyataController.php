@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Inovasi;
 use App\Models\TempInovasi;
 use Illuminate\Support\Str;
+use App\Models\NilaiInovasi;
 use Illuminate\Http\Request;
+use App\Models\TempNilaiInovasi;
 use Illuminate\Support\Facades\Crypt;
 
 class AksiNyataController extends Controller
@@ -25,7 +27,21 @@ class AksiNyataController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
+        $nilai = Inovasi::with('nilai.owner')->where('id', $request->id)->first();
+        // dd($nilai->nilai->id);
+        if ($nilai->nilai) {
+            $move = TempNilaiInovasi::create([
+                'id' => $nilai->nilai->id,
+                'inovasi_id' => $nilai->nilai->inovasi_id,
+                'bio_id' => $nilai->nilai->bio_id,
+                'status' => $nilai->nilai->status,
+                'point' => $nilai->nilai->point                
+            ]);
+                    
+            if ($move) {
+                $delNilai = NilaiInovasi::where('id', $nilai->nilai->id)->delete();               
+            }
+        }
         
         if ($request->submit == 'pub') {
             $status = 1;
@@ -60,7 +76,7 @@ class AksiNyataController extends Controller
         ]);
 
         if ($insert) {
-            return redirect('guru/aksi-nyata');
+            return redirect('guru/aksi-nyata')->with('success', 'Data berhasil disimpan.');
         }
     }
 
@@ -96,7 +112,7 @@ class AksiNyataController extends Controller
 
         if ($move) {
             $inovasi = Inovasi::where('id', $id)->delete();
-            return redirect('guru/aksi-nyata');
+            return redirect('guru/aksi-nyata')->with('success', 'Data berhasil disimpan.');
         }
     }
 }

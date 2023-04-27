@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inovasi;
+use App\Models\NilaiInovasi;
 use App\Models\TempInovasi;
+use App\Models\TempNilaiInovasi;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +29,22 @@ class InovasiController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
+
+        $nilai = Inovasi::with('nilai.owner')->where('id', $request->id)->first();
+        // dd($nilai->nilai->id);
+        if ($nilai->nilai) {
+            $move = TempNilaiInovasi::create([
+                'id' => $nilai->nilai->id,
+                'inovasi_id' => $nilai->nilai->inovasi_id,
+                'bio_id' => $nilai->nilai->bio_id,
+                'status' => $nilai->nilai->status,
+                'point' => $nilai->nilai->point                
+            ]);
+                    
+            if ($move) {
+                $delNilai = NilaiInovasi::where('id', $nilai->nilai->id)->delete();               
+            }
+        }
         
         if ($request->submit == 'pub') {
             $status = 1;
@@ -61,7 +79,7 @@ class InovasiController extends Controller
         ]);
 
         if ($insert) {
-            return redirect('guru/inovasi');
+            return redirect('guru/inovasi')->with('success', 'Data berhasil disimpan.');
         }
     }
 
@@ -97,7 +115,7 @@ class InovasiController extends Controller
 
         if ($move) {
             $inovasi = Inovasi::where('id', $id)->delete();
-            return redirect('guru/inovasi');
+            return redirect('guru/inovasi')->with('success', 'Data berhasil dihapus.');
         }
     }
 }
