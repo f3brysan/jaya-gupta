@@ -29,19 +29,22 @@ class AksiNyataController extends Controller
     {
         $nilai = Inovasi::with('nilai.owner')->where('id', $request->id)->first();
         // dd($nilai->nilai->id);
-        if ($nilai->nilai != null) {
-            $move = TempNilaiInovasi::create([
-                'id' => $nilai->nilai->id,
-                'inovasi_id' => $nilai->nilai->inovasi_id,
-                'bio_id' => $nilai->nilai->bio_id,
-                'status' => $nilai->nilai->status,
-                'point' => $nilai->nilai->point                
-            ]);
-                    
-            if ($move) {
-                $delNilai = NilaiInovasi::where('id', $nilai->nilai->id)->delete();               
+        if ($nilai) {
+            if ($nilai->nilai != null) {
+                $move = TempNilaiInovasi::create([
+                    'id' => $nilai->nilai->id,
+                    'inovasi_id' => $nilai->nilai->inovasi_id,
+                    'bio_id' => $nilai->nilai->bio_id,
+                    'status' => $nilai->nilai->status,
+                    'point' => $nilai->nilai->point                
+                ]);
+                        
+                if ($move) {
+                    $delNilai = NilaiInovasi::where('id', $nilai->nilai->id)->delete();               
+                }
             }
         }
+        
         
         if ($request->submit == 'pub') {
             $status = 1;
