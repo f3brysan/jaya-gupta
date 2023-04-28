@@ -32,7 +32,7 @@ class InovasiController extends Controller
 
         $nilai = Inovasi::with('nilai.owner')->where('id', $request->id)->first();
         // dd($nilai->nilai->id);
-        if ($nilai->nilai) {
+        if ($nilai->nilai != null) {
             $move = TempNilaiInovasi::create([
                 'id' => $nilai->nilai->id,
                 'inovasi_id' => $nilai->nilai->inovasi_id,
