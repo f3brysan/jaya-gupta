@@ -7,7 +7,6 @@
     <link rel="stylesheet"
         href="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
-    <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/izitoast/css/iziToast.min.css">
 @endpush
 
 @section('container')
@@ -185,8 +184,7 @@
     <script src="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js">
     </script>
     <script src="{{ URL::to('/') }}/assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
-    <script src="{{ URL::to('/') }}/assets/modules/jquery-ui/jquery-ui.min.js"></script>
-    <script src="{{ URL::to('/') }}/assets/modules/izitoast/js/iziToast.min.js"></script>
+    <script src="{{ URL::to('/') }}/assets/modules/jquery-ui/jquery-ui.min.js"></script>    
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -213,16 +211,5 @@
                 }
             });
         });
-    </script>
-    @if (session()->has('success'))
-    <script>
-        $(document).ready(function() {
-            iziToast.success({
-                title: 'Berhasil !',
-                message: "{{ session('success') }}",
-                position: 'topRight'
-            });
-        });
-    </script>
-    @endif
+    </script>   
 @endpush

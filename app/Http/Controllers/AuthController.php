@@ -35,8 +35,9 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = auth()->user();
             $bio = Biodata::where('id',$user->id)->first();
+            Session::put('user', $user);
             Session::put('bio', $bio);
-            return redirect()->intended('/');
+            return redirect()->intended('/')->with('success', 'Selamat Datang '.$bio->nama ?? $user->email. ' .');
         }
         return back()->with('LoginError', 'Email atau Password Anda salah !');
     }

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Biodata;
+use App\Models\Ms_MataPelajaran;
+use App\Models\Ms_Pangkat;
+use App\Models\Ms_SatuanPendidikan;
 use App\Models\Regency;
 use App\Models\Province;
 use Illuminate\Http\Request;
@@ -18,18 +21,25 @@ class BiodataController extends Controller
     public function show()
     {
         $id = auth()->user()->id;
-        $biodata = Biodata::find($id)->first();
-        $roles = auth()->user()->getRoleNames();
-        $prov = Province::all();
-        $kab = Regency::all();
+        $data['biodata'] = Biodata::where('id',$id)->first();        
+        $data['roles'] = auth()->user()->getRoleNames();
+        $data['prov'] = Province::all();
+        $data['kab']= Regency::all();
+        $data['matpel'] = Ms_MataPelajaran::orderBy('nama', 'ASC')->get();
+        $data['pangkat'] = Ms_Pangkat::where('is_aktif', true)->orderBy('gol', 'DESC')->get();
+        $data['asal_satuan'] = Ms_SatuanPendidikan::orderBy('npsn','ASC')->get();
         // return $kab;
-        return view('biodata.index', compact('biodata', 'roles','prov', 'kab'));    
+        return view('biodata.index', $data);    
     }
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $update = Biodata::where('id', $request->id)->update([
             'nama' => $request->nama,
+            'nip' => $request->nip,
+            'asal_satuan_pendidikan' => $request->asal_satuan,
+            'golongan' => $request->gol,
             'gender' => $request->gender,
             'tempatlahir' => $request->tempatlahir,
             'tanggallahir' => $request->tanggallahir,
@@ -40,7 +50,7 @@ class BiodataController extends Controller
             'wa' => $request->wa
         ]);
 
-        return redirect('/biodata');
+        return redirect('/biodata')->with('success', 'Perubahan berhasil disimpan.');
     }
 
     public function show_password()
@@ -72,13 +82,13 @@ class BiodataController extends Controller
         } 
 
         $user->update([
-            'password' => Hash::make($request->new_password),
+            'password' => Hash::make($request->newpswd),
         ]);
 
         request()->session()->invalidate();
 
         request()->session()->regenerateToken();
     
-        return redirect()->route('/')->with('success', 'Silahkan masuk dengan sandi baru!');
+        return redirect('/')->with('success', 'Silahkan masuk dengan sandi baru!');
     }
 }

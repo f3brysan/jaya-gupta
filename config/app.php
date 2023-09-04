@@ -178,6 +178,7 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         // Provider Lain
     AzisHapidin\IndoRegion\IndoRegionServiceProvider::class,
+            Yajra\DataTables\DataTablesServiceProvider::class,
     ],
 
     /*

@@ -22,7 +22,8 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Judul Inovasi</label>
-                                        <input type="text" name="judul" id="judul" class="form-control" value="{{ $inovasi->judul }}">
+                                        <input type="text" name="judul" id="judul" class="form-control"
+                                            value="{{ $inovasi->judul }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -34,18 +35,19 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Link Video Youtube</label>
-                                        <input type="text" name="video" id="video" class="form-control" value="{{ $inovasi->video }}">
+                                        <input type="text" name="video" id="video" class="form-control"
+                                            value="{{ $inovasi->video }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                    <input type="file" name="image" placeholder="Choose image" id="image">                                     
+                                        <input type="file" name="image" placeholder="Choose image" id="image">
                                     </div>
                                 </div>
                                 <div class="col-md-12 mb-2">
                                     <label for="">Preview</label>
                                     <br>
-                                    <img id="preview-image-before-upload" src="{{  URL::to('/') }}/{{ $inovasi->image }}"
+                                    <img id="preview-image-before-upload" src="{{ URL::to('/') }}/{{ $inovasi->image }}"
                                         alt="preview image" style="max-height: 250px;">
                                 </div>
                             </div>
@@ -54,7 +56,8 @@
                                     value="pub">Publikasi</button>
                                 <button type="submit" class="btn btn-warning float-right m-1" id="submit" name="submit"
                                     value="save">Simpan Draft</button>
-                                <a href="{{ URL::to('guru/inovasi') }}" class="btn btn-secondary float-right m-1">Kembali</a>
+                                <a href="{{ URL::to('guru/inovasi') }}"
+                                    class="btn btn-secondary float-right m-1">Kembali</a>
                             </div>
                         </form>
                     </div>
@@ -69,32 +72,33 @@
     <script src="{{ URL::to('/') }}/assets/modules/summernote/summernote-bs4.js"></script>
     <script>
         $(document).ready(function() {
-            $('#image').change(function(){
            
-           let reader = new FileReader();
-       
-           reader.onload = (e) => { 
-       
-             $('#preview-image-before-upload').attr('src', e.target.result); 
-           }
-       
-           reader.readAsDataURL(this.files[0]); 
-         
-          });
+            $('#image').change(function() {
+
+                let reader = new FileReader();
+
+                reader.onload = (e) => {
+
+                    $('#preview-image-before-upload').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+
+            });
         });
     </script>
     <script>
-        function previewImage(){
-           const image = document.querySelector('#image');
-           const imgPreview = document.querySelector('.image-preview'); 
+        function previewImage() {
+            const image = document.querySelector('#image');
+            const imgPreview = document.querySelector('.image-preview');
 
-           imgPreview.style.display= 'block';
+            imgPreview.style.display = 'block';
 
-           const oFReader = new FileReader();
-           oFReader.readAsDataURL(image.files[0]);
-           oFReader.onload = function(ofREvent){
-            imgPreview.src = ofREvent.target.result;
-           }
+            const oFReader = new FileReader();
+            oFReader.readAsDataURL(image.files[0]);
+            oFReader.onload = function(ofREvent) {
+                imgPreview.src = ofREvent.target.result;
+            }
         }
-    </script>    
+    </script>
 @endpush

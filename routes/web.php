@@ -6,7 +6,10 @@ use App\Http\Controllers\BiodataController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndoController;
 use App\Http\Controllers\InovasiController;
+use App\Http\Controllers\Ms_MataPelajaranController;
+use App\Http\Controllers\Ms_SatuanPendidikanController;
 use App\Http\Controllers\StatusInovasiController;
+use App\Models\Ms_MataPelajaran;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,7 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('ganti-password/simpan', [BiodataController::class, 'store_password']);
 });
 
-Route::middleware(['auth', 'role:guru'])->group(function () {
+Route::middleware(['auth', 'role:superadmin|guru'])->group(function () {
     Route::get('guru/inovasi', [InovasiController::class, 'index']);
     Route::get('guru/inovasi/tambah/', [InovasiController::class, 'tambah']);
     Route::post('guru/inovasi/store/', [InovasiController::class, 'store']);
@@ -48,10 +51,19 @@ Route::middleware(['auth', 'role:guru'])->group(function () {
     Route::post('guru/aksi-nyata/hapus', [AksiNyataController::class, 'hapus']);
 });
 
-Route::middleware(['auth', 'role:kurator'])->group(function () {
+Route::middleware(['auth', 'role:superadmin|kurator'])->group(function () {
     Route::get('kurator/inovasi', [StatusInovasiController::class, 'index_inovasi']);
     Route::get('kurator/aksi-nyata', [StatusInovasiController::class, 'index_aksi']);
     Route::post('kurator/nilai', [StatusInovasiController::class, 'nilai']);
+});
+
+Route::middleware(['auth', 'role:superadmin'])->group(function () {
+    Route::get('master/satuan-pendidikan', [Ms_SatuanPendidikanController::class, 'index']);    
+
+    Route::get('master/mata-pelajaran', [Ms_MataPelajaranController::class, 'index']); 
+    Route::post('master/mata-pelajaran/store', [Ms_MataPelajaranController::class, 'store']);   
+    Route::get('master/mata-pelajaran/edit/{id}', [Ms_MataPelajaranController::class, 'show']);  
+    Route::delete('master/mata-pelajaran/delete/{id}', [Ms_MataPelajaranController::class, 'delete']);  
 });
 
 Route::get('ajax/getkabupaten/{id}', [IndoController::class, 'getkabupaten']);
