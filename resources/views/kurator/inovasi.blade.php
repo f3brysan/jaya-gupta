@@ -141,12 +141,12 @@
                                                     <td align="center">
                                                         @if ($item->nilai->status == 0)
                                                             <span class="badge badge-danger">Telah ditolak oleh :
-                                                                {{ $item->nilai->owner->nama }} <br> Pada :
+                                                                {{ $item->nilai->owner->nama ?? ''}} <br> Pada :
                                                                 {{ $item->nilai->created_at }}</span>
                                                             <br>
                                                         @else
                                                             <span class="badge badge-success">Telah disetujui oleh :
-                                                                {{ $item->nilai->owner->nama }} <br> Pada :
+                                                                {{ $item->nilai->owner->nama ?? ''}} <br> Pada :
                                                                 {{ $item->nilai->created_at }}</span>
                                                             <br>
                                                         @endif
