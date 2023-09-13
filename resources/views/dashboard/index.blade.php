@@ -137,7 +137,12 @@
             @endif
         </section>
         <section class="section">
-
+            <div class="section-header">
+                <h5>Data Praktik baik</h5>
+            </div>
+            <div class="card">
+                <div class="table-r"></div>
+            </div>
         </section>
 
         <section class="section">

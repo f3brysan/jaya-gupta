@@ -27,7 +27,7 @@ Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'auth']);
 Route::post('logout', [AuthController::class, 'logout']);
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth:web'])->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
 
     Route::get('biodata', [BiodataController::class, 'show']);
@@ -37,7 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('ganti-password/simpan', [BiodataController::class, 'store_password']);
 });
 
-Route::middleware(['auth', 'role:superadmin|guru'])->group(function () {
+Route::middleware(['auth:web', 'role:superadmin|guru'])->group(function () {
     Route::get('guru/inovasi', [InovasiController::class, 'index']);
     Route::get('guru/inovasi/tambah/', [InovasiController::class, 'tambah']);
     Route::post('guru/inovasi/store/', [InovasiController::class, 'store']);
@@ -51,13 +51,13 @@ Route::middleware(['auth', 'role:superadmin|guru'])->group(function () {
     Route::post('guru/aksi-nyata/hapus', [AksiNyataController::class, 'hapus']);
 });
 
-Route::middleware(['auth', 'role:superadmin|kurator'])->group(function () {
+Route::middleware(['auth:web', 'role:superadmin|kurator'])->group(function () {
     Route::get('kurator/inovasi', [StatusInovasiController::class, 'index_inovasi']);
     Route::get('kurator/aksi-nyata', [StatusInovasiController::class, 'index_aksi']);
     Route::post('kurator/nilai', [StatusInovasiController::class, 'nilai']);
 });
 
-Route::middleware(['auth', 'role:superadmin'])->group(function () {
+Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
     Route::get('master/satuan-pendidikan', [Ms_SatuanPendidikanController::class, 'index']);    
 
     Route::get('master/mata-pelajaran', [Ms_MataPelajaranController::class, 'index']); 

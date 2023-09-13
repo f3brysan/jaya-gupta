@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
-{
+{   
 
     public function login()
     {
@@ -31,12 +31,13 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
+        
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+            $request->session()->regenerate();            
             $user = auth()->user();
-            $bio = Biodata::where('id',$user->id)->first();
+            $bio = Biodata::where('id',$user->id)->first();            
             Session::put('user', $user);
-            Session::put('bio', $bio);
+            Session::put('bio', $bio);            
             return redirect()->intended('/')->with('success', 'Selamat Datang '.$bio->nama ?? $user->email. ' .');
         }
         return back()->with('LoginError', 'Email atau Password Anda salah !');
