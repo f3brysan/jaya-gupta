@@ -87,7 +87,8 @@ class API_AuthController extends Controller
         DB::beginTransaction();
         $user = User::create(array_merge(
             $validator->validated(),
-            ['password' => bcrypt($request->password)]
+            ['password' => bcrypt($request->password),
+            'email_verified_at' => now()]
         ));
         $user->assignRole('tamu');
         if ($user) {
@@ -138,7 +139,13 @@ class API_AuthController extends Controller
      */
     public function userProfile()
     {
-        return response()->json(auth()->user());
+        $user = auth()->user();
+        $bio = User::with('bio')->where('id', $user->id)->first();
+        
+        if (!$bio) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        return response()->json($bio);
     }
 
     /**

@@ -45,6 +45,11 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+    public function bio()
+    {
+       return $this->hasOne(Biodata::class, 'id', 'id');
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
