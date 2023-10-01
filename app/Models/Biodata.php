@@ -13,4 +13,19 @@ class Biodata extends Model
     protected $guarded = [
         
     ];   
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'id');
+    }
+    
+    public function asal_sekolah()
+    {
+        return $this->belongsTo(Ms_SatuanPendidikan::class, 'asal_satuan_pendidikan', 'npsn');
+    }
+
+    public function user_bidang_pengembangan()
+    {
+        return $this->hasMany(UserBidangPengembangan::class, 'bio_id', 'id');
+    }
 }

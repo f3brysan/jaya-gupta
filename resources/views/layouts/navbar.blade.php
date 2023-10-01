@@ -29,9 +29,9 @@
             @endrole
 
             <li class="menu-header">Pembinaan Ketenagaan</li>
-            <li><a class="nav-link" href="javascript:void(0)"><i class="fas fa-list"></i> <span>Profil
+            <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Profil
                         Guru/Admin</span></a></li>
-            <li class="dropdown">
+            {{-- <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-list"></i>
                     <span>Tunjangan</span></a>
                 <ul class="dropdown-menu">
@@ -47,7 +47,7 @@
                     <li><a class="nav-link" href="javacsript:void(0)">Penetapan Angka Kredit</a></li>
                     <li><a class="nav-link" href="javacsript:void(0)">P. Ijin Belajar dan Tubel</a></li>
                 </ul>
-            </li>
+            </li> --}}
             @role('superadmin')
             <li class="menu-header">Data Master</li>
             <li class="dropdown">

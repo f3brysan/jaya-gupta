@@ -4,6 +4,7 @@ use App\Http\Controllers\AksiNyataController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BiodataController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DataGuruController;
 use App\Http\Controllers\IndoController;
 use App\Http\Controllers\InovasiController;
 use App\Http\Controllers\Ms_MataPelajaranController;
@@ -32,6 +33,7 @@ Route::middleware(['auth:web'])->group(function () {
 
     Route::get('biodata', [BiodataController::class, 'show']);
     Route::post('biodata/simpan', [BiodataController::class, 'store']);
+    Route::post('biodata/tambah-bidang-pengembangan', [BiodataController::class, 'tambah_bidang_pengembangan']);
 
     Route::get('ganti-password', [BiodataController::class, 'show_password']);
     Route::post('ganti-password/simpan', [BiodataController::class, 'store_password']);
@@ -58,6 +60,7 @@ Route::middleware(['auth:web', 'role:superadmin|kurator'])->group(function () {
 });
 
 Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
+    route::get('data-guru', [DataGuruController::class, 'index']);
     Route::get('master/satuan-pendidikan', [Ms_SatuanPendidikanController::class, 'index']);    
 
     Route::get('master/mata-pelajaran', [Ms_MataPelajaranController::class, 'index']); 
