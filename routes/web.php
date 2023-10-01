@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataGuruController;
 use App\Http\Controllers\IndoController;
 use App\Http\Controllers\InovasiController;
+use App\Http\Controllers\Ms_BidangPengembanganController;
 use App\Http\Controllers\Ms_MataPelajaranController;
 use App\Http\Controllers\Ms_SatuanPendidikanController;
 use App\Http\Controllers\StatusInovasiController;
@@ -63,10 +64,10 @@ Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
     route::get('data-guru', [DataGuruController::class, 'index']);
     Route::get('master/satuan-pendidikan', [Ms_SatuanPendidikanController::class, 'index']);    
 
-    Route::get('master/mata-pelajaran', [Ms_MataPelajaranController::class, 'index']); 
-    Route::post('master/mata-pelajaran/store', [Ms_MataPelajaranController::class, 'store']);   
-    Route::get('master/mata-pelajaran/edit/{id}', [Ms_MataPelajaranController::class, 'show']);  
-    Route::delete('master/mata-pelajaran/delete/{id}', [Ms_MataPelajaranController::class, 'delete']);  
+    Route::get('master/bidang-pengembangan', [Ms_BidangPengembanganController::class, 'index']); 
+    Route::post('master/bidang-pengembangan/store', [Ms_BidangPengembanganController::class, 'store']);   
+    Route::get('master/bidang-pengembangan/edit/{id}', [Ms_BidangPengembanganController::class, 'show']);  
+    Route::delete('master/bidang-pengembangan/delete/{id}', [Ms_BidangPengembanganController::class, 'delete']);  
 });
 
 Route::get('ajax/getkabupaten/{id}', [IndoController::class, 'getkabupaten']);

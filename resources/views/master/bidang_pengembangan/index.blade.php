@@ -93,7 +93,7 @@
                 processing: true,
                 serverSide: true, //aktifkan server-side 
                 ajax: {
-                    url: "{{ URL::to('master/mata-pelajaran') }}", // routing ke group.index
+                    url: "{{ URL::to('master/bidang-pengembangan') }}", // routing ke group.index
                     type: 'GET'
                 },
                 columns: [{
@@ -133,7 +133,7 @@
 
                     $.ajax({
                         type: "POST",
-                        url: "{{ URL::to('master/mata-pelajaran/store') }}",
+                        url: "{{ URL::to('master/bidang-pengembangan/store') }}",
                         data: $('#form-tambah-edit').serializeArray(),
                         dataType: 'json',
                         success: function(data) {
@@ -161,7 +161,7 @@
         // ** EDIT DATA * // 
         $("body").on("click", ".edit", function() {
             var data_id = $(this).data('id');
-            $.get("{{ URL::to('master/mata-pelajaran/edit') }}/" + data_id, function(data) {
+            $.get("{{ URL::to('master/bidang-pengembangan/edit') }}/" + data_id, function(data) {
                 $("#modal-judul").html("Edit Mata Pelajaran " + data.nama);
                 $("tombol-simpan").val("edit-post");
                 $("#tambah-edit-modal").modal('show');
@@ -189,7 +189,7 @@
                 if (isConfirm) {
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ URL::to('master/mata-pelajaran/delete') }}/" + dataId,
+                        url: "{{ URL::to('master/bidang-pengembangan/delete') }}/" + dataId,
                         success: function(data) {
                             var oTable = $("#example").dataTable();
                             oTable.fnDraw(false);

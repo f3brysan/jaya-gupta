@@ -54,8 +54,7 @@
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-list"></i>
                     <span>Master Data</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="{{ URL::to('master/satuan-pendidikan') }}">Satuan Pendidikan</a></li>
-                    <li><a class="nav-link" href="{{ URL::to('master/mata-pelajaran') }}">Mata Pelajaran</a></li>
+                    <li><a class="nav-link" href="{{ URL::to('master/satuan-pendidikan') }}">Satuan Pendidikan</a></li>                    
                     <li><a class="nav-link" href="{{ URL::to('master/bidang-pengembangan') }}">Bidang Pengembangan</a></li>
                 </ul>
             </li> 
