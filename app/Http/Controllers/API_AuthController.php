@@ -140,7 +140,7 @@ class API_AuthController extends Controller
     public function userProfile()
     {
         $user = auth()->user();
-        $bio = User::with('bio')->where('id', $user->id)->first();
+        $bio = User::with('bio','bio.user_bidang_pengembangan.bidangpengembangan')->where('id', $user->id)->first();
         
         if (!$bio) {
             return response()->json(['error' => 'Unauthorized'], 401);
