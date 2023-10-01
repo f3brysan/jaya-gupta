@@ -35,7 +35,7 @@
                                 <div class="tab-pane fade show active" id="home" role="tabpanel"
                                     aria-labelledby="home-tab">
                                     <div class="card">
-                                        <form action="{{ URL::to('biodata/simpan') }}" method="POST">
+                                        <form action="{{ URL::to('biodata/simpan') }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <input type="hidden" name="id" id="id" value="{{ $biodata->id }}">
                                             <div class="card-body">
@@ -55,7 +55,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="col-md-6">
-                                                        <label></label>
+                                                        <label>Asal Satuan?Sekolah</label>
                                                         <select name="asal_satuan" id="asal_satuan"
                                                             class="form-control select2">
                                                             <option value="">Pilih</option>
@@ -71,7 +71,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="col-md-6">
-                                                        <label></label>
+                                                        <label>Golongan</label>
                                                         <select name="gol" id="gol"
                                                             class="form-control select2">
                                                             <option value="">Pilih</option>
@@ -164,21 +164,19 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <label>Muatan Pelajaran</label>
-                                                        <select name="muatan_pelajaran" id="muatan_pelajaran"
-                                                            class="form-control select2">
-                                                            <option value="">Pilih</option>
-                                                            @foreach ($matpel as $item)
-                                                                @php
-                                                                    $selected = $biodata->mata_pelajaran == $item->id ? 'selected' : '';
-                                                                @endphp
-                                                                <option value="{{ $item->id }}" {{ $selected }}>
-                                                                    {{ $item->nama }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                    <div class="col-md-12 mb-2">
+                                                        <label for="">Preview</label>
+                                                        <br>
+                                                        <img id="preview-image-before-upload" src="{{ URL::to('/') }}/{{ $biodata->profile_picture }}"
+                                                            alt="preview image" style="max-height: 250px;">
                                                     </div>
+                                                    <div class="col-md-6">
+                                                        <label>Foto Profil</label>
+                                                        <input type="file" name="image" placeholder="Choose image" id="image">             
+                                                    </div>
+                                                    
                                                 </div>
+                                                
                                             </div>
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-primary float-right"
@@ -341,6 +339,23 @@
                         swal('Data tidak disimpan');
                     }
                 });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+           
+            $('#image').change(function() {
+
+                let reader = new FileReader();
+
+                reader.onload = (e) => {
+
+                    $('#preview-image-before-upload').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+
+            });
         });
     </script>
 @endpush

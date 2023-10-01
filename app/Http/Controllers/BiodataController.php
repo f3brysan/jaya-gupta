@@ -47,7 +47,19 @@ class BiodataController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
+
+        
+        if ($request->file('image')) {
+            $path =$request->file('image')->store('/images/profile', ['disk' =>   'my_files']);
+        }else{
+            $check = Biodata::where('id', $request->id)->first();
+            if ($check) {
+                $path = $check->profile_picture;
+            } else {
+                $path = NULL;
+            }                    
+        }
+        
         $update = Biodata::where('id', $request->id)->update([
             'nama' => $request->nama,
             'nip' => $request->nip,
@@ -60,7 +72,8 @@ class BiodataController extends Controller
             'kabdom' => $request->kabdom,
             'kecdom' => $request->kecdom, 
             'alamatdom' => $request->alamatdom,
-            'wa' => $request->wa
+            'wa' => $request->wa,
+            'profile_picture' => $path
         ]);
 
         return redirect('/biodata')->with('success', 'Perubahan berhasil disimpan.');
