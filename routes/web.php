@@ -31,6 +31,7 @@ Route::post('logout', [AuthController::class, 'logout']);
 
 Route::middleware(['auth:web'])->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
+    Route::get('get-praktik-baik', [DashboardController::class, 'get_praktik_baik']);
 
     Route::get('biodata', [BiodataController::class, 'show']);
     Route::post('biodata/simpan', [BiodataController::class, 'store']);

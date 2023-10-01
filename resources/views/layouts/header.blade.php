@@ -11,7 +11,7 @@
                 class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                 <img alt="image" src="{{ URL::to('') }}/{{ auth()->user()->bio->profile_picture ?? 'assets/img/avatar/avatar-1.png' }}" class="rounded-circle mr-1">
                 <div class="d-sm-none d-lg-inline-block">Hi,                    
-                    {{ auth()->user()->bio->nama ?? Auth()->user()->email}} </div>
+                    {{ Auth()->user()->bio->nama ?? Auth()->user()->email}} </div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 @php
