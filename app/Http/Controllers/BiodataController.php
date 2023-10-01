@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Biodata;
-use App\Models\Ms_MataPelajaran;
-use App\Models\Ms_Pangkat;
-use App\Models\Ms_SatuanPendidikan;
 use App\Models\Regency;
 use App\Models\Province;
+use App\Models\Ms_Pangkat;
 use Illuminate\Http\Request;
+use App\Models\Ms_MataPelajaran;
+use Illuminate\Support\Facades\DB;
+use App\Models\Ms_SatuanPendidikan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Ms_BidangPengembangan;
+use Illuminate\Support\Facades\Crypt;
+use App\Models\UserBidangPengembangan;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Session as FacadesSession;
 
@@ -27,7 +31,16 @@ class BiodataController extends Controller
         $data['kab']= Regency::all();
         $data['matpel'] = Ms_MataPelajaran::orderBy('nama', 'ASC')->get();
         $data['pangkat'] = Ms_Pangkat::where('is_aktif', true)->orderBy('gol', 'DESC')->get();
-        $data['asal_satuan'] = Ms_SatuanPendidikan::orderBy('npsn','ASC')->get();
+        $data['asal_satuan'] = Ms_SatuanPendidikan::orderBy('npsn','ASC')->get();        
+        $data['bidang_pengembangan'] = UserBidangPengembangan::where('bio_id', $id)->with('bidangpengembangan')->get();
+        $user_bp = $data['bidang_pengembangan']->pluck('bidang_pengembangan_id');
+
+        if (count($user_bp)>0) {
+            $data['ms_bidang_pengembangan'] = Ms_BidangPengembangan::whereNotIn('id', $user_bp)->get();
+        } else {
+            $data['ms_bidang_pengembangan'] = Ms_BidangPengembangan::get();
+        }
+                
         // return $kab;
         return view('biodata.index', $data);    
     }
@@ -90,5 +103,29 @@ class BiodataController extends Controller
         request()->session()->regenerateToken();
     
         return redirect('/')->with('success', 'Silahkan masuk dengan sandi baru!');
+    }
+
+    public function tambah_bidang_pengembangan(Request $request) 
+    {
+        
+        try {
+            DB::beginTransaction();
+            $bio_id = Crypt::decrypt($request->bio_id);
+            $bidang_pengembangan_id = Crypt::decrypt($request->bidang_pengembangan_id);
+            $insert = UserBidangPengembangan::create([
+                'bio_id' => $bio_id,
+                'bidang_pengembangan_id' => $bidang_pengembangan_id,
+                'created_by' => auth()->user()->id
+            ]);
+// dd($insert);
+            if ($insert) {
+                DB::commit();
+                return redirect('/biodata')->with('success', 'Data Bidang Pengembangan berhasil disimpan.');
+            }
+        } catch (\Exception $e) {
+            return $e->getMessage();
+                DB::rollBack();
+                return redirect('/biodata')->with('wrong', $e->getMessage());
+        }
     }
 }

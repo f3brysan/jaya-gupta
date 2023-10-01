@@ -189,7 +189,48 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                   Sedang dalam Pengembangan
+                                    <table class="table table-bordered table-hover table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <td class="text-right">No.</td>
+                                                <td>Nama</td>
+                                                <td>Aksi</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (count($bidang_pengembangan)<1)
+                                            <tr>
+                                                <td colspan="3" class="text-center"><span class="badge badge-warning">Belum Ada Data</span></td>
+                                            </tr>
+                                            @else
+                                                @foreach ($bidang_pengembangan as $item)
+                                                    <tr>
+                                                        <td class="text-right">{{ $loop->iteration }}</td>
+                                                        <td>{{ $item->bidangpengembangan->nama }}</td>
+                                                        <td><a href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-trash"></i></a></td>
+                                                    </tr>
+                                                @endforeach
+                                            @endif
+                                            <tr>
+                                                <form action="{{ URL::to('biodata/tambah-bidang-pengembangan') }}" method="post">
+                                                    @csrf
+                                                    <input type="hidden" name="bio_id" value="{{ Crypt::encrypt($biodata->id) }}">
+                                                <td class="text-center"><span class="badge badge-info"> Tambah Data Baru</span></td>
+                                                <td><select class="form-control select2" name="bidang_pengembangan_id" style="width: 100%" required>
+                                                    <option value="">-- Pilih Bidang Pengembangan --</option>
+                                                    @foreach ($ms_bidang_pengembangan as $item)
+                                                        <option value="{{ Crypt::encrypt($item->id)}}">{{ $item->nama }}</option>
+                                                    @endforeach
+                                                </select></td>
+                                                <td><button type="submit" class="btn btn-primary float-center"
+                                                    id="btn-submit">
+                                                    <i class="fa fa-plus"></i></button></td>
+                                            </form>
+                                            </tr>
+                                        </tbody>
+                                       
+                                    </table>
+                                  
                                 </div>
                             </div>
                         </div>
