@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Traits\Uuid;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Ms_BidangPengembangan extends Model
+class InovasiBidangPengembangan extends Model
 {
     use HasFactory, Uuid;
-    protected $table = 'ms_bidang_pengembangan';
+    protected $table = 'tr_inovasi_bidang_pengembangan';
 
     protected $guarded = [
         'id'

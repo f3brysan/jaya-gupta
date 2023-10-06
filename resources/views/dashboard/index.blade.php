@@ -135,33 +135,37 @@
                     </div>
                 </div>
             @endif
-        </section>
-        <section class="section">
+
             <div class="row">
                 <div class="col-12 col-md-12 col-lg-12">
-                    <h5>Data Praktik baik</h5>                
+                            
                     <div class="card">
-                        <div class="table-responsive">
-                            <table id="example" class="table table-bordered table-hover table-bordered"
-                                style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th class="text-center">Judul</th>
-                                        <th class="text-center">Deskripsi</th>
-                                        <th class="text-center">Gambar</th>
-                                        <th class="text-center">Bidang Pengembangan</th>
-                                        <th class="text-center">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                        <div class="card-header">
+                            <h5>Data Praktik baik</h5>    
                         </div>
+                          <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="example" class="table table-bordered table-hover table-bordered"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Judul</th>
+                                            <th class="text-center">Deskripsi</th>
+                                            <th class="text-center">Gambar</th>
+                                            <th class="text-center">Bidang Pengembangan</th>
+                                            <th class="text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                          </div>                        
                     </div>
                 </div>                
-            </div>            
-        </section>
+            </div>    
+        </section>       
 
         <section class="section">
             <div class="section-header">

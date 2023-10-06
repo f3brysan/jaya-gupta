@@ -26,7 +26,8 @@ class CreatePermissionTables extends Migration
         }
 
         Schema::create($tableNames['permissions'], function (Blueprint $table) {
-            $table->bigIncrements('id'); // permission id
+            // $table->bigIncrements('id'); // permission id
+            $table->uuid('id')->primary();
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
             $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
             $table->timestamps();
@@ -35,7 +36,8 @@ class CreatePermissionTables extends Migration
         });
 
         Schema::create($tableNames['roles'], function (Blueprint $table) use ($teams, $columnNames) {
-            $table->bigIncrements('id'); // role id
+            // $table->bigIncrements('id'); // role id
+            $table->uuid('id')->primary();
             if ($teams || config('permission.testing')) { // permission.testing is a fix for sqlite testing
                 $table->unsignedBigInteger($columnNames['team_foreign_key'])->nullable();
                 $table->index($columnNames['team_foreign_key'], 'roles_team_foreign_key_index');
@@ -51,10 +53,11 @@ class CreatePermissionTables extends Migration
         });
 
         Schema::create($tableNames['model_has_permissions'], function (Blueprint $table) use ($tableNames, $columnNames, $teams) {
-            $table->unsignedBigInteger(PermissionRegistrar::$pivotPermission);
-
+            // $table->unsignedBigInteger(PermissionRegistrar::$pivotPermission);
+            $table->uuid('permission_id');
             $table->string('model_type');
-            $table->unsignedBigInteger($columnNames['model_morph_key']);
+            // $table->unsignedBigInteger($columnNames['model_morph_key']);
+            $table->uuid($columnNames['model_morph_key']);
             $table->index([$columnNames['model_morph_key'], 'model_type'], 'model_has_permissions_model_id_model_type_index');
 
             $table->foreign(PermissionRegistrar::$pivotPermission)
@@ -75,10 +78,12 @@ class CreatePermissionTables extends Migration
         });
 
         Schema::create($tableNames['model_has_roles'], function (Blueprint $table) use ($tableNames, $columnNames, $teams) {
-            $table->unsignedBigInteger(PermissionRegistrar::$pivotRole);
+            // $table->unsignedBigInteger(PermissionRegistrar::$pivotRole);
+            $table->uuid('role_id');
 
             $table->string('model_type');
-            $table->unsignedBigInteger($columnNames['model_morph_key']);
+            // $table->unsignedBigInteger($columnNames['model_morph_key']);
+            $table->uuid($columnNames['model_morph_key']);
             $table->index([$columnNames['model_morph_key'], 'model_type'], 'model_has_roles_model_id_model_type_index');
 
             $table->foreign(PermissionRegistrar::$pivotRole)
@@ -98,9 +103,11 @@ class CreatePermissionTables extends Migration
         });
 
         Schema::create($tableNames['role_has_permissions'], function (Blueprint $table) use ($tableNames) {
-            $table->unsignedBigInteger(PermissionRegistrar::$pivotPermission);
-            $table->unsignedBigInteger(PermissionRegistrar::$pivotRole);
+            // $table->unsignedBigInteger(PermissionRegistrar::$pivotPermission);
+            // $table->unsignedBigInteger(PermissionRegistrar::$pivotRole);
 
+            $table->uuid('permission_id');
+            $table->uuid('role_id');
             $table->foreign(PermissionRegistrar::$pivotPermission)
                 ->references('id') // permission id
                 ->on($tableNames['permissions'])

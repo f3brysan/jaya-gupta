@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Uuid;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -13,7 +14,11 @@ use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable, AuthenticationLoggable, HasRoles;
+    use HasFactory, Notifiable, AuthenticationLoggable, HasRoles, Uuid;
+
+    public $incrementing = false;
+
+    protected $keyType = 'uuid';
 
     /**
      * The attributes that are mass assignable.
