@@ -270,8 +270,8 @@
                         name: 'images',
                     },
                     {
-                        data: '',
-                        name: '',
+                        data: 'bidang_pengembangan',
+                        name: 'bidang_pengembangan',
                     },
                     {
                         data: 'action',

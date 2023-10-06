@@ -49,7 +49,7 @@ class DashboardController extends Controller
     public function get_praktik_baik(Request $request)
     {
         // $getData = Inovasi::with('nilai')->get();
-        $getData =  Inovasi::with('nilai.owner', 'owner')->has('nilai')->where('status', 1)->get();
+        $getData =  Inovasi::with('nilai.owner', 'owner', 'inovasibidangpengembangan.bidangpengembangan')->has('nilai')->where('status', 1)->get();
         if ($request -> ajax()) {
             return DataTables::of($getData)
             ->addColumn('deskripsi_readmore', function($getData){
@@ -64,7 +64,15 @@ class DashboardController extends Controller
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.Crypt::encrypt($getData->id).'" data-name="'.$getData->nama.'" data-original-title="Hapus" class="delete btn btn-danger btn-sm "><i class="fas fa-trash-alt"></i></a>';
                 return  $btn;
             })
-            ->rawColumns(['action','deskripsi_readmore','images'])
+            ->addColumn('bidang_pengembangan', function($getData){
+                $value = '';
+                foreach ($getData->inovasibidangpengembangan as $inovasi) {
+                    $value .= '<li>'.$inovasi->bidangpengembangan->nama.'</li>';
+                }
+
+                return $value;
+            })
+            ->rawColumns(['action','deskripsi_readmore','images', 'bidang_pengembangan'])
             ->addIndexColumn()
             ->make(true);
         }

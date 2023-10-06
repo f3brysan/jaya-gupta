@@ -53,25 +53,18 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label for="">Bidang Pengembangan</label>                                       
+                                        <label for="">Bidang Pengembangan</label>
                                         <select class="js-example-basic-multiple form-control" name="bidang_pengembangan[]"
-                                                multiple="multiple" required>
-                                                @foreach ($ms_bidang_pengembangan as $item)
-                                                @foreach ($bidang_pengembangan as $bp)
-                                                    @if ($bp->bidang_pengembangan_id == $item->id)
-                                                        @php
-                                                            $selected = 'selected';
-                                                        @endphp
-                                                    @else
-                                                        @php
-                                                            $selected = '';
-                                                        @endphp
-                                                    @endif
-                                                    <option value="{{ $item->id }}" {{ $selected }} >{{ $item->nama }}</option>
-                                                @endforeach                                              
-                                               
-                                                @endforeach
-                                            </select>
+                                            multiple="multiple" required>
+                                            @foreach ($bidang_pengembangan as $item)
+                                                <option value="{{ $item->bidangpengembangan->id }}" selected>
+                                                    {{ $item->bidangpengembangan->nama }}</option>
+                                            @endforeach
+                                            @foreach ($ms_bidang_pengembangan as $item)
+                                                <option value="{{ $item->id }}">
+                                                    {{ $item->nama }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -97,7 +90,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
-           
+
             $('#image').change(function() {
 
                 let reader = new FileReader();

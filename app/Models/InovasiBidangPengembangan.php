@@ -18,4 +18,14 @@ class InovasiBidangPengembangan extends Model
     public $incrementing = false;
 
     protected $keyType = 'uuid';
+
+    public function bidangpengembangan()
+    {
+        return $this->belongsTo(Ms_BidangPengembangan::class, 'bidang_pengembangan_id', 'id');
+    }
+
+    public function inovasi()
+    {
+        return $this->belonsTo(Inovasi::class, 'inovasi_id', 'id');
+    }
 }

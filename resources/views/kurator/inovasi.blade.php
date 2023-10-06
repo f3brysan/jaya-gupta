@@ -4,7 +4,8 @@
 @push('css-custom')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.css">
-    <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet"
+        href="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/izitoast/css/iziToast.min.css">
 @endpush
@@ -48,6 +49,7 @@
                                                     <th class="text-center" style="width: 20%">Judul</th>
                                                     <th class="text-center" style="width: 20%">Deskripsi</th>
                                                     <th class="text-center" style="width: 10%">Gambar</th>
+                                                    <th class="text-left" style="width: 10%">Bidang Pengembangan</th>
                                                     <th class="text-center" style="width: 10%">Pemilik</th>
                                                     <th class="text-center" style="width: 15%">Aksi</th>
                                                 </tr>
@@ -62,6 +64,11 @@
                                                                 src="{{ URL::to('/') }}/{{ $item->image }}"
                                                                 style="width: 80px" class="img-fluid img-thumbnail"
                                                                 alt=""></td>
+                                                        <td class="text-left">
+                                                            @foreach ($item->inovasibidangpengembangan as $item_inovasi)
+                                                                <li>{{ $item_inovasi->bidangpengembangan->nama }}</li>
+                                                            @endforeach
+                                                        </td>
                                                         <td align="center">
                                                             {{ $item->owner->nama ?? '' }}
                                                         </td>
@@ -83,11 +90,10 @@
                                                                     <button type="submit" class="btn btn-success m-1"
                                                                         id="status-trm" title="Terima Inovasi"
                                                                         name="status" value="terima"><i
-                                                                            class="fas fa-check"></i></button>
-                                                                    <button type="submit" class="btn btn-danger m-1"
-                                                                        title="Tolak Inovasi" name="submit"
-                                                                        value="tolak"><i class="fas fa-times"></i></button>
+                                                                            class="fas fa-check"></i></button>                                                                    
                                                                 </form>
+                                                                <button type="button" class="btn btn-danger m-1"
+                                                                        title="Tolak Inovasi" value="tolak" onclick="tolak('{{ $item->id }}','{{ $item->judul }}')"><i class="fas fa-times"></i></button>
                                                         </td>
                                     </div>
                                     </tr>
@@ -99,6 +105,7 @@
                                             <th class="text-center" style="width: 20%">Judul</th>
                                             <th class="text-center" style="width: 20%">Deskripsi</th>
                                             <th class="text-center" style="width: 10%">Gambar</th>
+                                            <th class="text-left" style="width: 10%">Bidang Pengembangan</th>
                                             <th class="text-center" style="width: 10%">Pemilik</th>
                                             <th class="text-center" style="width: 15%">Aksi</th>
                                         </tr>
@@ -141,12 +148,12 @@
                                                     <td align="center">
                                                         @if ($item->nilai->status == 0)
                                                             <span class="badge badge-danger">Telah ditolak oleh :
-                                                                {{ $item->nilai->owner->nama ?? ''}} <br> Pada :
+                                                                {{ $item->nilai->owner->nama ?? '' }} <br> Pada :
                                                                 {{ $item->nilai->created_at }}</span>
                                                             <br>
                                                         @else
                                                             <span class="badge badge-success">Telah disetujui oleh :
-                                                                {{ $item->nilai->owner->nama ?? ''}} <br> Pada :
+                                                                {{ $item->nilai->owner->nama ?? '' }} <br> Pada :
                                                                 {{ $item->nilai->created_at }}</span>
                                                             <br>
                                                         @endif
@@ -223,6 +230,12 @@
                                 <td valign="top"><strong>{{ $item->judul }}</strong></td>
                             </tr>
                             <tr>
+                                <td style="width: 15%" valign="top">Bidang Pengembangan : </td>
+                                <td valign="top">  @foreach ($item->inovasibidangpengembangan as $item_inovasi)
+                                    <li>{{ $item_inovasi->bidangpengembangan->nama }}</li>
+                                @endforeach</td>
+                            </tr>
+                            <tr>
                                 <td style="width: 20%" valign="top">Deskripsi : </td>
                                 <td valign="top">{!! $item->deskripsi !!}</td>
                             </tr>
@@ -250,6 +263,27 @@
             </div>
         </div>
     @endforeach
+
+    <!-- Modal -->
+<div class="modal fade" id="modal-memo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Memo Kurator</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 @endsection
 @push('js-custom')
@@ -292,15 +326,33 @@
         });
     </script>
     @if (session()->has('success'))
-    <script>
-        $(document).ready(function() {
-            iziToast.success({
-                title: 'Berhasil !',
-                message: "{{ session('success') }}",
-                position: 'topRight'
+        <script>
+            $(document).ready(function() {
+                iziToast.success({
+                    title: 'Berhasil !',
+                    message: "{{ session('success') }}",
+                    position: 'topRight'
+                });
             });
-        });
-    </script>
+        </script>
     @endif
-    
+    <script>
+        function tolak(id, judul) {
+            swal({
+                    title: 'Apakah Anda Yakin?',
+                    text: 'Rubrik '+ judul +' ditolak',
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((isConfirm) => {
+                    if (isConfirm) {
+                        $("#modal-memo").modal('show');
+                    } else {
+                        swal('Tidak Ada perubahan');
+                    }
+                });
+        }
+    </script>
+
 @endpush

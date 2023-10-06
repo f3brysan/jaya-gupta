@@ -5507,7 +5507,10 @@ button.close {
 
 @media (min-width: 992px) {
   .modal-lg {
-    max-width: 800px;
+    max-width: 1140px;
+  }
+  .modal-xl {
+    max-width: 1140px;
   }
 }
 

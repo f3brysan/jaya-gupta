@@ -30,6 +30,7 @@
                                         <th class="text-center">Judul</th>
                                         <th class="text-center">Deskripsi</th>
                                         <th class="text-center">Gambar</th>
+                                        <th class="text-center">Bidang Pengembangan</th>
                                         <th class="text-center">Status</th>
                                         <th class="text-center">Hasil</th>
                                         <th class="text-center" style="width: 15%">Aksi</th>
@@ -43,6 +44,11 @@
                                             <td align="center">{!! Str::words($item->deskripsi, 10) !!}</td>
                                             <td align="center"> <img src="{{ URL::to('/') }}/{{ $item->image }}"
                                                     style="width: 80px" class="img-fluid img-thumbnail" alt=""></td>
+                                            <td class="text-left">
+                                                @foreach ($item->inovasibidangpengembangan as $item_inovasi)
+                                                    <li>{{ $item_inovasi->bidangpengembangan->nama }}</li>
+                                                @endforeach
+                                            </td>
                                             <td align="center">
                                                 @switch($item->status)
                                                     @case(0)
@@ -117,6 +123,7 @@
                                 <th class="text-center">Judul</th>
                                 <th class="text-center">Deskripsi</th>
                                 <th class="text-center">Gambar</th>
+                                <th class="text-center">Bidang Pengembangan</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Hasil</th>
                                 <th class="text-center" style="width: 10%">Aksi</th>
@@ -134,7 +141,7 @@
     @foreach ($inovasi as $item)
         <div class="modal fade" id="modal{{ $item->id }}" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" id="exampleModalLongTitle">Detil Inovasi</h6>
@@ -184,7 +191,7 @@
     <script src="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js">
     </script>
     <script src="{{ URL::to('/') }}/assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
-    <script src="{{ URL::to('/') }}/assets/modules/jquery-ui/jquery-ui.min.js"></script>    
+    <script src="{{ URL::to('/') }}/assets/modules/jquery-ui/jquery-ui.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -211,5 +218,5 @@
                 }
             });
         });
-    </script>   
+    </script>
 @endpush

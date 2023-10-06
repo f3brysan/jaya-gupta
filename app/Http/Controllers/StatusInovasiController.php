@@ -11,10 +11,10 @@ class StatusInovasiController extends Controller
 {
     public function index_inovasi()
     {
-        $waiting = Inovasi::with('nilai.owner', 'owner')->doesntHave('nilai')->where('status', 1)->where('jenis', 1)->get();
-        $done =  Inovasi::with('nilai.owner', 'owner')->has('nilai')->where('status', 1)->where('jenis', 1)->get();
-        $all = Inovasi::with('nilai.owner', 'owner')->where('status', 1)->where('jenis', 1)->get();
-        // return $done;
+        $waiting = Inovasi::with('nilai.owner', 'owner','inovasibidangpengembangan.bidangpengembangan')->doesntHave('nilai')->where('status', 1)->where('jenis', 1)->get();
+        $done =  Inovasi::with('nilai.owner', 'owner','inovasibidangpengembangan.bidangpengembangan')->has('nilai')->where('status', 1)->where('jenis', 1)->get();
+        $all = Inovasi::with('nilai.owner', 'owner','inovasibidangpengembangan.bidangpengembangan')->where('status', 1)->where('jenis', 1)->get();
+        // return $waiting;
         return view('kurator.inovasi', compact('waiting', 'done', 'all'));
     }
 

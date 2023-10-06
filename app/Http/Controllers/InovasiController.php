@@ -17,8 +17,7 @@ class InovasiController extends Controller
 {
     public function index()
     {
-        $inovasi = Inovasi::with('nilai.owner')->where('bio_id', auth()->user()->id)->where('jenis', 1)->get();
-        // return $inovasi;
+        $inovasi = Inovasi::with('nilai.owner','inovasibidangpengembangan.bidangpengembangan')->where('bio_id', auth()->user()->id)->where('jenis', 1)->get();        
         return view('inovasi.index', compact('inovasi'));
     }
 
@@ -89,7 +88,7 @@ class InovasiController extends Controller
             );            
 
             if ($insert) {
-                $delete = InovasiBidangPengembangan::where('inovasi_id', $insert->id);
+                $delete = InovasiBidangPengembangan::where('inovasi_id', $insert->id)->delete();
                 foreach ($request->bidang_pengembangan as $item) {
                     $insertIBP = InovasiBidangPengembangan::create([
                         'inovasi_id' => $insert->id,
@@ -112,9 +111,10 @@ class InovasiController extends Controller
     public function edit($id)
     {
         $id = Crypt::decrypt($id);
-        $inovasi = Inovasi::where('id', $id)->first();
-        $ms_bidang_pengembangan = Ms_BidangPengembangan::all();
-        $bidang_pengembangan = InovasiBidangPengembangan::where('inovasi_id', $id)->get();
+        $inovasi = Inovasi::where('id', $id)->first();        
+        $bidang_pengembangan = InovasiBidangPengembangan::where('inovasi_id', $id)->with('bidangpengembangan')->get();
+        $ms_bidang_pengembangan = Ms_BidangPengembangan::whereNotIn('id', $bidang_pengembangan->pluck('bidang_pengembangan_id'))->get();
+        // return $bidang_pengembangan;
         return view('inovasi.edit', compact('inovasi','bidang_pengembangan','ms_bidang_pengembangan'));
         // return $inovasi;
     }

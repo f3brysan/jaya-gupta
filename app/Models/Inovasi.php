@@ -21,12 +21,16 @@ class Inovasi extends Model
 
     public function owner()
     {
-        return $this->belongsTo(Biodata::class, 'bio_id', 'id');
+        return $this->belongsTo(Biodata::class,'bio_id', 'id');
     }
 
     public function nilai()
     {
         return $this->belongsTo(NilaiInovasi::class, 'id', 'inovasi_id');
+    }
+    public function inovasibidangpengembangan()
+    {
+        return $this->hasMany(InovasiBidangPengembangan::class, 'inovasi_id', 'id');
     }
 
 }
