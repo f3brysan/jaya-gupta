@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API_AuthController;
+use App\Http\Controllers\APIController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,9 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
     Route::post('me', [API_AuthController::class, 'userProfile']);
 
 });
+
+Route::post('encode', [APIController::class, 'encode']);
+
 
 // Route::controller(API_AuthController::class)->prefix('auth')->group(function () {
 //     Route::post('login', 'login');

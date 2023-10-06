@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Biodata;
+use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -139,8 +140,8 @@ class API_AuthController extends Controller
      */
     public function userProfile()
     {
-        $user = auth()->user();
-        $bio = User::with('bio','bio.user_bidang_pengembangan.bidangpengembangan')->where('id', $user->id)->first();
+        $user = auth('api')->user();
+        $bio = User::with('bio','roles')->where('id', $user->id)->first();
         
         if (!$bio) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -164,4 +165,5 @@ class API_AuthController extends Controller
             'user' => auth('api')->user()
         ]);
     }
+
 }
