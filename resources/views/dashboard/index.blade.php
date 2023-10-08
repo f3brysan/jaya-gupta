@@ -10,6 +10,31 @@
             </div>
             @if (auth()->user()->hasRole('guru'))
                 <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12">
+                        <div class="card author-box card-primary">
+                            <div class="card-body">
+                                <div class="author-box-left">
+                                    <img alt="image" src="assets/img/avatar/avatar-1.png"
+                                        class="rounded-circle author-box-picture">
+                                    <div class="clearfix"></div>                                    
+                                </div>
+                                <div class="author-box-details">
+                                    <div class="author-box-name">
+                                        <a href="#">{{ auth()->user()->bio->nama }}</a>
+                                    </div>
+                                    <div class="author-box-job">{{ auth()->user()->bio->nip }} ({{ auth()->user()->bio->asal_sekolah->nama_satuan }})</div>
+                                    <div class="author-box-description">
+                                        @foreach (auth()->user()->bio->user_bidang_pengembangan  as $item)
+                                            <li>{{ $item->bidangpengembangan->nama }}</li>
+                                        @endforeach
+                                    </div>                                  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                         <div class="card card-statistic-1">
                             <div class="card-icon bg-primary">
@@ -138,12 +163,12 @@
 
             <div class="row">
                 <div class="col-12 col-md-12 col-lg-12">
-                            
+
                     <div class="card">
                         <div class="card-header">
-                            <h5>Data Praktik baik</h5>    
+                            <h5>Data Praktik baik</h5>
                         </div>
-                          <div class="card-body">
+                        <div class="card-body">
                             <div class="table-responsive">
                                 <table id="example" class="table table-bordered table-hover table-bordered"
                                     style="width:100%">
@@ -161,11 +186,11 @@
                                     </tbody>
                                 </table>
                             </div>
-                          </div>                        
+                        </div>
                     </div>
-                </div>                
-            </div>    
-        </section>       
+                </div>
+            </div>
+        </section>
 
         <section class="section">
             <div class="section-header">
@@ -343,7 +368,7 @@
             });
         });
 
-        $(document).on('click', ".delete",function() {
+        $(document).on('click', ".delete", function() {
             var dataId = $(this).data('id');
             var dataName = $(this).data('name');
             console.log(dataId);
