@@ -15,6 +15,7 @@ use App\Models\Ms_SatuanPendidikan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Ms_BidangPengembangan;
+use App\Models\Ms_DataSekolah;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\UserBidangPengembangan;
 use Illuminate\Support\Facades\Session;
@@ -31,7 +32,7 @@ class BiodataController extends Controller
         $data['kab']= Regency::all();
         // $data['matpel'] = Ms_MataPelajaran::orderBy('nama', 'ASC')->get();
         $data['pangkat'] = Ms_Pangkat::where('is_aktif', true)->orderBy('gol', 'DESC')->get();
-        $data['asal_satuan'] = Ms_SatuanPendidikan::orderBy('npsn','ASC')->get();        
+        $data['asal_satuan'] = Ms_DataSekolah::orderBy('npsn','ASC')->get();        
         $data['bidang_pengembangan'] = UserBidangPengembangan::where('bio_id', $id)->with('bidangpengembangan')->get();
         $user_bp = $data['bidang_pengembangan']->pluck('bidang_pengembangan_id');
 

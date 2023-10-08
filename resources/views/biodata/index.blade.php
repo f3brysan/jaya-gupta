@@ -64,7 +64,7 @@
                                                                     $selected = $biodata->asal_satuan_pendidikan == $item->npsn ? 'selected' : '';
                                                                 @endphp
                                                                 <option value="{{ $item->npsn }}" {{ $selected }}>
-                                                                    {{ $item->nama_satuan }} ({{ $item->alamat }}) </option>
+                                                                    {{ $item->nama }} </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
