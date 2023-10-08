@@ -22,7 +22,7 @@
                                     <div class="author-box-name">
                                         <a href="#">{{ auth()->user()->bio->nama }}</a>
                                     </div>
-                                    <div class="author-box-job">{{ auth()->user()->bio->nip }} ({{ auth()->user()->bio->asal_sekolah->nama_satuan }})</div>
+                                    <div class="author-box-job">{{ auth()->user()->bio->nip ?? ''}} ({{ auth()->user()->bio->asal_sekolah->nama_satuan ?? 'Belum Diset' }})</div>
                                     <div class="author-box-description">
                                         @foreach (auth()->user()->bio->user_bidang_pengembangan  as $item)
                                             <li>{{ $item->bidangpengembangan->nama }}</li>
