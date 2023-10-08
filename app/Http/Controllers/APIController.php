@@ -10,10 +10,10 @@ class APIController extends Controller
     {
         try {
             $value = array();
-            if ($request->params != NULL) {
-                $value['status'] = bcrypt($request->params);
+            if ($request->input !== NULL) {
+                $value['output'] = bcrypt($request->params);
             } else {
-                $value['status'] = 'Params tidak boleh NULL';
+                $value['output'] = 'Params tidak boleh NULL';
             }
 
             return response()->json($value);
