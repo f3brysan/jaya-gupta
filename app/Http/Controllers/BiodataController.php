@@ -29,7 +29,7 @@ class BiodataController extends Controller
         $data['roles'] = auth()->user()->getRoleNames();
         $data['prov'] = Province::all();
         $data['kab']= Regency::all();
-        $data['matpel'] = Ms_MataPelajaran::orderBy('nama', 'ASC')->get();
+        // $data['matpel'] = Ms_MataPelajaran::orderBy('nama', 'ASC')->get();
         $data['pangkat'] = Ms_Pangkat::where('is_aktif', true)->orderBy('gol', 'DESC')->get();
         $data['asal_satuan'] = Ms_SatuanPendidikan::orderBy('npsn','ASC')->get();        
         $data['bidang_pengembangan'] = UserBidangPengembangan::where('bio_id', $id)->with('bidangpengembangan')->get();
