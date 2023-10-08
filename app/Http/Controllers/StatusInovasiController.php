@@ -39,10 +39,13 @@ class StatusInovasiController extends Controller
             $status = 0;
         }
 
+        $memo = $request->memo ?? '';
+
         $nilai = NilaiInovasi::create([
          'inovasi_id' => $inovasi->id,
          'bio_id' => auth()->user()->id,
-         'status' => $status
+         'status' => $status,
+         'memo' => $memo
         ]);
 
         if ($nilai) {

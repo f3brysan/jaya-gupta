@@ -85,7 +85,7 @@
                                                                 <form action="{{ URL::to('kurator/nilai') }}"
                                                                     method="POST">
                                                                     @csrf
-                                                                    <input type="hidden" name="id" id="id"
+                                                                    <input type="hidden" name="id" 
                                                                         value="{{ $encryptUrl }}">
                                                                     <button type="submit" class="btn btn-success m-1"
                                                                         id="status-trm" title="Terima Inovasi"
@@ -93,7 +93,7 @@
                                                                             class="fas fa-check"></i></button>                                                                    
                                                                 </form>
                                                                 <button type="button" class="btn btn-danger m-1"
-                                                                        title="Tolak Inovasi" value="tolak" onclick="tolak('{{ $item->id }}','{{ $item->judul }}')"><i class="fas fa-times"></i></button>
+                                                                        title="Tolak Inovasi" value="tolak" onclick="tolak('{{ $encryptUrl }}','{{ $item->judul }}')"><i class="fas fa-times"></i></button>
                                                         </td>
                                     </div>
                                     </tr>
@@ -170,7 +170,7 @@
                                                             <form action="{{ URL::to('guru/inovasi/hapus') }}"
                                                                 method="POST">
                                                                 @csrf
-                                                                <input type="hidden" name="id" id="id"
+                                                                <input type="hidden" name="id" 
                                                                     value="{{ $encryptUrl }}">
                                                                 @if ($item->nilai->status == 0)
                                                                     <button type="submit" class="btn btn-success m-1"
@@ -274,13 +274,21 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <form action="{{ URL::to('kurator/nilai') }}" method="POST">
+            @csrf
+            <input type="hidden" name="id" id="id">
+            <input type="hidden" name="status" value="tolak">
         <div class="modal-body">
-          ...
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Memo</label>
+                <textarea class="form-control" id="memo" name="memo" rows="3"></textarea>
+              </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Simpan</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
+    </form>
       </div>
     </div>
   </div>
@@ -348,6 +356,7 @@
                 .then((isConfirm) => {
                     if (isConfirm) {
                         $("#modal-memo").modal('show');
+                        $("#id").val(id);
                     } else {
                         swal('Tidak Ada perubahan');
                     }

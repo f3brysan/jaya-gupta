@@ -70,10 +70,14 @@
                                                     <br>
                                                 @else
                                                     @if ($item->nilai->status == 0)
+                                                        <span class="badge badge-info">Memo :
+                                                            {{ $item->nilai->memo }}</span>
+                                                            <br>
+                                                            <br>
                                                         <span class="badge badge-danger">Telah ditolak oleh :
                                                             {{ $item->nilai->owner->nama }} <br> Pada :
                                                             {{ $item->nilai->created_at }}</span>
-                                                        <br>
+                                                       
                                                     @else
                                                         <span class="badge badge-success">Telah disetujui oleh :
                                                             {{ $item->nilai->owner->nama }} <br> Pada :
