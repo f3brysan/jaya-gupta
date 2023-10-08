@@ -10,6 +10,8 @@ use App\Http\Controllers\InovasiController;
 use App\Http\Controllers\Ms_BidangPengembanganController;
 use App\Http\Controllers\Ms_MataPelajaranController;
 use App\Http\Controllers\Ms_SatuanPendidikanController;
+use App\Http\Controllers\Ms_Sekolah;
+use App\Http\Controllers\Ms_SekolahController;
 use App\Http\Controllers\StatusInovasiController;
 use App\Models\Ms_MataPelajaran;
 use Illuminate\Support\Facades\Route;
@@ -64,6 +66,8 @@ Route::middleware(['auth:web', 'role:superadmin|kurator'])->group(function () {
 Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
     route::get('data-guru', [DataGuruController::class, 'index']);
     Route::get('master/satuan-pendidikan', [Ms_SatuanPendidikanController::class, 'index']);    
+    Route::get('data-sekolah', [Ms_SekolahController::class, 'index']);    
+    Route::get('data-sekolah/show/{id_level_wil}/{kode_wil}', [Ms_SekolahController::class, 'sekolah_kec']);    
 
     Route::get('master/bidang-pengembangan', [Ms_BidangPengembanganController::class, 'index']); 
     Route::post('master/bidang-pengembangan/store', [Ms_BidangPengembanganController::class, 'store']);   
