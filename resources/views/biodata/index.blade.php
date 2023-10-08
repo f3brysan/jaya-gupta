@@ -87,7 +87,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="col-md-6">
-                                                        <label>Tempat Lahir</label>
+                                                        <label>Jenis Kelamin</label>
                                                         <select name="gender" id="gender" class="form-control" required>
                                                             @if ($biodata->gender == null)
                                                                 <option value="">Pilih</option>
