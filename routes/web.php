@@ -68,6 +68,7 @@ Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
     Route::get('master/satuan-pendidikan', [Ms_SatuanPendidikanController::class, 'index']);    
     Route::get('data-sekolah', [Ms_SekolahController::class, 'index']);    
     Route::get('data-sekolah/show/{id_level_wil}/{kode_wil}', [Ms_SekolahController::class, 'sekolah_kec']);    
+    Route::post('data-sekolah/pull-data', [Ms_SekolahController::class, 'pull_data']);    
 
     Route::get('master/bidang-pengembangan', [Ms_BidangPengembanganController::class, 'index']); 
     Route::post('master/bidang-pengembangan/store', [Ms_BidangPengembanganController::class, 'store']);   
