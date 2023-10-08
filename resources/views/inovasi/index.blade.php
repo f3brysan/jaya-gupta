@@ -7,6 +7,13 @@
     <link rel="stylesheet"
         href="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
+    <style>
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;            
+        }
+    </style>
 @endpush
 
 @section('container')
@@ -72,12 +79,11 @@
                                                     @if ($item->nilai->status == 0)
                                                         <span class="badge badge-info">Memo :
                                                             {{ $item->nilai->memo }}</span>
-                                                            <br>
-                                                            <br>
+                                                        <br>
+                                                        <br>
                                                         <span class="badge badge-danger">Telah ditolak oleh :
                                                             {{ $item->nilai->owner->nama }} <br> Pada :
                                                             {{ $item->nilai->created_at }}</span>
-                                                       
                                                     @else
                                                         <span class="badge badge-success">Telah disetujui oleh :
                                                             {{ $item->nilai->owner->nama }} <br> Pada :
@@ -154,15 +160,30 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                        @if ($item->image !== null)
+                            <div class="article-header">
+                                <img src="{{ URL::to('/') }}/{{ $item->image }}" class="img-fluid center"
+                                    alt="Responsive image" style="height: 400px">
+                            </div>
+                        @endif
                         <table class="table">
                             <tr>
                                 <td style="width: 15%" valign="top">Judul : </td>
                                 <td valign="top"><strong>{{ $item->judul }}</strong></td>
                             </tr>
                             <tr>
+                                <td style="width: 20%" valign="top">Bid Pengembangan : </td>
+                                <td valign="top">
+                                    @foreach ($item->inovasibidangpengembangan as $inovasi)
+                                        {{ $inovasi->bidangpengembangan->nama }},
+                                    @endforeach
+                                </td>
+                            </tr>
+                            <tr>
                                 <td style="width: 20%" valign="top">Deskripsi : </td>
                                 <td valign="top">{!! $item->deskripsi !!}</td>
                             </tr>
+                            @if ($item->video !== NULL)
                             <tr>
                                 <td style="width: 15%" valign="top">Video : </td>
                                 <td valign="top">
@@ -172,12 +193,8 @@
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                         allowfullscreen></iframe>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 15%" valign="top">Gambar : </td>
-                                <td valign="top"><img src="{{ URL::to('/') }}/{{ $item->image }}" alt=""
-                                        class="img-fluid img-thumbnail" style="height: 100px"></td>
-                            </tr>
+                            </tr>        
+                            @endif
                         </table>
                     </div>
                     <div class="modal-footer">

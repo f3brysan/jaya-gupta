@@ -83,7 +83,8 @@ class InovasiController extends Controller
                 'video' => $request->video,
                 'image' => $path,
                 'status' => $status,
-                'jenis' => 1
+                'jenis' => 1,
+                'link' => $request->link
     ]
             );            
 

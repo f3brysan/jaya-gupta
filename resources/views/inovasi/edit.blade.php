@@ -35,6 +35,13 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
+                                        <label>Link Pendukung</label>
+                                        <input type="text" name="link" id="link" class="form-control"
+                                            value="{{ $inovasi->link }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
                                         <label>Link Video Youtube</label>
                                         <input type="text" name="video" id="video" class="form-control"
                                             value="{{ $inovasi->video }}">
