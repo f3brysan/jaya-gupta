@@ -32,6 +32,7 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
 });
 
 Route::post('encode', [APIController::class, 'encode']);
+Route::get('getBidangKompetensi', [APIController::class, 'getBidangKompetensi']);
 
 
 // Route::controller(API_AuthController::class)->prefix('auth')->group(function () {

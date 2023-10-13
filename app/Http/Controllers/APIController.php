@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ms_BidangPengembangan;
 use Illuminate\Http\Request;
 
 class APIController extends Controller
@@ -22,5 +23,12 @@ class APIController extends Controller
             return $e->getMessage();
         }
         
+    }
+
+    public function getBidangKompetensi()
+    {
+        $getData = Ms_BidangPengembangan::all();
+
+        return response()->json(['output' => $getData]);
     }
 }
