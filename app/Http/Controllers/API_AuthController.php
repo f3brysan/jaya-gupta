@@ -79,7 +79,7 @@ class API_AuthController extends Controller
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|min:6',
-        ]);
+        ]);        
 
         if($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
@@ -99,15 +99,21 @@ class API_AuthController extends Controller
             ]);
         }
 
+        $value = array();
         if ($biodata) {
             DB::commit();
-            return response()->json([
+            
+            $value['output'] = array(
                 'message' => 'User successfully registered',
                 'user' => $user
+            );
+            return response()->json([
+                $value
             ], 201);
         }else{
-            DB::rollBack();
-        }
+            DB::rollBack();           
+            return response()->json(['error' => 'Unauthorized'], 401);
+                }
     }
 
 
