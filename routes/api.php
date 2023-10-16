@@ -28,6 +28,8 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
     Route::post('register', [API_AuthController::class, 'register']);
     Route::post('refresh', [API_AuthController::class, 'refresh']);
     Route::post('me', [API_AuthController::class, 'userProfile']);
+    Route::post('update-profile', [API_AuthController::class, 'updateProfile']);
+    Route::post('update-profile-picture', [API_AuthController::class, 'updateProfilePicture']);
 
 });
 
