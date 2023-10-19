@@ -31,7 +31,7 @@
                                     onclick="pullData('{{ $kode_wil }}')">Tarik data dapo ke database</button>
                             </div>
                         </div>
-                        <div class="table-responsive">
+                        <div class="col-md-12 table-responsive">
                             <table id="example" class="table table-bordered table-hover table-bordered"
                                 style="padding: 10px; width: 100%;">
                                 <thead>
@@ -50,7 +50,7 @@
                                         <th class="text-center">R. Perpus</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody>                                    
                                 </tbody>
                                 <tfoot>
                                     <tr>
@@ -85,8 +85,12 @@
         $(document).ready(function() {
             var url = window.location.href;
             $('#example').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
                 processing: true,
-                serverSide: true, //aktifkan server-side 
+                // serverSide: true, //aktifkan server-side 
                 ajax: {
                     url: url, // routing ke group.index
                     type: 'GET'
@@ -186,20 +190,20 @@
                 type: "POST",
                 url: "{{ URL::to('data-sekolah/pull-data') }}",
                 data: {
-                    'kode_wil' : kode_wil,
+                    'kode_wil': kode_wil,
                     '_token': "{{ csrf_token() }}",
-                },                
-                success: function (ress) {
+                },
+                success: function(ress) {
                     console.log(ress);
                     $("#pull_data_btn").removeClass("btn-secondary");
-                        $("#pull_data_btn").addClass("btn-primary btn-glow");                        
-                        $("#pull_data_btn").html("Tarik data dapo ke database");
-                        $('#pull_data_btn').prop('disabled', false);
-                        var oTable = $('#example').dataTable();
-                        oTable.fnDraw(false);
-                        swal("Info", ress + " data berhasil disinkron", "success");
+                    $("#pull_data_btn").addClass("btn-primary btn-glow");
+                    $("#pull_data_btn").html("Tarik data dapo ke database");
+                    $('#pull_data_btn').prop('disabled', false);
+                    var oTable = $('#example').dataTable();
+                    oTable.fnDraw(false);
+                    swal("Info", ress + " data berhasil disinkron", "success");
                 }
-            });        
+            });
         }
     </script>
 @endpush

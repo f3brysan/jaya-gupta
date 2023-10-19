@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Ms_DataSekolah;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Crypt;
 
@@ -27,11 +28,16 @@ class Ms_SekolahController extends Controller
         $kode_wil = Crypt::decrypt($kode_wil);
         $url = "https://dapo.kemdikbud.go.id/rekap/progresSP?id_level_wilayah=" . $id_level_wil . "&kode_wilayah=" . $kode_wil . "&semester_id=20231&bentuk_pendidikan_id=";
         $source = Http::get($url);
-        $getData = $source->json();
-
+        
+        $getData = Ms_DataSekolah::where('kode_wilayah_induk_kecamatan', "like", '%'.$kode_wil.'%')->get();
+        
         if ($request->ajax()) {
             return DataTables::of($getData)
-                ->rawColumns([])
+            ->addColumn('nama', function ($getData) {
+                $url = 'data-sekolah/show-detail/'.$getData->sekolah_id;
+                return '<a href="'.URL::to($url).'">'.$getData->nama.'</a>';
+            })
+                ->rawColumns(['nama'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -55,9 +61,40 @@ class Ms_SekolahController extends Controller
         }
         // return $total;
 
-        $nm_induk_kecamatan = $getData[0]['induk_kecamatan'];
-        $kode_wil = trim($getData[0]['kode_wilayah_induk_kecamatan']);
+        $nm_induk_kecamatan = $getData[0]['induk_kecamatan'] ?? '';
+        // $kode_wil = trim($getData[0]['kode_wilayah_induk_kecamatan']) ?? '';
         return view('master.sekolah.show', compact('nm_induk_kecamatan', 'total', 'kode_wil'));
+    }
+
+    public function detil_sekolah($npsn)
+    {
+        $npsn = Crypt::decrypt($npsn);
+        $getData = Ms_DataSekolah::where('npsn', $npsn)->first();
+        return view('master.sekolah.show_detil', compact('getData'));
+    }
+
+    public function edit_sekolah($npsn)
+    {
+        $npsn = Crypt::decrypt($npsn);
+        $getData = Ms_DataSekolah::where('npsn', $npsn)->first();
+        return view('master.sekolah.edit_detil', compact('getData'));
+    }
+
+    public function update_sekolah(Request $request)
+    {
+        
+        $record = $request->all();
+        unset($record['_token']);
+        // dd($record);
+        DB::beginTransaction();
+        $update = Ms_DataSekolah::where('npsn', $request->npsn)->update($record);
+        $npsn_enkripsi = Crypt::encrypt($request->npsn);
+
+        if ($update) {
+            DB::commit();
+            return redirect('data-sekolah/edit-detail/'.$npsn_enkripsi)->with('success', 'Data berhasil disimpan.');
+        }
+
     }
 
     public function pull_data(Request $request)
