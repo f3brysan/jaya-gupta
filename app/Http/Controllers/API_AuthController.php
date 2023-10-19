@@ -22,7 +22,7 @@ class API_AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'login_guru', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'login_guru', 'register', 'updateProfile', 'updateProfilePicture']]);
     }
 
     /**
@@ -56,7 +56,6 @@ class API_AuthController extends Controller
             'nuptk' => 'required',
             'password' => 'required|string|min:6',
         ]);
-
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -162,17 +161,19 @@ class API_AuthController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $user = auth('api')->user();
+        // $user = auth('api')->user();
+        // dd($request->all());
+
+        $user = User::with('roles')->where('id', $request->user_id)->first();
         
         $this->validate($request, [
-            'image' => 'image|mimes:jpg,png,jpeg,gif,svg',
-            'password' => 'required',
+            'image' => 'image|mimes:jpg,png,jpeg,gif,svg',            
         ]);
 
         if ($request->file('image')) {
             $path = $request->file('image')->store('/images/profile', ['disk' => 'my_files']);
         } else {
-            $check = Biodata::where('id', $request->id)->first();
+            $check = Biodata::where('id', $request->user_id)->first();
             if ($check) {
                 $path = $check->profile_picture;
             } else {
@@ -180,20 +181,33 @@ class API_AuthController extends Controller
             }
         }
 
+        if ($request->password == NULL or $request->password == '') {
+            $password = $user->password;
+        }else{
+            $password = bcrypt($request->password);
+        }
+
+        $check = Biodata::where('id', $request->id)->first();
+        if ($request->nama == NULL or $request->nama == '') {
+            $nama = $check->nama;
+        }else{
+            $nama = $request->nama;
+        }
+
         $roleGuest = $user->hasRole('tamu');
     
         DB::beginTransaction();
         if ($roleGuest) {
             $updateBio = Biodata::where('id', $user->id)->update([
-                'nama' => $request->nama,
+                'nama' => $nama,
                 'profile_picture' => $path,
                 'biografi' => $request->biografi
             ]);
 
             if ($updateBio) {
                 $updateUser = User::where('id', $user->id)->update([
-                    'name' => $request->nama,
-                    'password' => bcrypt($request->password)
+                    'name' => $nama,
+                    'password' => $password
                 ]);
             }
         }else{
@@ -204,7 +218,7 @@ class API_AuthController extends Controller
 
             if ($updateBio) {
                 $updateUser = User::where('id', $user->id)->update([                    
-                    'password' => bcrypt($request->password)
+                    'password' => $password
                 ]);
             }
         }
@@ -227,7 +241,8 @@ class API_AuthController extends Controller
 
     public function updateProfilePicture(Request $request)
     {
-        $user = auth('api')->user();
+        
+        $user = User::where('id', $request->user_id)->first();
 
         $this->validate($request, [
             'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg',
