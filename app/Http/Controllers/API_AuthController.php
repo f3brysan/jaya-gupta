@@ -162,7 +162,7 @@ class API_AuthController extends Controller
     public function updateProfile(Request $request)
     {
         // $user = auth('api')->user();
-        // dd($request->all());
+        
 
         $user = User::with('roles')->where('id', $request->user_id)->first();
         
@@ -187,10 +187,11 @@ class API_AuthController extends Controller
             $password = bcrypt($request->password);
         }
 
-        $check = Biodata::where('id', $request->id)->first();
-        if ($request->nama == NULL or $request->nama == '') {
+        
+        if ($request->nama == NULL or $request->nama == '') {            
+            $check = Biodata::where('id', $request->user_id)->first();            
             $nama = $check->nama;
-        }else{
+        }else{            
             $nama = $request->nama;
         }
 
