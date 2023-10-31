@@ -34,6 +34,7 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
 });
 
 Route::post('encode', [APIController::class, 'encode']);
+Route::post('validate-password', [APIController::class, 'hashcheck']);
 Route::get('getBidangKompetensi', [APIController::class, 'getBidangKompetensi']);
 
 

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ms_BidangPengembangan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Ms_BidangPengembangan;
 
 class APIController extends Controller
 {
@@ -30,5 +31,22 @@ class APIController extends Controller
         $getData = Ms_BidangPengembangan::all();
 
         return response()->json(['output' => $getData]);
+    }
+
+    public function hashcheck(Request $request){
+        $password = $request->password;
+        $hashedPassword = $request->hash_password;
+
+        try {
+            if (Hash::check($password, $hashedPassword)) {
+                $result = true;
+            }else{
+                $result = false;
+            }
+
+            return response()->json($result);
+        } catch (\Exception $e) {
+            return $e->getMessage();    
+        }
     }
 }
