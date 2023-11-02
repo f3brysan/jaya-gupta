@@ -12,8 +12,9 @@ class APIController extends Controller
     {
         try {
             $value = array();
+            
             if ($request->input !== NULL) {
-                $value['output'] = bcrypt($request->params);
+                $value['output'] = Hash::make($request->input);
             } else {
                 $value['output'] = 'Params tidak boleh NULL';
             }
