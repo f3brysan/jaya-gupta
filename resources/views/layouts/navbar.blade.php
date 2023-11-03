@@ -62,7 +62,7 @@
                         <span>Master Data</span></a>
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ URL::to('master/user') }}">Peran Pengguna</a></li>
-                        <li><a class="nav-link" href="{{ URL::to('master/satuan-pendidikan') }}">Satuan Pendidikan</a></li>
+                        {{-- <li><a class="nav-link" href="{{ URL::to('master/satuan-pendidikan') }}">Satuan Pendidikan</a></li> --}}
                         <li><a class="nav-link" href="{{ URL::to('master/bidang-pengembangan') }}">Bidang Pengembangan</a>
                         </li>
                     </ul>
