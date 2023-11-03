@@ -48,9 +48,9 @@
                     <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-list"></i>
                         <span>GTK</span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="{{ URL::to('data-guru') }}">Guru</a></li>
-                        <li><a class="nav-link" href="{{ URL::to('master/satuan-pendidikan') }}">Tendik</a></li>
-                        <li><a class="nav-link" href="{{ URL::to('master/bidang-pengembangan') }}">Guru Non Aktif</a>
+                        <li><a class="nav-link" href="{{ URL::to('data-guru') }}">Guru dan Tendik</a></li>
+                        {{-- {{-- <li><a class="nav-link" href="{{ URL::to('master/satuan-pendidikan') }}">Tendik</a></li> --}}
+                        <li><a class="nav-link" href="{{ URL::to('data-guru') }}">Guru Non Aktif</a> 
                         </li>
                     </ul>
                 </li>
