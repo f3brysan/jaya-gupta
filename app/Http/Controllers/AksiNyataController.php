@@ -8,20 +8,24 @@ use Illuminate\Support\Str;
 use App\Models\NilaiInovasi;
 use Illuminate\Http\Request;
 use App\Models\TempNilaiInovasi;
+use Illuminate\Support\Facades\DB;
+use App\Models\Ms_BidangPengembangan;
 use Illuminate\Support\Facades\Crypt;
+use App\Models\InovasiBidangPengembangan;
 
 class AksiNyataController extends Controller
 {
     public function index()
     {
-        $aksi = Inovasi::with('nilai.owner')->where('bio_id', auth()->user()->id)->where('jenis', 2)->get();
+        $aksi = Inovasi::with('nilai.owner', 'inovasibidangpengembangan.bidangpengembangan')->where('bio_id', auth()->user()->id)->where('jenis', 2)->get();
         // return $inovasi;
         return view('aksi.index', compact('aksi'));
     }
 
     public function tambah()
     {
-        return view('aksi.tambah');
+        $ms_bidang_pengembangan = Ms_BidangPengembangan::all();
+        return view('aksi.tambah', compact('ms_bidang_pengembangan'));
 
     }
 
@@ -29,6 +33,7 @@ class AksiNyataController extends Controller
     {
         $nilai = Inovasi::with('nilai.owner')->where('id', $request->id)->first();
         // dd($nilai->nilai->id);
+        DB::beginTransaction(); 
         if ($nilai) {
             if ($nilai->nilai != null) {
                 $move = TempNilaiInovasi::create([
@@ -79,15 +84,29 @@ class AksiNyataController extends Controller
         ]);
 
         if ($insert) {
+            $delete = InovasiBidangPengembangan::where('inovasi_id', $insert->id)->delete();
+            foreach ($request->bidang_pengembangan as $item) {
+                $insertIBP = InovasiBidangPengembangan::create([
+                    'inovasi_id' => $insert->id,
+                    'bidang_pengembangan_id' => $item
+                ]);
+            }                               
+        }
+
+        if ($insertIBP) {
+            DB::commit();                
             return redirect('guru/aksi-nyata')->with('success', 'Data berhasil disimpan.');
         }
+        
     }
 
     public function edit($id)
     {
         $id = Crypt::decrypt($id);
         $inovasi = Inovasi::where('id', $id)->first();
-        return view('aksi.edit',compact('inovasi'));
+        $bidang_pengembangan = InovasiBidangPengembangan::where('inovasi_id', $id)->with('bidangpengembangan')->get();
+        $ms_bidang_pengembangan = Ms_BidangPengembangan::whereNotIn('id', $bidang_pengembangan->pluck('bidang_pengembangan_id'))->get();
+        return view('aksi.edit',compact('inovasi', 'bidang_pengembangan', 'ms_bidang_pengembangan'));
         // return $inovasi;
     }
 

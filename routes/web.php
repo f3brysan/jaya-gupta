@@ -35,10 +35,12 @@ Route::post('logout', [AuthController::class, 'logout']);
 Route::middleware(['auth:web'])->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
     Route::get('get-praktik-baik', [DashboardController::class, 'get_praktik_baik']);
+    Route::get('detil-praktik-baik/{id}', [DashboardController::class, 'detil_praktik_baik']);
 
     Route::get('biodata', [BiodataController::class, 'show']);
     Route::post('biodata/simpan', [BiodataController::class, 'store']);
     Route::post('biodata/tambah-bidang-pengembangan', [BiodataController::class, 'tambah_bidang_pengembangan']);
+    Route::delete('biodata/hapus-bidang-pengembangan/{id}', [BiodataController::class, 'hapus_bidang_pengembangan']);
 
     Route::get('ganti-password', [BiodataController::class, 'show_password']);
     Route::post('ganti-password/simpan', [BiodataController::class, 'store_password']);
@@ -64,8 +66,7 @@ Route::middleware(['auth:web', 'role:superadmin|kurator'])->group(function () {
     Route::post('kurator/nilai', [StatusInovasiController::class, 'nilai']);
 });
 
-Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
-    route::get('data-guru', [DataGuruController::class, 'index']);
+Route::middleware(['auth:web', 'role:superadmin'])->group(function () {    
     Route::get('master/satuan-pendidikan', [Ms_SatuanPendidikanController::class, 'index']);        
 
     Route::get('master/bidang-pengembangan', [Ms_BidangPengembanganController::class, 'index']); 
@@ -82,6 +83,12 @@ Route::get('data-sekolah', [Ms_SekolahController::class, 'index']);
     Route::get('data-sekolah/show/{id_level_wil}/{kode_wil}', [Ms_SekolahController::class, 'sekolah_kec']);    
     Route::get('data-sekolah/show-detail/{npsn}', [Ms_SekolahController::class, 'detil_sekolah']);    
     Route::post('data-sekolah/pull-data', [Ms_SekolahController::class, 'pull_data']);    
+
+    route::get('data-guru', [DataGuruController::class, 'index']);
+    route::get('data-guru/tambah', [DataGuruController::class, 'create']);
+    route::post('data-guru/simpan', [DataGuruController::class, 'store']);
+    route::get('data-guru/ubah/{id}', [DataGuruController::class, 'edit']);
+    route::post('data-guru/update', [DataGuruController::class, 'update']);
     
     Route::get('data-sekolah/edit-detail/{npsn}', [Ms_SekolahController::class, 'edit_sekolah']); 
     Route::post('data-sekolah/update-detail', [Ms_SekolahController::class, 'update_sekolah']);      
@@ -89,3 +96,4 @@ Route::get('data-sekolah', [Ms_SekolahController::class, 'index']);
 
 Route::get('ajax/getkabupaten/{id}', [IndoController::class, 'getkabupaten']);
 Route::get('ajax/getkecamatan/{id}', [IndoController::class, 'getkecamatan']);
+Route::get('ajax/getkelurahan/{id}', [IndoController::class, 'getkelurahan']);

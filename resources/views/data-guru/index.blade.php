@@ -13,31 +13,34 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Data Guru</h1>
+                <h1>Data Guru dan Tendik</h1>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="float-right">
-                            <a href="javascript:void(0)" class="btn btn-primary mb-3" id="add-btn"> Tambah</a>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="example" class="table table-bordered table-hover table-bordered"
-                                style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th class="text-center">Nama Guru</th>
-                                        <th class="text-center">Asal Sekolah</th>
-                                        <th class="text-center">Email</th>
-                                        <th>Bidang Pengembangan</th>
-                                        <th class="text-center">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
+                        <div class="col-md-12">
+                            <div class="float-left">
+                                <a href="{{ Url::to('data-guru/tambah') }}" class="btn btn-primary mt-2 mb-3"> Tambah</a>
+                            </div>
+                            <div class="col-lg-12 table-responsive">
+                                <table id="example" class="table table-bordered table-hover table-bordered"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Nama Guru</th>
+                                            <th class="text-center">Asal Sekolah</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Status</th>
+                                            <th>Bidang Pengembangan</th>
+                                            <th class="text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>                       
                     </div>
                 </div>
             </div>
@@ -115,6 +118,10 @@
                     {
                         data: 'email',
                         name: 'email',
+                    },
+                    {
+                        data: 'role',
+                        name: 'role',
                     },
                     {
                         data: 'bidang_pengembangan',

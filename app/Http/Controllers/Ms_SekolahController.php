@@ -17,8 +17,36 @@ class Ms_SekolahController extends Controller
         $semester_id = date('Y') . '1';
         $source = Http::get("https://dapo.kemdikbud.go.id/rekap/dataSekolah?id_level_wilayah=2&kode_wilayah=226000&semester_id=" . $semester_id . "");
 
-        $getData = $source->json();
+        $getData = $source->json();           
+        $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->get("bentuk_pendidikan");
 
+        $data = array();
+        foreach ($bentuk_pendidikan as $bp) {
+            $sql = "SELECT
+            kode_wilayah_induk_kecamatan as kode_wil,
+            induk_kecamatan,
+            SUM ( CASE bentuk_pendidikan WHEN '$bp->bentuk_pendidikan' THEN 1 ELSE 0 END ) AS value 	
+        FROM
+            ms_sekolah 
+        GROUP BY
+            induk_kecamatan,
+            kode_wilayah_induk_kecamatan";
+            $query = DB::select($sql);
+
+            foreach ($query as $q) {
+                $data[$q->kode_wil]['kode_wil'] = $q->kode_wil;
+                $data[$q->kode_wil]['nama'] = $q->induk_kecamatan;
+                $data[$q->kode_wil][$bp->bentuk_pendidikan] = $q->value;                
+            }
+        }
+
+        $total_sekolah = Ms_DataSekolah::select("induk_kecamatan","kode_wilayah_induk_kecamatan as kode_wil", DB::raw('count(*) as total'))->groupBy("induk_kecamatan", "kode_wilayah_induk_kecamatan")->get();
+
+        foreach ($total_sekolah as $item) {
+            $data[$item->kode_wil]['total'] = $item->total;
+        }
+        
+        
         return view('master.sekolah.index', compact('getData'));
     }
 
@@ -26,16 +54,20 @@ class Ms_SekolahController extends Controller
     {
         $semester_id = date('Y') . '1';
         $kode_wil = Crypt::decrypt($kode_wil);
+        // dd($kode_wil);
         $url = "https://dapo.kemdikbud.go.id/rekap/progresSP?id_level_wilayah=" . $id_level_wil . "&kode_wilayah=" . $kode_wil . "&semester_id=20231&bentuk_pendidikan_id=";
         $source = Http::get($url);
         
-        $getData = Ms_DataSekolah::where('kode_wilayah_induk_kecamatan', "like", '%'.$kode_wil.'%')->get();
+        $getData = Ms_DataSekolah::with('guru')->where('kode_wilayah_induk_kecamatan', $kode_wil)->get();
         
         if ($request->ajax()) {
             return DataTables::of($getData)
             ->addColumn('nama', function ($getData) {
-                $url = 'data-sekolah/show-detail/'.$getData->sekolah_id;
+                $url = 'data-sekolah/show-detail/'.Crypt::encrypt($getData->npsn);;
                 return '<a href="'.URL::to($url).'">'.$getData->nama.'</a>';
+            })
+            ->addColumn('total_guru', function ($getData) {
+                return count($getData->guru);
             })
                 ->rawColumns(['nama'])
                 ->addIndexColumn()
@@ -50,14 +82,9 @@ class Ms_SekolahController extends Controller
         $total['jml_lab'] = 0;
         $total['jml_rk'] = 0;
         $total['jml_perpus'] = 0;
-        foreach ($getData as $data) {
-            $total['pd'] += $data['pd'];
-            $total['rombel'] += $data['rombel'];
-            $total['ptk'] += $data['ptk'];
-            $total['pegawai'] += $data['pegawai'];
-            $total['jml_lab'] += $data['jml_lab'];
-            $total['jml_rk'] += $data['jml_rk'];
-            $total['jml_perpus'] += $data['jml_perpus'];
+        foreach ($getData as $data) {           
+            $total['ptk'] += count($data['guru']);
+            $total['pegawai'] += $data['pegawai'];            
         }
         // return $total;
 
@@ -123,7 +150,8 @@ class Ms_SekolahController extends Controller
             if ($count > 0) {
                 DB::beginTransaction();
                 foreach ($array_diff as $data) {
-                    $data['created_at'] = now();        
+                    $data['created_at'] = now();      
+                    $data['kode_wilayah_induk_kecamatan'] = trim($data['kode_wilayah_induk_kecamatan']);
                     $exe = Ms_DataSekolah::insert($data);
                     if ($exe) {
                         $newData += 1;

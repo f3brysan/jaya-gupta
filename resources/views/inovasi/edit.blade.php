@@ -49,9 +49,33 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <input type="file" name="image" placeholder="Choose image" id="image">
+                                        <label>Dokumen Penunjang</label>  
+                                        <p><code>File berekstensi *pdf dan berukuran dibawah 5Mb</code></p>  
+                                        @if ($inovasi->document)
+                                            <a href="{{ URL::to('') }}/{{ $inovasi->document }}" target="_blank" class="btn btn-info btn-sm mb-2">File Penunjang : {{ $inovasi->document }}</a>
+                                        @endif                                    
+                                        <input type="file" name="document" accept="application/pdf"
+                                            placeholder="Choose document" id="document"
+                                            class="form-control @error('document') is-invalid @enderror">                                           
+                                        @error('document')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label for="">Gambar Penunjang</label>
+                                        <p class="text-muted"><code>File berekstensi *jpg dan berukuran dibawah 5Mb</code></p>
+                                        <input type="file" name="image" placeholder="Choose image" id="image"
+                                            accept="image/*" class="form-control @error('picture') is-invalid @enderror">                                            
+                                            @error('picture')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                    </div>
                                 <div class="col-md-12 mb-2">
                                     <label for="">Preview</label>
                                     <br>
@@ -130,6 +154,6 @@
             oFReader.onload = function(ofREvent) {
                 imgPreview.src = ofREvent.target.result;
             }
-        }
+        }        
     </script>
 @endpush

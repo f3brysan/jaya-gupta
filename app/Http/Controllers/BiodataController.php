@@ -142,4 +142,8 @@ class BiodataController extends Controller
                 return redirect('/biodata')->with('wrong', $e->getMessage());
         }
     }
+    public function hapus_bidang_pengembangan($id){        
+        $delete = UserBidangPengembangan::destroy($id);
+        return response()->json($delete);
+    }
 }

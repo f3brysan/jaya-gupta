@@ -31,6 +31,7 @@
                                         <th class="text-center">Judul</th>
                                         <th class="text-center">Deskripsi</th>
                                         <th class="text-center">Gambar</th>
+                                        <th class="text-center">Bidang Pengembangan</th>
                                         <th class="text-center">Status</th>
                                         <th class="text-center">Hasil</th>
                                         <th class="text-center" style="width: 15%">Aksi</th>
@@ -44,6 +45,11 @@
                                             <td align="center">{!! Str::words($item->deskripsi, 10) !!}</td>
                                             <td align="center"> <img src="{{ URL::to('/') }}/{{ $item->image }}"
                                                     style="width: 80px" class="img-fluid img-thumbnail" alt=""></td>
+                                            <td class="text-left">
+                                                @foreach ($item->inovasibidangpengembangan as $item_inovasi)
+                                                    <li>{{ $item_inovasi->bidangpengembangan->nama }}</li>
+                                                @endforeach
+                                            </td>
                                             <td align="center">
                                                 @switch($item->status)
                                                     @case(0)
@@ -116,6 +122,7 @@
                                 <th class="text-center">Judul</th>
                                 <th class="text-center">Deskripsi</th>
                                 <th class="text-center">Gambar</th>
+                                <th class="text-center">Bidang Pengembangan</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Hasil</th>
                                 <th class="text-center" style="width: 10%">Aksi</th>
@@ -146,6 +153,14 @@
                             <tr>
                                 <td style="width: 15%" valign="top">Judul : </td>
                                 <td valign="top"><strong>{{ $item->judul }}</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%" valign="top">Bid Pengembangan : </td>
+                                <td valign="top">
+                                    @foreach ($item->inovasibidangpengembangan as $inovasi)
+                                        {{ $inovasi->bidangpengembangan->nama }},
+                                    @endforeach
+                                </td>
                             </tr>
                             <tr>
                                 <td style="width: 20%" valign="top">Deskripsi : </td>
@@ -218,14 +233,14 @@
         });
     </script>
     @if (session()->has('success'))
-    <script>
-        $(document).ready(function() {
-            iziToast.success({
-                title: 'Berhasil !',
-                message: "{{ session('success') }}",
-                position: 'topRight'
+        <script>
+            $(document).ready(function() {
+                iziToast.success({
+                    title: 'Berhasil !',
+                    message: "{{ session('success') }}",
+                    position: 'topRight'
+                });
             });
-        });
-    </script>
+        </script>
     @endif
 @endpush

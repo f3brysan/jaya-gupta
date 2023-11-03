@@ -12,4 +12,9 @@ class Ms_DataSekolah extends Model
     protected $table = 'ms_sekolah';
     protected $guarded = [        
     ];
+
+    public function guru()
+    {
+        return $this->hasMany(Biodata::class, 'asal_satuan_pendidikan','npsn');
+    }
 }

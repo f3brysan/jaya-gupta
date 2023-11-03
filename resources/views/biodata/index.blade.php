@@ -35,7 +35,8 @@
                                 <div class="tab-pane fade show active" id="home" role="tabpanel"
                                     aria-labelledby="home-tab">
                                     <div class="card">
-                                        <form action="{{ URL::to('biodata/simpan') }}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ URL::to('biodata/simpan') }}" method="POST"
+                                            enctype="multipart/form-data">
                                             @csrf
                                             <input type="hidden" name="id" id="id" value="{{ $biodata->id }}">
                                             <div class="card-body">
@@ -72,8 +73,7 @@
                                                 <div class="form-group">
                                                     <div class="col-md-6">
                                                         <label>Golongan</label>
-                                                        <select name="gol" id="gol"
-                                                            class="form-control select2">
+                                                        <select name="gol" id="gol" class="form-control select2">
                                                             <option value="">Pilih</option>
                                                             @foreach ($pangkat as $item)
                                                                 @php
@@ -126,7 +126,8 @@
                                                 <div class="form-group">
                                                     <div class="col-md-6">
                                                         <label>Provinsi Domisili</label>
-                                                        <select name="provdom" id="provdom" class="form-control select2">
+                                                        <select name="provdom" id="provdom"
+                                                            class="form-control select2">
                                                             <option value=""></option>
                                                             @foreach ($prov as $item)
                                                                 <option value="{{ $item->id }}">{{ $item->name }}
@@ -138,14 +139,16 @@
                                                 <div class="form-group">
                                                     <div class="col-md-6">
                                                         <label>Kabupaten Domisili</label>
-                                                        <select name="kabdom" id="kabdom" class="form-control select2">
+                                                        <select name="kabdom" id="kabdom"
+                                                            class="form-control select2">
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="col-md-6">
                                                         <label>Kecamatan Domisili</label>
-                                                        <select name="kecdom" id="kecdom" class="form-control select2">
+                                                        <select name="kecdom" id="kecdom"
+                                                            class="form-control select2">
                                                         </select>
                                                     </div>
                                                 </div>
@@ -167,16 +170,18 @@
                                                     <div class="col-md-12 mb-2">
                                                         <label for="">Preview</label>
                                                         <br>
-                                                        <img id="preview-image-before-upload" src="{{ URL::to('/') }}/{{ $biodata->profile_picture }}"
+                                                        <img id="preview-image-before-upload"
+                                                            src="{{ URL::to('/') }}/{{ $biodata->profile_picture }}"
                                                             alt="preview image" style="max-height: 250px;">
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label>Foto Profil</label>
-                                                        <input type="file" name="image" placeholder="Choose image" id="image">             
+                                                        <input type="file" name="image" placeholder="Choose image"
+                                                            id="image">
                                                     </div>
-                                                    
+
                                                 </div>
-                                                
+
                                             </div>
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-primary float-right"
@@ -196,39 +201,47 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if (count($bidang_pengembangan)<1)
-                                            <tr>
-                                                <td colspan="3" class="text-center"><span class="badge badge-warning">Belum Ada Data</span></td>
-                                            </tr>
+                                            @if (count($bidang_pengembangan) < 1)
+                                                <tr>
+                                                    <td colspan="3" class="text-center"><span
+                                                            class="badge badge-warning">Belum Ada Data</span></td>
+                                                </tr>
                                             @else
                                                 @foreach ($bidang_pengembangan as $item)
                                                     <tr>
                                                         <td class="text-right">{{ $loop->iteration }}</td>
                                                         <td>{{ $item->bidangpengembangan->nama }}</td>
-                                                        <td><a href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-trash"></i></a></td>
+                                                        <td><a href="javascript:void(0)" class="btn btn-danger delete"
+                                                                onclick="hapusBidPengembangan('{{ $item->id }}', '{{ $item->bidangpengembangan->nama }}')"><i
+                                                                    class="fa fa-trash"></i></a></td>
                                                     </tr>
                                                 @endforeach
                                             @endif
                                             <tr>
-                                                <form action="{{ URL::to('biodata/tambah-bidang-pengembangan') }}" method="post">
+                                                <form action="{{ URL::to('biodata/tambah-bidang-pengembangan') }}"
+                                                    method="post">
                                                     @csrf
-                                                    <input type="hidden" name="bio_id" value="{{ Crypt::encrypt($biodata->id) }}">
-                                                <td class="text-center"><span class="badge badge-info"> Tambah Data Baru</span></td>
-                                                <td><select class="form-control select2" name="bidang_pengembangan_id" style="width: 100%" required>
-                                                    <option value="">-- Pilih Bidang Pengembangan --</option>
-                                                    @foreach ($ms_bidang_pengembangan as $item)
-                                                        <option value="{{ Crypt::encrypt($item->id)}}">{{ $item->nama }}</option>
-                                                    @endforeach
-                                                </select></td>
-                                                <td><button type="submit" class="btn btn-primary float-center"
-                                                    id="btn-submit">
-                                                    <i class="fa fa-plus"></i></button></td>
-                                            </form>
+                                                    <input type="hidden" name="bio_id"
+                                                        value="{{ Crypt::encrypt($biodata->id) }}">
+                                                    <td class="text-center"><span class="badge badge-info"> Tambah Data
+                                                            Baru</span></td>
+                                                    <td><select class="form-control select2" name="bidang_pengembangan_id"
+                                                            style="width: 100%" required>
+                                                            <option value="">-- Pilih Bidang Pengembangan --</option>
+                                                            @foreach ($ms_bidang_pengembangan as $item)
+                                                                <option value="{{ Crypt::encrypt($item->id) }}">
+                                                                    {{ $item->nama }}</option>
+                                                            @endforeach
+                                                        </select></td>
+                                                    <td><button type="submit" class="btn btn-primary float-center"
+                                                            id="btn-submit">
+                                                            <i class="fa fa-plus"></i></button></td>
+                                                </form>
                                             </tr>
                                         </tbody>
-                                       
+
                                     </table>
-                                  
+
                                 </div>
                             </div>
                         </div>
@@ -343,7 +356,7 @@
     </script>
     <script>
         $(document).ready(function() {
-           
+
             $('#image').change(function() {
 
                 let reader = new FileReader();
@@ -357,5 +370,34 @@
 
             });
         });
+    </script>
+    <script>
+        function hapusBidPengembangan(id, nama) {
+            console.log(id);
+            swal({
+                    title: 'Apakah Anda Yakin?',
+                    text: 'Kompetensi ' + nama + ' akan dihapus.',
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((isConfirm) => {
+                    if (isConfirm) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "{{ URL::to('biodata/hapus-bidang-pengembangan') }}/" + id,
+                            success: function(data) {                               
+                                swal("Berhasil", "Data telah terhapus", "success");
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 2000);
+                               
+                            }
+                        });                                                
+                    } else {
+                        swal('Data tidak disimpan');
+                    }
+                });
+        }
     </script>
 @endpush

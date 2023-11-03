@@ -22,7 +22,7 @@
                                     <div class="author-box-name">
                                         <a href="#">{{ auth()->user()->bio->nama }}</a>
                                     </div>
-                                    <div class="author-box-job">{{ auth()->user()->bio->nip ?? ''}} ({{ auth()->user()->bio->asal_sekolah->nama_satuan ?? 'Belum Diset' }})</div>
+                                    <div class="author-box-job">{{ auth()->user()->bio->nip ?? ''}} ({{ auth()->user()->bio->asal_sekolah->nama ?? 'Belum Diset' }})</div>
                                     <div class="author-box-description">
                                         @foreach (auth()->user()->bio->user_bidang_pengembangan  as $item)
                                             <li>{{ $item->bidangpengembangan->nama }}</li>
@@ -32,134 +32,113 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <div class="card card-statistic-1">
-                            <div class="card-icon bg-primary">
-                                <i class="far fa-flag"></i>
-                            </div>
-                            <div class="card-wrap">
-                                <div class="card-header">
-                                    <h4>Total Inovasi/Aksi Nyata</h4>
-                                </div>
-                                <div class="card-body">
-                                    {{ $data['all'] }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <div class="card card-statistic-1">
-                            <div class="card-icon bg-success">
-                                <i class="far fa-smile"></i>
-                            </div>
-                            <div class="card-wrap">
-                                <div class="card-header">
-                                    <h4>Total Inovasi/Aksi Nyata Lolos</h4>
-                                </div>
-                                <div class="card-body">
-                                    {{ $data['terima'] }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <div class="card card-statistic-1">
-                            <div class="card-icon bg-danger">
-                                <i class="far fa-frown"></i>
-                            </div>
-                            <div class="card-wrap">
-                                <div class="card-header">
-                                    <h4>Total Inovasi/Aksi Nyata Tidak Lolos</h4>
-                                </div>
-                                <div class="card-body">
-                                    {{ $data['tolak'] }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <div class="card card-statistic-1">
-                            <div class="card-icon bg-info">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="card-wrap">
-                                <div class="card-header">
-                                    <h4>Menunggu Penilaian</h4>
-                                </div>
-                                <div class="card-body">
-                                    {{ $data['waiting'] }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @else
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <div class="card card-statistic-1">
-                            <div class="card-icon bg-primary">
-                                <i class="far fa-flag"></i>
-                            </div>
-                            <div class="card-wrap">
-                                <div class="card-header">
-                                    <h4>Total Seluruh Inovasi/Aksi Nyata</h4>
-                                </div>
-                                <div class="card-body">
-                                    {{ $data['all'] }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <div class="card card-statistic-1">
-                            <div class="card-icon bg-success">
-                                <i class="far fa-smile"></i>
-                            </div>
-                            <div class="card-wrap">
-                                <div class="card-header">
-                                    <h4>Total Inovasi/Aksi Nyata Lolos</h4>
-                                </div>
-                                <div class="card-body">
-                                    {{ $data['terima'] }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <div class="card card-statistic-1">
-                            <div class="card-icon bg-danger">
-                                <i class="far fa-frown"></i>
-                            </div>
-                            <div class="card-wrap">
-                                <div class="card-header">
-                                    <h4>Total Inovasi/Aksi Nyata Tidak Lolos</h4>
-                                </div>
-                                <div class="card-body">
-                                    {{ $data['tolak'] }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <div class="card card-statistic-1">
-                            <div class="card-icon bg-info">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="card-wrap">
-                                <div class="card-header">
-                                    <h4>Menunggu Penilaian</h4>
-                                </div>
-                                <div class="card-body">
-                                    {{ $data['waiting'] }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </div>                           
             @endif
+
+            @if (auth()->user()->hasRole(['kepalasekolah']))
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card author-box card-primary">
+                        <div class="card-body">                                                        
+                                <div class="author-box-name">
+                                    <h5><i class="fa fa-university"></i>{{ $dataSekolah->nama }}</h5>
+                                </div>                               
+                                <div class="author-box-description">
+                                   <li>NPSN : {{ $dataSekolah->npsn }}</li>
+                                   <li>Bentuk Pendidikan : {{ $dataSekolah->bentuk_pendidikan }}</li>
+                                   <li>Status : {{ $dataSekolah->status_sekolah }}</li>
+                                   <li>Kecamatan : {{ $dataSekolah->induk_kecamatan }}</li>
+                                   <li>Kabupaten : {{ $dataSekolah->induk_kabupaten }}</li>
+                                   <li>Provinsi : {{ $dataSekolah->induk_provinsi }}</li>
+                                   <li>Kepala Sekolah : {{ $kepalasekolah ? $kepalasekolah->bio->nama : '' }}</li>
+                                </div>                                                              
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card author-box card-primary">                        
+                        <div class="col-md-12">
+                            <div class="card card-statistic-1">
+                                <div class="card-icon bg-primary">
+                                    <i class="far fa-user"></i>
+                                </div>
+                                <div class="card-wrap">
+                                    <div class="card-header">
+                                        <h4>Total GTK</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        {{ $jmlguru }} Orang
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                          
+                    </div>
+                </div>
+            </div> 
+            @endif
+
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-primary">
+                            <i class="far fa-flag"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Total Seluruh Inovasi/Aksi Nyata</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $data['all'] }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-success">
+                            <i class="far fa-smile"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Total Inovasi/Aksi Nyata Lolos</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $data['terima'] }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-danger">
+                            <i class="far fa-frown"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Total Inovasi/Aksi Nyata Tidak Lolos</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $data['tolak'] }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-info">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Menunggu Penilaian</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $data['waiting'] }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-12 col-md-12 col-lg-12">
@@ -169,16 +148,28 @@
                             <h5>Data Praktik baik</h5>
                         </div>
                         <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-md-3">
+                                    <label for="">Bidang Pengembangan</label>
+                                    <select class="form-control select risk_value" id="bid_pengembangan">
+                                        <option value="">-- Semua --</option>
+                                        @foreach ($bid_pengembangan as $data)
+                                            <option value="{{ $data->nama }}">{{ $data->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>                                
+                            </div>
                             <div class="table-responsive">
                                 <table id="example" class="table table-bordered table-hover table-bordered"
                                     style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th class="text-center">No</th>
+                                            <th class="text-center" style="width: 5%">No</th>
                                             <th class="text-center">Judul</th>
                                             <th class="text-center">Deskripsi</th>
-                                            <th class="text-center">Gambar</th>
+                                            <th class="text-center">Penulis</th>
                                             <th class="text-center">Bidang Pengembangan</th>
+                                            <th class="text-center">Waktu Terbit</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -191,75 +182,81 @@
                 </div>
             </div>
         </section>
+    </div>
 
-        <section class="section">
-            <div class="section-header">
-
-            </div>
-            <div class="row">
-                <div class="col-12 col-md-12 col-lg-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4><i class="fas fa-bullhorn"></i> Informasi</h4>
+    {{-- modal show inovasi --}}
+    @foreach ($getData as $item)
+    <div class="modal fade" id="modal{{ $item->id }}" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLongTitle">Detil Inovasi</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if ($item->image !== null)
+                        <div class="article-header col-md-12">
+                            <img src="{{ URL::to('/') }}/{{ $item->image }}" class="img-fluid center mx-auto d-block"
+                                alt="Responsive image" style="height: 400px">
                         </div>
-                        <div class="card-body">
-                            <div id="accordion">
-                                <div class="accordion">
-                                    <div class="accordion-header" role="button" data-toggle="collapse"
-                                        data-target="#panel-body-1">
-                                        <h4>Petunjuk Teknis Inovasi Praktik Baik</h4>
-                                    </div>
-                                    <div class="accordion-body collapse" id="panel-body-1" data-parent="#accordion">
-                                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                            eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                    </div>
-                                </div>
-                                <div class="accordion">
-                                    <div class="accordion-header" role="button" data-toggle="collapse"
-                                        data-target="#panel-body-2">
-                                        <h4>Petunjuk Teknis Aksi Nyata Praktik Baik</h4>
-                                    </div>
-                                    <div class="accordion-body collapse" id="panel-body-2" data-parent="#accordion">
-                                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                            eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                    </div>
-                                </div>
-                                <div class="accordion">
-                                    <div class="accordion-header" role="button" data-toggle="collapse"
-                                        data-target="#panel-body-3">
-                                        <h4>Persyaratan Kurasi</h4>
-                                    </div>
-                                    <div class="accordion-body collapse" id="panel-body-3" data-parent="#accordion">
-                                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                            eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endif
+                    <table class="table">
+                        <tr>
+                            <td style="width: 15%" valign="top">Judul : </td>
+                            <td valign="top" ><strong>{{ $item->judul }}</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%" valign="top">Penulis : </td>
+                            <td valign="top"><strong>{{ $item->owner->nama }}</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20%" valign="top">Bid Pengembangan : </td>
+                            <td valign="top">
+                                @foreach ($item->inovasibidangpengembangan as $inovasi)
+                                    {{ $inovasi->bidangpengembangan->nama }},
+                                @endforeach
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20%" valign="top">Deskripsi : </td>
+                            <td valign="top">{!! $item->deskripsi !!}</td>
+                        </tr>
+                        @if ($item->video !== NULL)
+                        <tr>
+                            <td style="width: 15%" valign="top">Video : </td>
+                            <td valign="top">
+                                <iframe width="560" height="315"
+                                    src="https://www.youtube.com/embed/{{ $item->video }}"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen></iframe>
+                            </td>
+                        </tr>        
+                        @endif
+                        <tr>
+                            <td style="width: 15%" valign="top">Referensi/Jurnal : </td>
+                            <td valign="top"><a href="{{ $item->link }}"> {{ $item->link }}</a></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%" valign="top">Dokumen Pendukung : </td>
+                            <td valign="top">@if ($item->document)
+                                <a href="{{ URL::to('') }}/{{ $item->document }}" target="_blank" class="btn btn-info btn-sm mb-2">File Penunjang : {{ $item->document }}</a>
+                            @endif   </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
+        </div>
     </div>
-    </div>
-
-    </div>
-    </section>
-    </div>
+    @endforeach
+    
+    {{-- modal show --}}
 @endsection
 @push('js-custom')
     <!-- JS Libraies -->
@@ -270,7 +267,7 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#example').DataTable({
+           var table = $('#example').DataTable({
                 processing: true,
                 serverSide: true, //aktifkan server-side 
                 ajax: {
@@ -291,12 +288,17 @@
                         name: 'deskripsi_readmore',
                     },
                     {
-                        data: 'images',
-                        name: 'images',
+                        data: 'owner.nama',
+                        name: 'owner.nama',
+                        className: 'text-center',
                     },
                     {
                         data: 'bidang_pengembangan',
                         name: 'bidang_pengembangan',
+                    },
+                    {
+                        data: 'updated_at',
+                        name: 'updated_at',
                     },
                     {
                         data: 'action',
@@ -307,8 +309,17 @@
                     },
                 ],
                 order: [
-                    [0, 'asc']
+                    [5, 'asc']
                 ]
+            });
+
+            // DROPDOWN FILTER UNIT
+            $('#bid_pengembangan').change(function() {
+                var id = $(this).val();
+                // console.log(id);
+                table.column(4)
+                    .search($(this).val())
+                    .draw();
             });
         });
 

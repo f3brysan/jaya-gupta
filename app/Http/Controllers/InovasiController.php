@@ -31,12 +31,15 @@ class InovasiController extends Controller
 
     public function store(Request $request)
     {
-       
-        try {
+    //    dd($request->all());
+           $request->validate([
+                'image' => 'image|max:5120',
+                'document' => 'mimes:pdf|max:5120',
+            ]);
             
             DB::beginTransaction();
             $nilai = Inovasi::with('nilai.owner')->where('id', $request->id)->first();
-            // dd($nilai->nilai->id);
+            
             if ($nilai) {
                 if ($nilai->nilai != null) {
                     $move = TempNilaiInovasi::create([
@@ -62,13 +65,25 @@ class InovasiController extends Controller
 
 
             if ($request->file('image')) {
-                $path = $request->file('image')->store('/images/inovasi', ['disk' =>   'my_files']);
+                $path_image = $request->file('image')->store('/images/inovasi', ['disk' =>   'my_files']);
             } else {
                 $check = Inovasi::where('id', $request->id)->first();
                 if ($check) {
-                    $path = $check->image;
+                    $path_image = $check->image;
                 } else {
-                    $path = null;
+                    $path_image = null;
+                }
+            }
+            
+
+            if ($request->file('document')) {
+                $path_doc = $request->file('document')->store('/document/inovasi', ['disk' =>   'my_files']);
+            } else {
+                $check = Inovasi::where('id', $request->id)->first();
+                if ($check) {
+                    $path_doc = $check->document;
+                } else {
+                    $path_doc = null;
                 }
             }
 
@@ -81,7 +96,8 @@ class InovasiController extends Controller
                 'bio_id' => auth()->user()->id,
                 'deskripsi' => $request->deskripsi,
                 'video' => $request->video,
-                'image' => $path,
+                'image' => $path_image,
+                'document' => $path_doc,
                 'status' => $status,
                 'jenis' => 1,
                 'link' => $request->link
@@ -101,11 +117,9 @@ class InovasiController extends Controller
             if ($insertIBP) {
                 DB::commit();                
                 return redirect('guru/inovasi')->with('success', 'Data berhasil disimpan.');
-            }
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return $e->getMessage();
-        }
+            }else{
+                DB::rollBack();                
+            }        
 
     }
 

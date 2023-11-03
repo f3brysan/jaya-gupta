@@ -22,48 +22,70 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Judul Inovasi</label>
-                                        <input type="text" name="judul" id="judul" class="form-control">
+                                        <input type="text" name="judul" id="judul" value="{{ old('judul') }}" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Deskripsi</label>
-                                        <textarea class="summernote form-control" id="deskripsi" name="deskripsi"></textarea>
+                                        <textarea class="summernote form-control" id="deskripsi" name="deskripsi"> {{ old('deskripsi') }}</textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Link Pendukung</label>
                                         <input type="text" name="link" id="link" class="form-control"
-                                            value="">
+                                            value="{{ old('link') }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Link Video Youtube</label>
-                                        <input type="text" name="video" id="video" class="form-control">
+                                        <input type="text" name="video" id="video" class="form-control" value="{{ old('video') }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <input type="file" name="image" placeholder="Choose image" id="image">
+                                        <label>Dokumen Penunjang</label>  
+                                        <p><code>File berekstensi *pdf dan berukuran dibawah 5Mb</code></p>                                      
+                                        <input type="file" name="document" accept="application/pdf"
+                                            placeholder="Choose document" id="document"
+                                            class="form-control @error('document') is-invalid @enderror">                                           
+                                        @error('document')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label for="">Gambar Penunjang</label>
+                                        <p class="text-muted"><code>File berekstensi *jpg dan berukuran dibawah 5Mb</code></p>
+                                        <input type="file" name="image" placeholder="Choose image" id="image"
+                                            accept="image/*" class="form-control @error('picture') is-invalid @enderror">                                            
+                                            @error('picture')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <label for="">Preview</label>
                                         <br>
                                         <img id="preview-image-before-upload"
-                                            src="https://www.riobeauty.co.uk/images/product_image_not_found.gif"
+                                            src="https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
                                             alt="preview image" style="max-height: 250px;">
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
                                             <label for="">Bidang Pengembangan</label>
-                                            <select class="js-example-basic-multiple form-control" name="bidang_pengembangan[]"
-                                            multiple="multiple" required>
-                                            @foreach ($ms_bidang_pengembangan as $item)
-                                                <option value="{{ $item->id }}">{{ $item->nama }}</option>
-                                            @endforeach
-                                        </select>
+                                            <select class="js-example-basic-multiple form-control"
+                                                name="bidang_pengembangan[]" multiple="multiple" required>
+                                                @foreach ($ms_bidang_pengembangan as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -123,4 +145,19 @@
             }
         }
     </script>
+
+
+    @if ($errors->any())
+        <script>
+            $(document).ready(function() {
+                @foreach ($errors->all() as $error)
+                    iziToast.danger({
+                        title: 'Warning !',
+                        message: "{{ $error }}",
+                        position: 'topRight'
+                    });
+                @endforeach
+            });
+        </script>
+    @endif
 @endpush

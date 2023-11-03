@@ -40,28 +40,18 @@
                                         <th class="text-center">Nama Sekolah</th>
                                         <th class="text-center">NPSN</th>
                                         <th class="text-center">BP</th>
-                                        <th class="text-center">Status</th>
-                                        <th class="text-center">PD</th>
-                                        <th class="text-center">Rombel</th>
+                                        <th class="text-center">Status</th>                                       
                                         <th class="text-center">Guru</th>
-                                        <th class="text-center">Pegawai</th>
-                                        <th class="text-center">R. Kelas</th>
-                                        <th class="text-center">R. Lab</th>
-                                        <th class="text-center">R. Perpus</th>
+                                        <th class="text-center">Pegawai</th>                                        
                                     </tr>
                                 </thead>
                                 <tbody>                                    
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th class="text-center" colspan="5">Total</th>
-                                        <th class="text-right">{{ $total['pd'] }}</th>
-                                        <th class="text-right">{{ $total['rombel'] }}</th>
+                                        <th class="text-center" colspan="5">Total</th>                                       
                                         <th class="text-right">{{ $total['ptk'] }}</th>
-                                        <th class="text-right">{{ $total['pegawai'] }}</th>
-                                        <th class="text-right">{{ $total['jml_rk'] }}</th>
-                                        <th class="text-right">{{ $total['jml_lab'] }}</th>
-                                        <th class="text-right">{{ $total['jml_perpus'] }}</th>
+                                        <th class="text-right">{{ $total['pegawai'] }}</th>                                       
                                     </tr>
                                 </tfoot>
                             </table>
@@ -115,42 +105,17 @@
                     {
                         data: 'status_sekolah',
                         name: 'status_sekolah',
-                    },
+                    },                    
                     {
-                        data: 'pd',
-                        name: 'pd',
-                        className: 'text-right',
-                    },
-                    {
-                        data: 'rombel',
-                        name: 'rombel',
-                        className: 'text-right',
-                    },
-                    {
-                        data: 'ptk',
-                        name: 'ptk',
+                        data: 'total_guru',
+                        name: 'total_guru',
                         className: 'text-right',
                     },
                     {
                         data: 'pegawai',
                         name: 'pegawai',
                         className: 'text-right',
-                    },
-                    {
-                        data: 'jml_rk',
-                        name: 'jml_rk',
-                        className: 'text-right',
-                    },
-                    {
-                        data: 'jml_lab',
-                        name: 'jml_lab',
-                        className: 'text-right',
-                    },
-                    {
-                        data: 'jml_perpus',
-                        name: 'jml_perpus',
-                        className: 'text-right',
-                    },
+                    },                    
                 ],
                 order: [
                     [0, 'asc']
