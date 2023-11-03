@@ -49,10 +49,10 @@ class DataGuruController extends Controller
                     foreach ($getData->user_bidang_pengembangan as $item) {
                         $value .= '<li>'.$item->bidangpengembangan->nama.'</li>'; 
                     }
-                    $value .= '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.Crypt::encrypt($getData->id).'" data-name="'.$getData->nama.'" data-original-title="Hapus" class="btn btn-warning btn-sm float-right"><i class="fas fa-wrench"></i></a>';
+                    // $value .= '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.Crypt::encrypt($getData->id).'" data-name="'.$getData->nama.'" data-original-title="Hapus" class="btn btn-warning btn-sm float-right"><i class="fas fa-wrench"></i></a>';
                 } else {
                     $value = 'Belum Ada Data.';
-                    $value .= '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.Crypt::encrypt($getData->id).'" data-name="'.$getData->nama.'" data-original-title="Hapus" class="btn btn-warning btn-sm float-right"><i class="fas fa-wrench"></i></a>';
+                    // $value .= '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.Crypt::encrypt($getData->id).'" data-name="'.$getData->nama.'" data-original-title="Hapus" class="btn btn-warning btn-sm float-right"><i class="fas fa-wrench"></i></a>';
                 }
                 return $value;
             })          
