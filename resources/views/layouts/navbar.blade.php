@@ -42,6 +42,7 @@
             @endrole    
             
             @role(['kepalasekolah'])
+            <li class="menu-header">Sekolah dan GTK</li>
             <li><a class="nav-link" href="{{ URL::to('data-sekolah/show-detail/'.Crypt::encrypt(auth()->user()->bio->asal_satuan_pendidikan)) }}"><i class="fas fa-list"></i> <span>Data
                 Sekolah</span></a></li>
                 <li class="dropdown">
