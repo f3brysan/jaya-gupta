@@ -39,7 +39,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                    <input type="file" name="image" placeholder="Choose image" id="image">                                      
+                                        <label>Gambar Pendukung</label>
+                                    <input type="file" name="image" placeholder="Choose image" class="form-control" accept="image/*" id="image">                                      
                                 </div>
                                 <div class="col-md-12 mb-2">
                                     <label for="">Preview</label>

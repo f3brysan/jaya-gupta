@@ -40,7 +40,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                    <input type="file" name="image" placeholder="Choose image" id="image">                                     
+                                    <input type="file" name="image" placeholder="Choose image" id="image" class="form-control" accept="image/*">                                     
                                     </div>
                                 </div>
                                 <div class="col-md-12 mb-2">
