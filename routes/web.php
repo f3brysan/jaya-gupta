@@ -9,6 +9,7 @@ use App\Http\Controllers\IndoController;
 use App\Http\Controllers\InovasiController;
 use App\Http\Controllers\Ms_BidangPengembanganController;
 use App\Http\Controllers\Ms_MataPelajaranController;
+use App\Http\Controllers\Ms_PesertaDidikController;
 use App\Http\Controllers\Ms_SatuanPendidikanController;
 use App\Http\Controllers\Ms_Sekolah;
 use App\Http\Controllers\Ms_SekolahController;
@@ -66,32 +67,37 @@ Route::middleware(['auth:web', 'role:superadmin|kurator'])->group(function () {
     Route::post('kurator/nilai', [StatusInovasiController::class, 'nilai']);
 });
 
-Route::middleware(['auth:web', 'role:superadmin'])->group(function () {    
-    Route::get('master/satuan-pendidikan', [Ms_SatuanPendidikanController::class, 'index']);        
+Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
+    Route::get('master/satuan-pendidikan', [Ms_SatuanPendidikanController::class, 'index']);
 
-    Route::get('master/bidang-pengembangan', [Ms_BidangPengembanganController::class, 'index']); 
-    Route::post('master/bidang-pengembangan/store', [Ms_BidangPengembanganController::class, 'store']);   
-    Route::get('master/bidang-pengembangan/edit/{id}', [Ms_BidangPengembanganController::class, 'show']);  
-    Route::delete('master/bidang-pengembangan/delete/{id}', [Ms_BidangPengembanganController::class, 'delete']); 
-    
-    Route::get('master/user', [Ms_UsersController::class, 'index']); 
-    Route::get('master/user-role/{id}', [Ms_UsersController::class, 'user_role']); 
-    Route::post('master/user-role/store', [Ms_UsersController::class, 'user_role_store']); 
+    Route::get('master/bidang-pengembangan', [Ms_BidangPengembanganController::class, 'index']);
+    Route::post('master/bidang-pengembangan/store', [Ms_BidangPengembanganController::class, 'store']);
+    Route::get('master/bidang-pengembangan/edit/{id}', [Ms_BidangPengembanganController::class, 'show']);
+    Route::delete('master/bidang-pengembangan/delete/{id}', [Ms_BidangPengembanganController::class, 'delete']);
+
+    Route::get('master/user', [Ms_UsersController::class, 'index']);
+    Route::get('master/user-role/{id}', [Ms_UsersController::class, 'user_role']);
+    Route::post('master/user-role/store', [Ms_UsersController::class, 'user_role_store']);
 });
+
 Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function () {
-Route::get('data-sekolah', [Ms_SekolahController::class, 'index']);    
-    Route::get('data-sekolah/show/{id_level_wil}/{kode_wil}', [Ms_SekolahController::class, 'sekolah_kec']);    
-    Route::get('data-sekolah/show-detail/{npsn}', [Ms_SekolahController::class, 'detil_sekolah']);    
-    Route::post('data-sekolah/pull-data', [Ms_SekolahController::class, 'pull_data']);    
+    Route::get('data-sekolah', [Ms_SekolahController::class, 'index']);
+    Route::get('data-sekolah/show/{id_level_wil}/{kode_wil}', [Ms_SekolahController::class, 'sekolah_kec']);
+    Route::get('data-sekolah/show-detail/{npsn}', [Ms_SekolahController::class, 'detil_sekolah']);
+    Route::post('data-sekolah/pull-data', [Ms_SekolahController::class, 'pull_data']);
 
     route::get('data-guru', [DataGuruController::class, 'index']);
     route::get('data-guru/tambah', [DataGuruController::class, 'create']);
     route::post('data-guru/simpan', [DataGuruController::class, 'store']);
     route::get('data-guru/ubah/{id}', [DataGuruController::class, 'edit']);
     route::post('data-guru/update', [DataGuruController::class, 'update']);
-    
-    Route::get('data-sekolah/edit-detail/{npsn}', [Ms_SekolahController::class, 'edit_sekolah']); 
-    Route::post('data-sekolah/update-detail', [Ms_SekolahController::class, 'update_sekolah']);      
+
+    Route::get('data-sekolah/edit-detail/{npsn}', [Ms_SekolahController::class, 'edit_sekolah']);
+    Route::post('data-sekolah/update-detail', [Ms_SekolahController::class, 'update_sekolah']);
+
+    Route::get('data-peserta-didik', [Ms_PesertaDidikController::class, 'index']);
+    Route::get('data-peserta-didik/export-template', [Ms_PesertaDidikController::class, 'export_template']);
+    Route::POST('data-peserta-didik/import', [Ms_PesertaDidikController::class, 'import']);
 });
 
 Route::get('ajax/getkabupaten/{id}', [IndoController::class, 'getkabupaten']);

@@ -28,33 +28,39 @@
                             Aksi Nyata Praktik Baik</span></a></li>
             @endrole
 
-            
+
             @role(['superadmin'])
-            <li class="menu-header">GTK</li>
-            {{-- <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Profil
+                <li class="menu-header">GTK</li>
+                {{-- <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Profil
                         Guru/Admin</span></a></li> --}}
-            <li><a class="nav-link" href="{{ URL::to('data-sekolah') }}"><i class="fas fa-list"></i> <span>Data
-                        Sekolah</span></a></li>           
-            <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Data
-                        Guru dan Tendik</span></a></li>
-            {{-- <li><a class="nav-link" href="{{ URL::to('data-sekolah') }}"><i class="fas fa-list"></i> <span>Data
+                <li><a class="nav-link" href="{{ URL::to('data-sekolah') }}"><i class="fas fa-list"></i> <span>Data
+                            Sekolah</span></a></li>
+                <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Data
+                            Guru dan Tendik</span></a></li>
+                {{-- <li><a class="nav-link" href="{{ URL::to('data-sekolah') }}"><i class="fas fa-list"></i> <span>Data
                         Tendik</span></a></li>     --}}
-            @endrole    
-            
+            @endrole
+
             @role(['kepalasekolah'])
-            <li class="menu-header">Sekolah dan GTK</li>
-            <li><a class="nav-link" href="{{ URL::to('data-sekolah/show-detail/'.Crypt::encrypt(auth()->user()->bio->asal_satuan_pendidikan)) }}"><i class="fas fa-list"></i> <span>Data
-                Sekolah</span></a></li>
+                <li class="menu-header">Sekolah dan GTK</li>
+                <li><a class="nav-link"
+                        href="{{ URL::to('data-sekolah/show-detail/' . Crypt::encrypt(auth()->user()->bio->asal_satuan_pendidikan)) }}"><i
+                            class="fas fa-list"></i> <span>Data
+                            Sekolah</span></a></li>
                 <li class="dropdown">
                     <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-list"></i>
                         <span>GTK</span></a>
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ URL::to('data-guru') }}">Guru dan Tendik</a></li>
                         {{-- {{-- <li><a class="nav-link" href="{{ URL::to('master/satuan-pendidikan') }}">Tendik</a></li> --}}
-                        <li><a class="nav-link" href="{{ URL::to('data-guru') }}">Guru Non Aktif</a> 
+                        <li><a class="nav-link" href="{{ URL::to('data-guru') }}">Guru Non Aktif</a>
                         </li>
                     </ul>
                 </li>
+                <li><a class="nav-link" href="{{ URL::to('data-peserta-didik') }}"><i class="fas fa-list"></i> <span>Data
+                            Peserta Didik</span></a></li>
+                <li><a class="nav-link" href="{{ URL::to('data-rombel') }}"><i class="fas fa-list"></i> <span>Data
+                            Rombongan Belajar</span></a></li>
             @endrole
             @role('superadmin')
                 <li class="menu-header">Data Master</li>
