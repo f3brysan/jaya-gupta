@@ -96,6 +96,9 @@ Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function
     Route::post('data-sekolah/update-detail', [Ms_SekolahController::class, 'update_sekolah']);
 
     Route::get('data-peserta-didik', [Ms_PesertaDidikController::class, 'index']);
+    Route::get('data-peserta-didik/edit/{id}', [Ms_PesertaDidikController::class, 'edit']);
+    Route::post('data-peserta-didik/simpan/', [Ms_PesertaDidikController::class, 'store']);
+    Route::post('data-peserta-didik/hapus/', [Ms_PesertaDidikController::class, 'destroy']);
     Route::get('data-peserta-didik/export-template', [Ms_PesertaDidikController::class, 'export_template']);
     Route::POST('data-peserta-didik/import', [Ms_PesertaDidikController::class, 'import']);
 });

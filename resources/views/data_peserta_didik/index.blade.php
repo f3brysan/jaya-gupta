@@ -37,7 +37,8 @@
                                 <table id="example" class="table table-bordered table-hover table-bordered">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" rowspan="2" colspan="1" style="width: 300px !important"> Aksi</th>
+                                            <th class="text-center" rowspan="2" colspan="1"
+                                                style="width: 300px !important"> Aksi</th>
                                             <th class="text-center" rowspan="2" colspan="1"
                                                 data-sheets-value="{'1':2,'2':'No'}">
                                                 <div>No</div>
@@ -136,7 +137,7 @@
                                                 data-sheets-value="{'1':2,'2':'Jarak Rumah\nke Sekolah (KM)'}">
                                                 <div>Jarak Rumah<br />
                                                     ke Sekolah (KM)</div>
-                                            </th>                                            
+                                            </th>
                                         </tr>
                                         <tr>
                                             <th class="text-center" data-sheets-value="{'1':2,'2':'Nama'}"
@@ -163,8 +164,17 @@
                                         @foreach ($data_peserta_didik as $pd)
                                             <tr>
                                                 <td class="text-center">
-                                                    <a href="" class="btn btn-sm btn-info m-1"><i class="fa fa-edit"></i></a>
-                                                    <a href="" class="btn btn-sm btn-danger m-1"><i class="fa fa-trash"></i></a>
+                                                    <a href="{{ URL::to('data-peserta-didik/edit/' . $pd->id) }}"
+                                                        target="_blank" title="Ubah Data"
+                                                        class="btn btn-sm btn-info m-1"><i class="fa fa-edit"></i></a>
+                                                    <form action="{{ URL::to('data-peserta-didik/hapus/') }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="id" id="id"
+                                                            value="{{ Crypt::encrypt($pd->id) }}">
+                                                        <button type="submit" class="btn btn-sm btn-danger m-1 hapus-btn"
+                                                            title="Hapus Data"><i class="fas fa-trash"></i></button>
+                                                    </form>
                                                 </td>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $pd->nama }}</td>
@@ -182,10 +192,10 @@
                                                 <td>{{ $pd->pekerjaan_ayah }}</td>
                                                 <td>{{ $pd->nama_ibu }}</td>
                                                 <td>{{ $pd->pendidikan_ibu }}</td>
-                                                <td>{{ $pd->pekerjaan_ibu }}</td>                                                                                               
-                                                <td>{{ $pd->nama_wali  }}</td>
+                                                <td>{{ $pd->pekerjaan_ibu }}</td>
+                                                <td>{{ $pd->nama_wali }}</td>
                                                 <td>{{ $pd->pendidikan_wali }}</td>
-                                                <td>{{ $pd->pekerjaan_wali }}</td>                                                                                               
+                                                <td>{{ $pd->pekerjaan_wali }}</td>
                                                 <td>{{ $pd->rombel }}</td>
                                                 <td>{{ $pd->kebutuhan_khusus }}</td>
                                                 <td>{{ $pd->sekolah_asal }}</td>
@@ -253,7 +263,7 @@
         <script>
             $(document).ready(function() {
                 $('#example').DataTable({
-                    "autoWidth":false,
+                    "autoWidth": false,
                 });
             });
 
