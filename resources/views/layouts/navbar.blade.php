@@ -53,7 +53,7 @@
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ URL::to('data-guru') }}">Data Guru</a></li>
                         <li><a class="nav-link" href="{{ URL::to('data-tendik') }}">Data Tenik</a></li>
-                        <li><a class="nav-link" href="{{ URL::to('data-guru-nonaktif') }}">Guru Non Aktif</a>
+                        <li><a class="nav-link" href="{{ URL::to('data-gtk-nonaktif') }}">Guru Non Aktif</a>
                         </li>
                     </ul>
                 </li>

@@ -199,10 +199,11 @@ class DataGuruController extends Controller
             'siswa' => $request->siswa,
             'status_sekolah' => $request->status_sekolah,
             'gender' => $request->gender,
-            'asal_satuan_pendidikan' => $request->asal_satuan,
-            'is_active' => 1,
+            'asal_satuan_pendidikan' => $request->asal_satuan,            
             'lembaga_pengangkatan' => $request->lembaga_pengangkatan,
         ]);
+
+        
 
         if ($bio) {
             DB::commit();
@@ -340,11 +341,15 @@ class DataGuruController extends Controller
     {
         $id = Crypt::decrypt($request->id);
         
-        DB::beginTransaction();
-        $deleteUser = User::where('id', $id)->delete();
-        if ($deleteUser) {
-            $delete = Biodata::where('id', $id)->delete();
-        }
+        DB::beginTransaction();       
+            $user = User::where('id', $id)->first();
+            $user->removeRole('guru');
+            $user->assignRole('nonaktif');
+
+            $delete = Biodata::where('id', $id)->update([
+                'is_active' => 0
+            ]);
+        
 
         if ($delete) {
             DB::commit();

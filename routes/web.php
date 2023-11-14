@@ -4,6 +4,7 @@ use App\Http\Controllers\AksiNyataController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BiodataController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DataGTKNonAktifController;
 use App\Http\Controllers\DataGuruController;
 use App\Http\Controllers\IndoController;
 use App\Http\Controllers\InovasiController;
@@ -94,6 +95,8 @@ Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function
     Route::post('data-guru/hapus', [DataGuruController::class, 'destroy']);
     Route::get('data-guru/export-template', [DataGuruController::class, 'export_template']);
     Route::POST('data-guru/import', [DataGuruController::class, 'import']);
+
+    route::get('data-gtk-nonaktif', [DataGTKNonAktifController::class, 'index']);
 
     Route::get('data-sekolah/edit-detail/{npsn}', [Ms_SekolahController::class, 'edit_sekolah']);
     Route::post('data-sekolah/update-detail', [Ms_SekolahController::class, 'update_sekolah']);
