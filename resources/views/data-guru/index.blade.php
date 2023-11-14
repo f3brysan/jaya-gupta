@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Data Mata Pelajaran')
+@section('title', 'Data Guru')
 @push('css-custom')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.css">
@@ -20,27 +20,134 @@
                     <div class="card">
                         <div class="col-md-12">
                             <div class="float-left">
-                                <a href="{{ Url::to('data-guru/tambah') }}" class="btn btn-primary mt-2 mb-3"> Tambah</a>
+                                {{-- <a href="{{ Url::to('data-guru/tambah') }}" class="btn btn-primary mt-2 mb-3"> Tambah</a> --}}
+                                <a href="{{ URL::to('data-guru/export-template') }}" class="btn btn-primary mb-3"
+                                    onclick="unduhExcel()"><i class="fa fa-download"></i> Unduh Template Excel</a>
+                                <a href="javascript:void(0)" class="btn btn-info mb-3" onclick="importExcel()"><i
+                                        class="fa fa-upload"></i> Unggah Data Excel</a>
                             </div>
                             <div class="col-lg-12 table-responsive">
                                 <table id="example" class="table table-bordered table-hover table-bordered"
                                     style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th class="text-center">No</th>
-                                            <th class="text-center">Nama Guru</th>
-                                            <th class="text-center">Asal Sekolah</th>
-                                            <th class="text-center">Email</th>
-                                            <th class="text-center">Status</th>
-                                            <th>Bidang Pengembangan</th>
                                             <th class="text-center">Aksi</th>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Nama</th>
+                                            <th class="text-center">NUPTK</th>
+                                            <th class="text-center">JK</th>
+                                            <th class="text-center">Tempat Lahir</th>
+                                            <th class="text-center">Tanggal Lahir</th>
+                                            <th class="text-center">NIP</th>
+                                            <th class="text-center">Status Kepegawaian</th>
+                                            <th class="text-center">Mengajar</th>
+                                            <th class="text-center">Gelar Depan</th>
+                                            <th class="text-center">Gelar Belakang</th>
+                                            <th class="text-center">Jenjang</th>
+                                            <th class="text-center">Jurusan/Prodi</th>
+                                            <th class="text-center">Sertifikasi</th>
+                                            <th class="text-center">Nama Dusun</th>
+                                            <th class="text-center">Desa/Kelurahan</th>
+                                            <th class="text-center">Kecamatan</th>
+                                            <th class="text-center">Kodepos</th>
+                                            <th class="text-center">Telepon</th>
+                                            <th class="text-center">HP</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Tugas Tambahan</th>
+                                            <th class="text-center">SK CPNS</th>
+                                            <th class="text-center">Tanggal CPNS</th>
+                                            <th class="text-center">SK Pengangkatan</th>
+                                            <th class="text-center">TMT Pengangkatan</th>
+                                            <th class="text-center">Lembaga Pengangkatan</th>
+                                            <th class="text-center">Pangkat Golongan</th>
+                                            <th class="text-center">Sumber Gaji</th>
+                                            <th class="text-center">Nama Ibu Kandung</th>
+                                            <th class="text-center">Status Perkawinan</th>
+                                            <th class="text-center">Nama Suami/Istri</th>
+                                            <th class="text-center">Pekerjaan Suami/Istri</th>
+                                            <th class="text-center">TMT PNS</th>
+                                            <th class="text-center">NPWP</th>
+                                            <th class="text-center">Bank</th>
+                                            <th class="text-center">No Rekening</th>
+                                            <th class="text-center">Rekening Atas Nama</th>
+                                            <th class="text-center">NIK</th>
+                                            <th class="text-center">No KK</th>
+                                            <th class="text-center">Guru Penggerak</th>
+                                            <th class="text-center">Tugas Tambahan</th>
+                                            <th class="text-center">JJM</th>
+                                            <th class="text-center">Total JJM</th>
+                                            <th class="text-center">Siswa</th>
+                                            <th class="text-center">Status Sekolah</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach ($getData as $dt)
+                                            <tr>
+                                                <td class="text-center">
+                                                    <a href="{{ URL::to('data-guru/ubah/' . $dt->id) }}"
+                                                        target="_blank" title="Ubah Data" class="btn btn-sm btn-info m-1"><i
+                                                            class="fa fa-edit"></i></a>
+                                                    <form action="{{ URL::to('data-guru/hapus') }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="id" id="id"
+                                                            value="{{ Crypt::encrypt($dt->id) }}">
+                                                        <button type="submit" class="btn btn-sm btn-danger m-1 hapus-btn"
+                                                            title="Hapus Data"><i class="fas fa-trash"></i></button>
+                                                    </form>
+                                                </td>
+                                                <td class="text-right">{{ $loop->iteration }}</td>
+                                                <td>{{ $dt->nama }}</td>
+                                                <td>{{ $dt->nuptk }}</td>
+                                                <td>{{ $dt->gender }}</td>
+                                                <td>{{ $dt->tempatlahir }}</td>
+                                                <td>{{ $dt->tanggallahir }}</td>
+                                                <td>{{ $dt->nip }}</td>
+                                                <td>{{ $dt->status_kepegawaian }}</td>
+                                                <td>{{ $dt->mengajar }}</td>
+                                                <td>{{ $dt->gelar_depan }}</td>
+                                                <td>{{ $dt->gelar_belakang }}</td>
+                                                <td>{{ $dt->pendidikan_terakhir }}</td>
+                                                <td>{{ $dt->prodi }}</td>
+                                                <td>{{ $dt->sertifikasi }}</td>
+                                                <td>{{ $dt->alamat }}</td>
+                                                <td>{{ $dt->keldom }}</td>
+                                                <td>{{ $dt->kecdom }}</td>
+                                                <td>{{ $dt->kodepos }}</td>
+                                                <td>{{ $dt->telepon }}</td>
+                                                <td>{{ $dt->wa }}</td>
+                                                <td>{{ $dt->user->email }}</td>
+                                                <td>{{ $dt->tugas_tambahan }}</td>
+                                                <td>{{ $dt->sk_cpns }}</td>
+                                                <td>{{ $dt->tgl_cpns }}</td>
+                                                <td>{{ $dt->sk_pengangkatan }}</td>
+                                                <td>{{ $dt->tmt_pengangkatan }}</td>
+                                                <td>{{ $dt->lembaga_pengangkatan }}</td>
+                                                <td>{{ $dt->golongan }}</td>
+                                                <td>{{ $dt->sumber_gaji }}</td>
+                                                <td>{{ $dt->nm_ibu }}</td>
+                                                <td>{{ $dt->status_perkawinan }}</td>
+                                                <td>{{ $dt->nm_pasangan }}</td>
+                                                <td>{{ $dt->pekerjaan_pasangan }}</td>
+                                                <td>{{ $dt->tmt_pns }}</td>
+                                                <td>{{ $dt->npwp }}</td>
+                                                <td>{{ $dt->bank }}</td>
+                                                <td>{{ $dt->norek_bank }}</td>
+                                                <td>{{ $dt->nama_norek }}</td>
+                                                <td>{{ $dt->nik }}</td>
+                                                <td>{{ $dt->no_kk }}</td>
+                                                <td>{{ $dt->is_penggerak }}</td>
+                                                <td>{{ $dt->jam_tgs_tambahan }}</td>
+                                                <td>{{ $dt->jjm }}</td>
+                                                <td>{{ $dt->jam_tgs_tambahan + $dt->jjm }}</td>
+                                                <td>{{ $dt->siswa }}</td>
+                                                <td>{{ $dt->status_sekolah }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
-                        </div>                       
+                        </div>
                     </div>
                 </div>
             </div>
@@ -48,189 +155,77 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="tambah-edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
+    <div class="modal fade" id="modal_unggah_excel" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-judul"></h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Unggah Excel</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-tambah-edit">
-                        <input type="hidden" id="id" name="id">
+                    <form action="{{ URL::to('data-guru/import') }}" method="post"
+                        enctype="multipart/form-data">
+                        @csrf
                         <div class="form-group">
-                            <label>Nama Mata Pelajaran</label>
-                            <input type="text" class="form-control" id="nama" name="nama" required>
+                            <div class="col-md-12">
+                                <label>File Excel</label>
+                                <input type="file" name="dokumen" placeholder="Unggah data excel"
+                                    class="form-control"
+                                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                                    id="dokumen">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <div class="control-label">Mata Pelajaran Aktif?</div>
-                            <label class="custom-switch mt-2">
-                                {{-- <span class="custom-switch-description">Tidak &nbsp;</span> --}}
-                                <input type="checkbox" class="custom-switch-input"
-                                    id="is_aktif" name="is_aktif" checked>
-                                <span class="custom-switch-indicator"></span>
-                                <span class="custom-switch-description">Iya</span>
-                            </label>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary" id="tombol-simpan">Simpan</button>
-                </div>
-                </form>
             </div>
         </div>
     </div>
-
 @endsection
 @push('js-custom')
     <!-- JS Libraies -->
     <script src="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.js"></script>
-    <script src="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js">
+    </script>
     <script src="{{ URL::to('/') }}/assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
     <script src="{{ URL::to('/') }}/assets/modules/jquery-ui/jquery-ui.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#example').DataTable({
-                processing: true,
-                serverSide: true, //aktifkan server-side 
-                ajax: {
-                    url: "{{ URL::to('data-guru') }}", // routing ke group.index
-                    type: 'GET'
-                },
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        className: 'text-right'
-                    },
-                    {
-                        data: 'nama',
-                        name: 'nama',
-                    },
-                    {
-                        data: 'asal_sekolah',
-                        name: 'asal_sekolah',
-                    },
-                    {
-                        data: 'email',
-                        name: 'email',
-                    },
-                    {
-                        data: 'role',
-                        name: 'role',
-                    },
-                    {
-                        data: 'bidang_pengembangan',
-                        name: 'bidang_pengembangan',
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        className: 'text-center',
-                        orderable: false,
-                        searchable: false
-                    },
-                ],
-                order: [
-                    [0, 'asc']
-                ]
-            });
+            $('#example').DataTable();
         });
 
-        $("#add-btn").click(function() {
-            $("#tambah-edit-modal").modal('show');
-            $("#modal-judul").html("Tambah Mata Pelajaran Baru");
-        });
-
-        // ** TAMBAH DATA BARU * //
-        if ($("#form-tambah-edit").length > 0) {
-            $("#form-tambah-edit").validate({
-                submitHandler: function(form) {
-                    var actionType = $('#tombol-simpan').val();
-                    $('#tombol-simpan').html('Menyimpan . .');
-
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ URL::to('master/mata-pelajaran/store') }}",
-                        data: $('#form-tambah-edit').serializeArray(),
-                        dataType: 'json',
-                        success: function(data) {
-                            $('#form-tambah-edit').trigger("reset");
-                            $('#tambah-edit-modal').modal("hide");
-                            $('#tombol-simpan').html('Simpan');
-                            var oTable = $('#example').dataTable();
-                            oTable.fnDraw(false);
-                            iziToast.success({
-                                title: 'Berhasil !',
-                                message: "Data Mata Pelajaran " + data.nama +
-                                    " berhasil disimpan.",
-                                position: 'topRight'
-                            });
-                        },
-                        error: function(data) {
-                            console.log('Error', data);
-                            $('#tombol-simpan').html('Simpan');
-                        }
-                    });
-                }
+        $('.hapus-btn').on('click', function(e) {
+                e.preventDefault();
+                var form = $(this).parents('form');
+                swal({
+                    title: 'Apakah Anda Yakin?',
+                    text: 'Data akan dihapus',
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                }).then((isConfirm) => {
+                    if (isConfirm) {
+                        swal('Data Telah dihapus', {
+                            icon: 'success',
+                        });
+                        if (isConfirm) form.submit();
+                    } else {
+                        swal('Tidak Ada perubahan');
+                    }
+                });
             });
+    </script>
+
+    <script>
+        function importExcel() {
+            $("#modal_unggah_excel").modal('show');
         }
-
-        // ** EDIT DATA * // 
-        $("body").on("click", ".edit", function() {
-            var data_id = $(this).data('id');
-            $.get("{{ URL::to('master/mata-pelajaran/edit') }}/" + data_id, function(data) {
-                $("#modal-judul").html("Edit Mata Pelajaran " + data.nama);
-                $("tombol-simpan").val("edit-post");
-                $("#tambah-edit-modal").modal('show');
-                $("#id").val(data.id);
-                $("#nama").val(data.nama);
-                if (data.is_aktif === true) {
-                    $('#is_aktif').prop('checked', true);
-                } else {
-                    $('#is_aktif').prop('checked', false);
-                }
-            });
-        });
-
-        $(document).on('click', ".delete",function() {
-            var dataId = $(this).data('id');
-            var dataName = $(this).data('name');
-            console.log(dataId);
-            swal({
-                title: 'Apakah Anda Yakin?',
-                text: 'Data akan dihapus',
-                icon: 'warning',
-                buttons: true,
-                dangerMode: true,
-            }).then((isConfirm) => {
-                if (isConfirm) {
-                    $.ajax({
-                        type: "DELETE",
-                        url: "{{ URL::to('master/mata-pelajaran/delete') }}/" + dataId,
-                        success: function(data) {
-                            var oTable = $("#example").dataTable();
-                            oTable.fnDraw(false);
-                            iziToast.success({
-                                title: 'Berhasil !',
-                                message: "Data Mata Pelajaran " + dataName +
-                                    " berhasil dihapus.",
-                                position: 'topRight'
-                            });
-                        }
-                    });
-                } else {
-                    iziToast.info({
-                        title: 'Info',
-                        message: 'Tidak ada perubahan yg disimpan.',
-                        position: 'topRight'
-                    });
-                }
-            });
-        });
     </script>
 @endpush

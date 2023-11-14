@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Data Sekolah')
+@section('title', 'Edit Data Guru')
 @push('css-custom')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.css">
@@ -53,16 +53,8 @@
                                         <label>Jenis Kelamin</label>
                                         <select name="gender" id="gender" class="form-control">
                                             <option value="">Pilih</option>
-                                            @if ($get->gender == null)
-                                                <option value="L">Laki - Laki</option>
-                                                <option value="P">Perempuan</option>
-                                            @elseif ($get->gender == 'L')
-                                                <option value="L" selected>Laki - Laki</option>
-                                                <option value="P">Perempuan</option>
-                                            @else
-                                                <option value="L">Laki - Laki</option>
-                                                <option value="P" selected>Perempuan</option>
-                                            @endif
+                                            <option value="L" {{ $get->gender == 'L' ? 'selected' : '' }}>Laki - Laki</option>
+                                            <option value="P" {{ $get->gender == 'P' ? 'selected' : '' }}>Perempuan</option>                                            
                                         </select>
                                     </div>
                                 </div>
@@ -89,15 +81,8 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="">Tempat Lahir</label>
-                                        <select name="tempatlahir" id="tempatlahir" class="form-control select2">
-                                            <option value="">Pilih Tempat Lahir</option>
-                                            @foreach ($kab as $item)
-                                                <option value="{{ $item->id }}"
-                                                    {{ $get->tempatlahir == $item->id ? 'selected' : '' }}>
-                                                    {{ $item->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                       <input type="text" name="tempatlahir" class="form-control" id=""
+                                            value="{{ $get->tempatlahir }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -128,7 +113,7 @@
                                             <option value="">-- Pilih Jenjang --</option>
                                             @foreach ($jenjang as $item)
                                                 <option value="{{ $item->kode }}"
-                                                    {{ $get->pendidikan_terakhir == $item->kode ? 'selected' : '' }}>
+                                                    {{ $get->pendidikan_terakhir == $item->nama ? 'selected' : '' }}>
                                                     {{ $item->nama }}</option>
                                             @endforeach
                                         </select>
@@ -155,44 +140,25 @@
                                             value="{{ $get->sertifikasi }}">
                                     </div>
                                 </div>
-                                <h6>Domisili</h6>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Provinsi</label>
-                                        <select name="provdom" id="provdom" class="form-control select2">
-                                            <option value=""></option>
-                                            @foreach ($prov as $item)
-                                                <option value="{{ $item->id }}">{{ $item->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Kabupaten</label>
-                                        <select name="kabdom" id="kabdom" class="form-control select2">
-                                        </select>
-                                    </div>
-                                </div>
+                                <h6>Domisili</h6>                               
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="">Kecamatan</label>
-                                        <select name="kecdom" id="kecdom" class="form-control select2">
-                                        </select>
+                                        <input type="text" name="kecdom" class="form-control" id=""
+                                            value="{{ $get->kecdom }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="">Kelurahan</label>
-                                        <select name="keldom" id="keldom" class="form-control select2">
-                                        </select>
+                                        <input type="text" name="keldom" class="form-control" id=""
+                                            value="{{ $get->keldom }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="">Alamat/Nama Dusun</label>
-                                        <input type="text" class="form-control" name="desadom"
+                                        <input type="text" name="alamat" class="form-control" id=""
                                             value="{{ $get->alamat }}">
                                     </div>
                                 </div>
@@ -270,14 +236,8 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="">Pangkat Golongan</label>
-                                        <select name="golongan" class="form-control" id="">
-                                            <option value="">-- Pilih Pangkat Golongan --</option>
-                                            @foreach ($pangkat as $item)
-                                                <option value="{{ $item->gol }}"
-                                                    {{ $get->golongan == $item->gol ? 'selected' : '' }}>
-                                                    {{ $item->pangkat . ' - ' . $item->gol }}</option>
-                                            @endforeach
-                                        </select>
+                                        <input type="text" name="golongan" class="form-control" id=""
+                                            value="{{ $get->golongan }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -298,9 +258,8 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="">Status Perkawinan</label>
-                                        <select name="status_perkawinan" id="" class="form-control">
-                                            <option value="">-- Pilih Status Perkawinan --</option>
-                                        </select>
+                                        <input type="text" name="status_perkawinan" class="form-control" id=""
+                                            value="{{ $get->status_perkawinan }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -376,12 +335,8 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="">Guru Penggerak</label>
-                                        <select name="is_penggerak" class="form-control" id="">
-                                            <option value="0" {{ $get->is_penggerak == 0 ? 'selected' : '' }}>Tidak
-                                            </option>
-                                            <option value="1" {{ $get->is_penggerak == 1 ? 'selected' : '' }}>Iya
-                                            </option>
-                                        </select>
+                                        <input type="text" name="is_penggerak" class="form-control" id=""
+                                        value="{{ $get->is_penggerak }}">
                                     </div>
                                 </div>
                                 <h6>Lain - Lain</h6>

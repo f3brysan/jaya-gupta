@@ -87,10 +87,13 @@ Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function
     Route::post('data-sekolah/pull-data', [Ms_SekolahController::class, 'pull_data']);
 
     route::get('data-guru', [DataGuruController::class, 'index']);
-    route::get('data-guru/tambah', [DataGuruController::class, 'create']);
-    route::post('data-guru/simpan', [DataGuruController::class, 'store']);
+    // route::get('data-guru/tambah', [DataGuruController::class, 'create']);
+    // route::post('data-guru/simpan', [DataGuruController::class, 'store']);
     route::get('data-guru/ubah/{id}', [DataGuruController::class, 'edit']);
     route::post('data-guru/update', [DataGuruController::class, 'update']);
+    Route::post('data-guru/hapus', [DataGuruController::class, 'destroy']);
+    Route::get('data-guru/export-template', [DataGuruController::class, 'export_template']);
+    Route::POST('data-guru/import', [DataGuruController::class, 'import']);
 
     Route::get('data-sekolah/edit-detail/{npsn}', [Ms_SekolahController::class, 'edit_sekolah']);
     Route::post('data-sekolah/update-detail', [Ms_SekolahController::class, 'update_sekolah']);

@@ -9,87 +9,49 @@ use App\Models\Province;
 use App\Models\Ms_Pangkat;
 use Illuminate\Http\Request;
 use App\Models\Ms_DataSekolah;
-use App\Models\Ms_JenjangPendidikanDikti;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Crypt;
+use App\Exports\DataGuruTemplateExport;
+use App\Imports\DataGuruImport;
+use App\Models\Ms_JenjangPendidikanDikti;
 
 class DataGuruController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $user_guru = User::role('guru')->pluck('id');
         if (auth()->user()->hasRole('superadmin')) {
-            $getData = Biodata::with('user','user.roles','asal_sekolah','user_bidang_pengembangan.bidangpengembangan')->whereIn('id', $user_guru)->get();
+            $getData = Biodata::with('user', 'user.roles', 'asal_sekolah', 'user_bidang_pengembangan.bidangpengembangan')->whereIn('id', $user_guru)->get();
         } else {
-            $getData = Biodata::with('user','user.roles','asal_sekolah','user_bidang_pengembangan.bidangpengembangan')->whereIn('id', $user_guru)->where('asal_satuan_pendidikan', auth()->user()->bio->asal_satuan_pendidikan)->get();
-        }
-                
-        // return $getData->where('id','1');
-        if ($request -> ajax()) {
-            return DataTables::of($getData)
-            ->addColumn('asal_sekolah', function($getData){
-                $asal_sekolah = $getData->asal_sekolah->nama ?? '';
-                return $asal_sekolah;
-            })
-            ->addColumn('role', function($getData){                
-                $result = '';
-                foreach ($getData->user->roles as $role) {
-                    $result .= '<li>'.$role->name.'</li>';
-                }
-                return $result;
-            })    
-            ->addColumn('email', function($getData){
-                return $getData->user->email;
-            })
-            ->addColumn('bidang_pengembangan', function($getData){
-                $value = "";
-                if (count($getData->user_bidang_pengembangan)>0) {
-                    foreach ($getData->user_bidang_pengembangan as $item) {
-                        $value .= '<li>'.$item->bidangpengembangan->nama.'</li>'; 
-                    }
-                    // $value .= '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.Crypt::encrypt($getData->id).'" data-name="'.$getData->nama.'" data-original-title="Hapus" class="btn btn-warning btn-sm float-right"><i class="fas fa-wrench"></i></a>';
-                } else {
-                    $value = 'Belum Ada Data.';
-                    // $value .= '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.Crypt::encrypt($getData->id).'" data-name="'.$getData->nama.'" data-original-title="Hapus" class="btn btn-warning btn-sm float-right"><i class="fas fa-wrench"></i></a>';
-                }
-                return $value;
-            })          
-            ->addColumn('action', function ($getData) {
-                $btn = '<a href="'.URL::to('data-guru/ubah/'.Crypt::encrypt($getData->id)).'" data-toggle="tooltip" data-original-title="Edit" class="edit btn btn-info btn-sm "><i class="far fa-edit"></i></a>';
-                $btn .= '&nbsp;';
-                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.Crypt::encrypt($getData->id).'" data-name="'.$getData->nama.'" data-original-title="Hapus" class="delete btn btn-danger btn-sm "><i class="fas fa-trash-alt"></i></a>';
-                return  $btn;
-            })
-            ->rawColumns(['action','bidang_pengembangan','role'])
-            ->addIndexColumn()
-            ->make(true);
+            $getData = Biodata::with('user', 'user.roles', 'asal_sekolah', 'user_bidang_pengembangan.bidangpengembangan')->whereIn('id', $user_guru)->where('asal_satuan_pendidikan', auth()->user()->bio->asal_satuan_pendidikan)->get();
         }
 
-        return view('data-guru.index');
+        return view('data-guru.index', compact('getData'));
     }
 
     public function create()
     {
-        $data['asal_satuan'] = Ms_DataSekolah::orderBy('kode_wilayah_induk_kecamatan','ASC')->orderBy('created_at','ASC')->get();    
-        $data['kab']= Regency::all();
+        $data['asal_satuan'] = Ms_DataSekolah::orderBy('kode_wilayah_induk_kecamatan', 'ASC')->orderBy('created_at', 'ASC')->get();
+        $data['kab'] = Regency::all();
         $data['prov'] = Province::all();
         $data['pangkat'] = Ms_Pangkat::where('is_aktif', true)->orderBy('gol', 'DESC')->get();
         return view('data-guru.create', $data);
     }
 
-    public function store(Request $request) 
+    public function store(Request $request)
     {
-        $nama = $request->gelardepan.' '.$request->nama_lengkap.' '.$request->gelar_blkg;
+        $nama = $request->gelardepan . ' ' . $request->nama_lengkap . ' ' . $request->gelar_blkg;
         $date = strtotime($request->tgllahir);
-        $password = date('d', $date).date("m", $date).date("Y", $date);
+        $password = date('d', $date) . date("m", $date) . date("Y", $date);
         // dd($request->all());
-        
+
         DB::beginTransaction();
         // * check email apakah sudah ada?
         $check_user = User::where('email', $request->email)->first();
-        
+
         if (empty($check_user)) {
             // create user
             $user = User::create([
@@ -99,7 +61,7 @@ class DataGuruController extends Controller
                 'nuptk' => $request->nuptk
             ]);
             // tambah role
-            $user->assignRole('guru');            
+            $user->assignRole('guru');
         }
 
         $biodata = Biodata::create([
@@ -162,34 +124,34 @@ class DataGuruController extends Controller
             DB::rollBack();
             return redirect('data-guru/tambah/')->with('error', 'Data gagal disimpan.');
         }
-        
+
     }
 
     public function edit($id)
     {
-        $id = Crypt::decrypt($id);
+        // $id = Crypt::decrypt($id);
         $data['get'] = Biodata::with('user')->find($id);
-        $data['asal_satuan'] = Ms_DataSekolah::orderBy('kode_wilayah_induk_kecamatan','ASC')->orderBy('created_at','ASC')->get();    
-        $data['kab']= Regency::all();
+        $data['asal_satuan'] = Ms_DataSekolah::orderBy('kode_wilayah_induk_kecamatan', 'ASC')->orderBy('created_at', 'ASC')->get();
+        $data['kab'] = Regency::all();
         $data['prov'] = Province::all();
         $data['pangkat'] = Ms_Pangkat::where('is_aktif', true)->orderBy('gol', 'DESC')->get();
         $data['jenjang'] = Ms_JenjangPendidikanDikti::all();
         // return $data['getData'];
         return view('data-guru.edit', $data);
-       
+
     }
 
     public function update(Request $request)
-    {        
+    {
         $id = Crypt::decrypt($request->id);
-        $nama = $request->gelardepan.' '.$request->nama_lengkap.' '.$request->gelar_blkg;
+        $nama = $request->gelardepan . ' ' . $request->nama_lengkap . ' ' . $request->gelar_blkg;
         DB::beginTransaction();
         $user = User::where('id', $id)->update([
             'name' => $nama,
-            'email' => $request->email,            
+            'email' => $request->email,
             'nuptk' => $request->nuptk
-        ]);    
-        $bio = Biodata::where('id', $id)->update([            
+        ]);
+        $bio = Biodata::where('id', $id)->update([
             'nama' => $nama,
             'nama_lengkap' => $request->nama_lengkap,
             'gelar_depan' => $request->gelar_depan,
@@ -233,14 +195,15 @@ class DataGuruController extends Controller
             'is_penggerak' => $request->is_penggerak,
             'jam_tgs_tambahan' => $request->jam_tgs_tambahan,
             'jjm' => $request->jjm,
+            'total_jjm' => $request->jjm + $request->jam_tgs_tambahan,
             'siswa' => $request->siswa,
             'status_sekolah' => $request->status_sekolah,
             'gender' => $request->gender,
             'asal_satuan_pendidikan' => $request->asal_satuan,
             'is_active' => 1,
             'lembaga_pengangkatan' => $request->lembaga_pengangkatan,
-        ]);     
-        
+        ]);
+
         if ($bio) {
             DB::commit();
             return redirect('data-guru')->with('success', 'Data berhasil disimpan.');
@@ -249,5 +212,143 @@ class DataGuruController extends Controller
             return redirect('data-guru/edit/')->with('error', 'Data gagal disimpan.');
         }
 
+    }
+
+    public function export_template()
+    {
+        return Excel::download(new DataGuruTemplateExport(), 'template_data_guru.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        // error_reporting(0);
+        // validasi
+        $this->validate($request, [
+            'dokumen' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        // menangkap file excel
+        $file = $request->file('dokumen');
+
+
+        // membuat nama file unik
+        $nama_file = date("Y_m_d") . '_' . $file->getClientOriginalName();
+
+        // upload ke folder file_siswa di dalam folder public
+        $file->move('unggahan_excel', $nama_file);
+
+        // import data
+        $rows = Excel::toArray(new DataGuruImport, public_path('/unggahan_excel/' . $nama_file));
+
+
+        $bin = Biodata::get();
+        $nik = $bin->pluck('nik');
+
+        $users = User::get();
+        $email = $users->pluck('email');
+
+        $new = 0;
+        $updated = 0;
+
+        DB::beginTransaction();
+
+        foreach ($rows[0] as $row) {
+            // * check email apakah sudah ada?
+            if ($email->contains($row[20]) == false) {
+                // buat password dari tgl lahir
+                if ($row[5] == NULL) {
+                    $password = '123456';
+                } else {
+                    $date = strtotime($row[5]);
+                    $password = date('d', $date) . date("m", $date) . date("Y", $date);
+                }
+                $nama = $row[9] . ' ' . $row[1] . ' ' . $row[10];
+
+                $createUser = User::create([
+                    'email' => $row[20],
+                    'name' => $nama,
+                    'password' => bcrypt($password),
+                    'nuptk' => $row[2]
+                ]);
+
+                $createUser->assignRole('guru');
+
+                $createBio = Biodata::create([
+                    'id' => $createUser->id,
+                    'nama' => $nama,
+                    'nama_lengkap' => $row[1],
+                    'gelar_depan' => $row[9],
+                    'gelar_belakang' => $row[10],
+                    'nuptk' => $row[2],
+                    'tempatlahir' => $row[4],
+                    'tanggallahir' => $row[5],
+                    'kecdom' => $row[16],
+                    'keldom' => $row[15],
+                    'alamatdom' => $row[14],
+                    'kodepos' => $row[17],
+                    'telepon' => $row[18],
+                    'wa' => $row[19],
+                    'nip' => $row[6],
+                    'golongan' => $row[27],
+                    'status_kepegawaian' => $row[7],
+                    'pendidikan_terakhir' => $row[11],
+                    'mengajar' => $row[8],
+                    'prodi' => $row[12],
+                    'sertifikasi' => $row[13],
+                    'tugas_tambahan' => $row[21],
+                    'sk_cpns' => $row[22],
+                    'tgl_cpns' => $row[23],
+                    'sk_pengangkatan' => $row[24],
+                    'tmt_pengangkatan' => $row[25],
+                    'sumber_gaji' => $row[28],
+                    'nm_ibu' => $row[29],
+                    'status_perkawinan' => $row[30],
+                    'nm_pasangan' => $row[31],
+                    'nip_pasangan' => $row[32],
+                    'pekerjaan_pasangan' => $row[33],
+                    'tmt_pns' => $row[34],
+                    'npwp' => $row[35],
+                    'bank' => $row[36],
+                    'norek_bank' => $row[37],
+                    'nama_norek' => $row[38],
+                    'nik' => $row[39],
+                    'no_kk' => $row[40],
+                    'is_penggerak' => $row[41],
+                    'jam_tgs_tambahan' => $row[42],
+                    'jjm' => $row[43],
+                    'total_jjm' => $row[44],
+                    'siswa' => $row[45],
+                    'status_sekolah' => $row[46],
+                    'gender' => $request->gender,
+                    'asal_satuan_pendidikan' => auth()->user()->bio->asal_satuan_pendidikan,
+                    'is_active' => 1,
+                    'lembaga_pengangkatan' => $row[26],
+                ]);
+            }
+        }
+
+        if ($createBio) {
+            DB::commit();
+            return redirect('data-guru')->with('success', 'Data berhasil disimpan.');
+        } else {
+            DB::rollBack();
+            return redirect('data-guru')->with('error', 'Data gagal disimpan.');
+        }
+    }
+
+    public function destroy(Request $request)
+    {
+        $id = Crypt::decrypt($request->id);
+        
+        DB::beginTransaction();
+        $deleteUser = User::where('id', $id)->delete();
+        if ($deleteUser) {
+            $delete = Biodata::where('id', $id)->delete();
+        }
+
+        if ($delete) {
+            DB::commit();
+            return redirect(URL::to('data-guru'))->with('success', 'Data berhasil dihapus.');
+        }
     }
 }
