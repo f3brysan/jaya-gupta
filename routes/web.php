@@ -6,6 +6,7 @@ use App\Http\Controllers\BiodataController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataGTKNonAktifController;
 use App\Http\Controllers\DataGuruController;
+use App\Http\Controllers\DataTendikController;
 use App\Http\Controllers\IndoController;
 use App\Http\Controllers\InovasiController;
 use App\Http\Controllers\Ms_BidangPengembanganController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Ms_SatuanPendidikanController;
 use App\Http\Controllers\Ms_Sekolah;
 use App\Http\Controllers\Ms_SekolahController;
 use App\Http\Controllers\Ms_UsersController;
+use App\Http\Controllers\RombelController;
 use App\Http\Controllers\StatusInovasiController;
 use App\Models\Ms_MataPelajaran;
 use Illuminate\Support\Facades\Route;
@@ -96,6 +98,13 @@ Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function
     Route::get('data-guru/export-template', [DataGuruController::class, 'export_template']);
     Route::POST('data-guru/import', [DataGuruController::class, 'import']);
 
+    route::get('data-tendik', [DataTendikController::class, 'index']);
+    Route::get('data-tendik/export-template', [DataTendikController::class, 'export_template']);
+    Route::POST('data-tendik/import', [DataTendikController::class, 'import']);
+    route::get('data-tendik/ubah/{id}', [DataTendikController::class, 'edit']);
+    route::post('data-tendik/update', [DataTendikController::class, 'update']);
+    Route::post('data-tendik/hapus', [DataTendikController::class, 'destroy']);
+
     route::get('data-gtk-nonaktif', [DataGTKNonAktifController::class, 'index']);
 
     Route::get('data-sekolah/edit-detail/{npsn}', [Ms_SekolahController::class, 'edit_sekolah']);
@@ -107,6 +116,8 @@ Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function
     Route::post('data-peserta-didik/hapus/', [Ms_PesertaDidikController::class, 'destroy']);
     Route::get('data-peserta-didik/export-template', [Ms_PesertaDidikController::class, 'export_template']);
     Route::POST('data-peserta-didik/import', [Ms_PesertaDidikController::class, 'import']);
+
+    Route::get('data-rombel', [RombelController::class, 'index']);
 });
 
 Route::get('ajax/getkabupaten/{id}', [IndoController::class, 'getkabupaten']);
