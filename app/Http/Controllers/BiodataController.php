@@ -47,9 +47,7 @@ class BiodataController extends Controller
     }
 
     public function store(Request $request)
-    {
-
-        
+    {    
         if ($request->file('image')) {
             $path =$request->file('image')->store('/images/profile', ['disk' =>   'my_files']);
         }else{
@@ -60,19 +58,16 @@ class BiodataController extends Controller
                 $path = NULL;
             }                    
         }
-        
+
+        $nama = $request->gelardepan . ' ' . $request->nama_lengkap . ' ' . $request->gelar_blkg;        
         $update = Biodata::where('id', $request->id)->update([
-            'nama' => $request->nama,
-            'nip' => $request->nip,
-            'asal_satuan_pendidikan' => $request->asal_satuan,
-            'golongan' => $request->gol,
-            'gender' => $request->gender,
-            'tempatlahir' => $request->tempatlahir,
-            'tanggallahir' => $request->tanggallahir,
-            'provdom' => $request->provdom,
-            'kabdom' => $request->kabdom,
-            'kecdom' => $request->kecdom, 
-            'alamatdom' => $request->alamatdom,
+            'nama' => $nama,
+            'nama_lengkap' => $request->nama_lengkap,
+            'gelar_depan' => $request->gelar_depan,
+            'gelar_belakang' => $request->gelar_blkg,
+            'nip' => $request->nip,                       
+            'gender' => $request->gender,            
+            'tanggallahir' => $request->tanggallahir,            
             'wa' => $request->wa,
             'profile_picture' => $path
         ]);

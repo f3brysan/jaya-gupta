@@ -41,10 +41,24 @@
                                             <input type="hidden" name="id" id="id" value="{{ $biodata->id }}">
                                             <div class="card-body">
                                                 <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <label>Nama Pengguna</label>
-                                                        <input type="text" name="nama" class="form-control"
-                                                            value="{{ $biodata->nama }}">
+                                                    <div class="col-md-12">
+                                                        <label>Nama Lengkap <code>*Tanpa Gelar</code></label>
+                                                        <input type="text" class="form-control" name="nama_lengkap"
+                                                            value="{{ $biodata->nama_lengkap }}" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label for="">Gelar Depan</label>
+                                                        <input type="text" class="form-control" name="gelar_depan"
+                                                            value="{{ $biodata->gelar_depan }}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label for="">Gelar Belakang</label>
+                                                        <input type="text" name="gelar_blkg" class="form-control" id=""
+                                                            value="{{ $biodata->gelar_belakang }}">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -53,38 +67,7 @@
                                                         <input type="text" name="nip" class="form-control"
                                                             value="{{ $biodata->nip }}">
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <label>Asal Satuan?Sekolah</label>
-                                                        <select name="asal_satuan" id="asal_satuan"
-                                                            class="form-control select2">
-                                                            <option value="">Pilih</option>
-                                                            @foreach ($asal_satuan as $item)
-                                                                @php
-                                                                    $selected = $biodata->asal_satuan_pendidikan == $item->npsn ? 'selected' : '';
-                                                                @endphp
-                                                                <option value="{{ $item->npsn }}" {{ $selected }}>
-                                                                    {{ $item->nama }} </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <label>Golongan</label>
-                                                        <select name="gol" id="gol" class="form-control select2">
-                                                            <option value="">Pilih</option>
-                                                            @foreach ($pangkat as $item)
-                                                                @php
-                                                                    $selected = $biodata->golongan == $item->gol ? 'selected' : '';
-                                                                @endphp
-                                                                <option value="{{ $item->gol }}" {{ $selected }}>
-                                                                    {{ $item->pangkat }} {{ $item->gol }} </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                </div>                                               
                                                 <div class="form-group">
                                                     <div class="col-md-6">
                                                         <label>Jenis Kelamin</label>
@@ -102,62 +85,14 @@
                                                             @endif
                                                         </select>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <label>Tempat Lahir</label>
-                                                        <select name="tempatlahir" id="tempatlahir"
-                                                            class="form-control select2">
-                                                            <option value=""></option>
-                                                            @foreach ($kab as $item)
-                                                                <option value="{{ $item->id }}">{{ $item->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                </div>                                                
                                                 <div class="form-group">
                                                     <div class="col-md-6">
                                                         <label>Tanggal Lahir</label>
                                                         <input type="date" class="form-control" name="tanggallahir"
                                                             value="{{ $biodata->tanggallahir }}">
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <label>Provinsi Domisili</label>
-                                                        <select name="provdom" id="provdom"
-                                                            class="form-control select2">
-                                                            <option value=""></option>
-                                                            @foreach ($prov as $item)
-                                                                <option value="{{ $item->id }}">{{ $item->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <label>Kabupaten Domisili</label>
-                                                        <select name="kabdom" id="kabdom"
-                                                            class="form-control select2">
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <label>Kecamatan Domisili</label>
-                                                        <select name="kecdom" id="kecdom"
-                                                            class="form-control select2">
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="col-md-8">
-                                                        <label>Alamat Domisili</label>
-                                                        <textarea class="form-control" name="alamatdom" id="alamatdom" cols="30" rows="15">{!! $biodata->alamatdom !!}</textarea>
-                                                    </div>
-                                                </div>
+                                                </div>                                                                                                                                              
                                                 <div class="form-group">
                                                     <div class="col-md-6">
                                                         <label>No WA</label>
