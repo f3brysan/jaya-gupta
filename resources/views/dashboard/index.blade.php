@@ -137,7 +137,7 @@
                                 <h4>Total Sekolah</h4>
                             </div>
                             <div class="card-body">
-                               555
+                               {{ $jml['sekolah_all'] }}
                             </div>
                         </div>
                     </div>
@@ -152,7 +152,7 @@
                                 <h4>Total PNS</h4>
                             </div>
                             <div class="card-body">
-                               {{ $jmlpns }}
+                               {{ $jml['pns_all'] }}
                             </div>
                         </div>
                     </div>
@@ -167,7 +167,7 @@
                                 <h4>Jumlah Pengawas</h4>
                             </div>
                             <div class="card-body">
-                                10
+                                NaN
                             </div>
                         </div>
                     </div>
@@ -182,7 +182,7 @@
                                 <h4>Jumlah Peserta Didik</h4>
                             </div>
                             <div class="card-body">
-                               5000
+                               {{ $jml['pd_all'] }}
                             </div>
                         </div>
                     </div>
@@ -197,7 +197,7 @@
                                 <h4>Jumlah GTK</h4>
                             </div>
                             <div class="card-body">
-                               
+                                {{ $jml['gtk_all'] }}                               
                             </div>
                         </div>
                     </div>
@@ -209,10 +209,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">  
-                                Jumlah PPPK                              
+                                <h4>Jumlah PPPK</h4>                 
                             </div>
                             <div class="card-body">
-                               555
+                               {{ $jml['pppk_all'] }}
                             </div>
                         </div>
                     </div>
@@ -227,7 +227,7 @@
                                 <h4>Jumlah Guru Penggerak</h4>
                             </div>
                             <div class="card-body">
-                               {{ $jmlguru }}
+                               {{ $jml['penggerak'] }}
                             </div>
                         </div>
                     </div>
@@ -242,7 +242,7 @@
                                 <h4>Jumlah Ruangan</h4>
                             </div>
                             <div class="card-body">
-                               8
+                               {{ $jml['ruangan_all'] }}
                             </div>
                         </div>
                     </div>

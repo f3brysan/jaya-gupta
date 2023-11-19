@@ -55,7 +55,10 @@ class DashboardController extends Controller
 
         // get data RAW
         $bid_pengembangan = Ms_BidangPengembangan::get();
-        $bioguru = User::with('bio', 'roles');
+        $bioguru = User::with('bio.user_bidang_pengembangan');
+        
+
+        //  dd( $jml['penggerak']);
 
         // set default value
         $jml = array();
@@ -65,6 +68,11 @@ class DashboardController extends Controller
         $jml['pd'] = 0;
         $jml['rombel'] = 0;
         $jml['ruangan'] = 0;
+        $jml['sekolah'] = 0;
+        $jml['pppk'] = 0;
+
+        $dataSekolah = '';
+        $kepalasekolah = '';
 
         // dd($npsn);
         if (auth()->user()->hasRole('kepalasekolah')) {
@@ -85,11 +93,23 @@ class DashboardController extends Controller
         }
 
         if (auth()->user()->hasRole('superadmin')) {
-            $jmlpns = $bioguru->whereHas('bio', function ($q) {
+            
+            $jml['pns'] = $bioguru->whereHas('bio', function ($q) {
                 $q->whereNotNull('nip');
             })->count();
-            $jmlguru = $bioguru->role(['guru'])->count();
-            // $jmlguru = $bioguru->role(['guru','tendik'])->count();        
+            
+            $jml['sekolah_all'] = Ms_DataSekolah::count();
+            $jml['guru_all'] = $bioguru->role(['guru'])->count();
+            $jml['pd_all'] = PesertaDidik::count();
+            $jml['gtk_all'] = $bioguru->role(['guru','tendik'])->count();                 
+            $jml['penggerak'] = $bioguru->role(['guru'])->has('bio.user_bidang_pengembangan')->count();
+            $jml['pns_all'] = $bioguru->whereHas('bio', function ($q) {
+                $q->whereNotNull('nip');
+            })->count();       
+            $jml['pppk_all'] = $bioguru->whereHas('bio', function ($q) {
+                $q->where('golongan', 'PPPK');
+            })->count();                    
+            $jml['ruangan_all'] = Ms_Rombel::count();
         }
 
 
