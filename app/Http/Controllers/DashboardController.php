@@ -55,10 +55,6 @@ class DashboardController extends Controller
 
         // get data RAW
         $bid_pengembangan = Ms_BidangPengembangan::get();
-        $bioguru = User::with('bio.user_bidang_pengembangan');
-        
-
-        //  dd( $jml['penggerak']);
 
         // set default value
         $jml = array();
@@ -76,6 +72,7 @@ class DashboardController extends Controller
 
         // dd($npsn);
         if (auth()->user()->hasRole('kepalasekolah')) {
+            $bioguru = User::with('bio.user_bidang_pengembangan');
             $dataSekolah = Ms_DataSekolah::where('npsn', auth()->user()->bio->asal_satuan_pendidikan)->first();
             $npsn = $dataSekolah->npsn;
             $kepalasekolah = User::with('bio')->role('kepalasekolah')->whereHas('bio', function ($q) use ($npsn) {
@@ -93,22 +90,19 @@ class DashboardController extends Controller
         }
 
         if (auth()->user()->hasRole('superadmin')) {
-            
-            $jml['pns'] = $bioguru->whereHas('bio', function ($q) {
-                $q->whereNotNull('nip');
-            })->count();
-            
+            $bioguru = User::with('bio.user_bidang_pengembangan');
+
+            $jml['penggerak'] = $bioguru->role(['guru'])->has('bio.user_bidang_pengembangan')->count();
             $jml['sekolah_all'] = Ms_DataSekolah::count();
             $jml['guru_all'] = $bioguru->role(['guru'])->count();
             $jml['pd_all'] = PesertaDidik::count();
-            $jml['gtk_all'] = $bioguru->role(['guru','tendik'])->count();                 
-            $jml['penggerak'] = $bioguru->role(['guru'])->has('bio.user_bidang_pengembangan')->count();
+            $jml['gtk_all'] = $bioguru->role(['guru', 'tendik'])->count();
             $jml['pns_all'] = $bioguru->whereHas('bio', function ($q) {
                 $q->whereNotNull('nip');
-            })->count();       
+            })->count();
             $jml['pppk_all'] = $bioguru->whereHas('bio', function ($q) {
                 $q->where('golongan', 'PPPK');
-            })->count();                    
+            })->count();
             $jml['ruangan_all'] = Ms_Rombel::count();
         }
 
