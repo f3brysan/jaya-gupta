@@ -18,10 +18,11 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="card">                       
+                    <div class="card">
                         <div class="card-body">
                             <div class="float-left">
-                                <a href="{{ URL::to('data-rombel/tambah') }}" class="btn btn-primary mb-3"><i class="fa fa-plus"></i> Tambah</a>
+                                <a href="{{ URL::to('data-rombel/tambah') }}" class="btn btn-primary mb-3"><i
+                                        class="fa fa-plus"></i> Tambah</a>
                             </div>
                             <div class="table-responsive">
                                 <table id="example" class="table table-bordered table-hover table-bordered"
@@ -67,25 +68,35 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($kelas as $k)
-                                        <tr>
-                                            <td class="text-right">{{ $loop->iteration }}</td>
-                                            <td class="text-center">{{ $k['nama_rombel'] }}</td>
-                                            <td class="text-center">{{ $k['tingkat_kelas'] }}</td>
-                                            <td class="text-right">{{ $k['L'] }}</td>
-                                            <td class="text-right">{{ $k['P'] }}</td>
-                                            <td class="text-right">{{ $k['total'] }}</td>
-                                            <td class="text-eflt">{{ $k['nm_wali'] }} <br> NUPTK : {{ $k['wali_kelas'] }}</td>
-                                            <td data-sheets-value="{'1':2,'2':'Kurikulum SD Merdeka'}">{{ $k['kurikulum'] }}
-                                            </td>
-                                            <td data-sheets-value="{'1':2,'2':'Ruang Kelas 1 A'}">{{ $k['ruangan'] }}</td>
-                                            <td class="text-center">
-                                                <a href="javascript:void" class="btn btn-sm btn-info" title="Ubah"><i class="fa fa-edit"></i></a>
-                                                &nbsp;
-                                                <a href="javascript:void" class="btn btn-sm btn-danger" title="Hapus"><i class="fa fa-trash"></i></a>
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td class="text-right">{{ $loop->iteration }}</td>
+                                                <td class="text-center">{{ $k['nama_rombel'] }}</td>
+                                                <td class="text-center">{{ $k['tingkat_kelas'] }}</td>
+                                                <td class="text-right">{{ $k['L'] }}</td>
+                                                <td class="text-right">{{ $k['P'] }}</td>
+                                                <td class="text-right">{{ $k['total'] }}</td>
+                                                <td class="text-eflt">{{ $k['nm_wali'] }} <br> NUPTK :
+                                                    {{ $k['wali_kelas'] }}</td>
+                                                <td data-sheets-value="{'1':2,'2':'Kurikulum SD Merdeka'}">
+                                                    {{ $k['kurikulum'] }}
+                                                </td>
+                                                <td data-sheets-value="{'1':2,'2':'Ruang Kelas 1 A'}">{{ $k['ruangan'] }}
+                                                </td>
+                                                <td class="text-center">
+                                                    <a href="{{ URL::to('data-rombel/edit/' . Crypt::encrypt($k['id'])) }}"
+                                                        class="btn btn-sm btn-info m-1" title="Ubah"><i
+                                                            class="fa fa-edit"></i></a>                                                    
+                                                    <form action="{{ URL::to('data-rombel/hapus') }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="id" id="id"
+                                                            value="{{ Crypt::encrypt($k['id']) }}">
+                                                        <button type="submit" class="btn btn-sm btn-danger m-1 hapus-btn"
+                                                            title="Hapus Data"><i class="fas fa-trash-alt"></i></button>
+                                                    </form>
+                                                </td>
+                                            </tr>
                                         @endforeach
-                                       
+
                                     </tbody>
                                 </table>
                             </div>
@@ -101,7 +112,8 @@
 @push('js-custom')
     <!-- JS Libraies -->
     <script src="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.js"></script>
-    <script src="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js">
+    </script>
     <script src="{{ URL::to('/') }}/assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
     <script src="{{ URL::to('/') }}/assets/modules/jquery-ui/jquery-ui.min.js"></script>
     <script src="{{ URL::to('/') }}/assets/modules/izitoast/js/iziToast.min.js"></script>
