@@ -17,7 +17,7 @@ class RombelController extends Controller
     {
         $npsn = auth()->user()->bio->asal_satuan_pendidikan;
         $kelas = array();
-        $rombel = Ms_Rombel::with('walikelas')->get();
+        $rombel = Ms_Rombel::with('walikelas')->where('sekolah_npsn', $npsn)->get();
 
         $sql_count = "SELECT
         pd.rombel,
@@ -26,8 +26,10 @@ class RombelController extends Controller
         COUNT (pd.nik) AS total
         FROM
         tr_pesertadidik AS pd
-        WHERE sekolah_npsn = '$npsn'
+        WHERE pd.sekolah_npsn = '$npsn'
         GROUP BY pd.rombel";
+
+        // dd($sql_count);
         $hitung_siswa = DB::select($sql_count);
 
         foreach ($rombel as $item) {
