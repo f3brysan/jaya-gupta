@@ -56,25 +56,198 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="card author-box card-primary">                        
-                        <div class="col-md-12">
-                            <div class="card card-statistic-1">
-                                <div class="card-icon bg-primary">
-                                    <i class="far fa-user"></i>
-                                </div>
-                                <div class="card-wrap">
-                                    <div class="card-header">
-                                        <h4>Total GTK</h4>
+                    <div class="card author-box card-primary">   
+                        <div class="row" style="width: 99%">
+                            <div class="col-sm-6">
+                                <div class="card card-statistic-1">
+                                    <div class="card-icon bg-primary">
+                                        <i class="far fa-user"></i>
                                     </div>
-                                    <div class="card-body">
-                                        {{ $jmlguru }} Orang
+                                    <div class="card-wrap">
+                                        <div class="card-header">
+                                            <h4>Total GTK</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            {{ $jml['gtk'] }} Orang
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>                          
+                            </div>   
+                            <div class="col-sm-6">
+                                <div class="card card-statistic-1">
+                                    <div class="card-icon bg-primary">
+                                        <i class="fas fa-user-graduate"></i>
+                                    </div>
+                                    <div class="card-wrap">
+                                        <div class="card-header">
+                                            <h4>Total Peserta Didik</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            {{ $jml['pd'] }} Siswa
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>  
+                            <div class="col-sm-6">
+                                <div class="card card-statistic-1">
+                                    <div class="card-icon bg-primary">
+                                        <i class="fab fa-shirtsinbulk"></i>
+                                    </div>
+                                    <div class="card-wrap">
+                                        <div class="card-header">
+                                            <h4>Total Rombel</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            {{ $jml['rombel'] }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>     
+                            <div class="col-sm-6">
+                                <div class="card card-statistic-1">
+                                    <div class="card-icon bg-primary">
+                                        <i class="fas fa-person-booth"></i>
+                                    </div>
+                                    <div class="card-wrap">
+                                        <div class="card-header">
+                                            <h4>Total Ruangan</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            {{ $jml['ruangan'] }} 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>     
+                            </div>                     
+                                           
                     </div>
                 </div>
             </div> 
+            @endif
+
+            @if (auth()->user()->hasRole('superadmin'))
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-primary">
+                            <i class="fas fa-school"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Total Sekolah</h4>
+                            </div>
+                            <div class="card-body">
+                               555
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-primary">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Total PNS</h4>
+                            </div>
+                            <div class="card-body">
+                               {{ $jmlpns }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-primary">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Jumlah Pengawas</h4>
+                            </div>
+                            <div class="card-body">
+                                10
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-primary">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Jumlah Peserta Didik</h4>
+                            </div>
+                            <div class="card-body">
+                               5000
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-primary">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Jumlah GTK</h4>
+                            </div>
+                            <div class="card-body">
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-primary">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">  
+                                Jumlah PPPK                              
+                            </div>
+                            <div class="card-body">
+                               555
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-primary">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Jumlah Guru Penggerak</h4>
+                            </div>
+                            <div class="card-body">
+                               {{ $jmlguru }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-primary">
+                            <i class="fas fa-school"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Jumlah Ruangan</h4>
+                            </div>
+                            <div class="card-body">
+                               8
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             @endif
 
             <div class="row">

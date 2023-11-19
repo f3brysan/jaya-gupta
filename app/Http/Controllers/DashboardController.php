@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Inovasi;
 use App\Models\Ms_BidangPengembangan;
 use App\Models\Ms_DataSekolah;
+use App\Models\Ms_Rombel;
+use App\Models\PesertaDidik;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -47,25 +49,59 @@ class DashboardController extends Controller
         }
         // return $inovasi;
 
-        $getData = Inovasi::with('nilai.owner', 'owner', 'inovasibidangpengembangan.bidangpengembangan')->has('nilai')->where('status', 1)->whereHas('nilai', function($q){
+        $getData = Inovasi::with('nilai.owner', 'owner', 'inovasibidangpengembangan.bidangpengembangan')->has('nilai')->where('status', 1)->whereHas('nilai', function ($q) {
             $q->where('status', 1);
         })->get();
+
+        // get data RAW
         $bid_pengembangan = Ms_BidangPengembangan::get();
-        $dataSekolah = Ms_DataSekolah::where('npsn', auth()->user()->bio->asal_satuan_pendidikan)->first();
-        $npsn = $dataSekolah->npsn;
-        $kepalasekolah = User::with('bio')->role('kepalasekolah')->whereHas('bio', function ($q) use( $npsn ) {
-            $q->where('asal_satuan_pendidikan', $npsn);
-        })->first();
-        $jmlguru = Biodata::where('asal_satuan_pendidikan', $npsn)->count();
+        $bioguru = User::with('bio', 'roles');
+
+        // set default value
+        $jml = array();
+        $jml['gtk'] = 0;
+        $jml['guru'] = 0;
+        $jml['pns'] = 0;
+        $jml['pd'] = 0;
+        $jml['rombel'] = 0;
+        $jml['ruangan'] = 0;
+
         // dd($npsn);
-        return view('dashboard.index', compact('data', 'getData', 'bid_pengembangan', 'dataSekolah', 'kepalasekolah', 'jmlguru'));
+        if (auth()->user()->hasRole('kepalasekolah')) {
+            $dataSekolah = Ms_DataSekolah::where('npsn', auth()->user()->bio->asal_satuan_pendidikan)->first();
+            $npsn = $dataSekolah->npsn;
+            $kepalasekolah = User::with('bio')->role('kepalasekolah')->whereHas('bio', function ($q) use ($npsn) {
+                $q->where('asal_satuan_pendidikan', $npsn);
+            })->first();
+
+            $jml['gtk'] = $bioguru->whereHas('bio', function ($q) use ($npsn) {
+                $q->where('asal_satuan_pendidikan', $npsn);
+            })->count();
+
+            $jml['pd'] = PesertaDidik::where('sekolah_npsn', $npsn)->count();
+            $jml['rombel'] = Ms_Rombel::where('sekolah_npsn', $npsn)->count();
+            $jml['ruangan'] = Ms_Rombel::where('sekolah_npsn', $npsn)->count();
+
+        }
+
+        if (auth()->user()->hasRole('superadmin')) {
+            $jmlpns = $bioguru->whereHas('bio', function ($q) {
+                $q->whereNotNull('nip');
+            })->count();
+            $jmlguru = $bioguru->role(['guru'])->count();
+            // $jmlguru = $bioguru->role(['guru','tendik'])->count();        
+        }
+
+
+        // dd($npsn);
+        return view('dashboard.index', compact('data', 'getData', 'bid_pengembangan', 'dataSekolah', 'kepalasekolah', 'jml'));
     }
 
     public function get_praktik_baik(Request $request)
     {
         // $getData = Inovasi::with('nilai')->get();
         // $getData = Inovasi::with('nilai.owner', 'owner', 'inovasibidangpengembangan.bidangpengembangan')->has('nilai')->where('status', 1)->get();
-        $getData = Inovasi::with('nilai.owner', 'owner', 'inovasibidangpengembangan.bidangpengembangan')->has('nilai')->where('status', 1)->whereHas('nilai', function($q){
+        $getData = Inovasi::with('nilai.owner', 'owner', 'inovasibidangpengembangan.bidangpengembangan')->has('nilai')->where('status', 1)->whereHas('nilai', function ($q) {
             $q->where('status', 1);
         })->get();
         if ($request->ajax()) {
@@ -78,12 +114,12 @@ class DashboardController extends Controller
                 })
                 ->addColumn('action', function ($getData) {
                     $btn = '<a href="javascript:void(0)" class="btn btn-info m-1" title="Lihat Data"
-                    data-toggle="modal" data-target="#modal'.$getData->id.'"><i
+                    data-toggle="modal" data-target="#modal' . $getData->id . '"><i
                         class="far fa-eye"></i></a>';
                     return $btn;
                 })
                 ->editColumn('updated_at', function ($getData) {
-                    return date_format(date_create($getData->updated_at),'Y-m-d H:i');
+                    return date_format(date_create($getData->updated_at), 'Y-m-d H:i');
                 })
                 ->addColumn('bidang_pengembangan', function ($getData) {
                     $value = '';
@@ -97,6 +133,6 @@ class DashboardController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
-        
+
     }
 }

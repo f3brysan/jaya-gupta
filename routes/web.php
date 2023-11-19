@@ -118,6 +118,10 @@ Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function
     Route::POST('data-peserta-didik/import', [Ms_PesertaDidikController::class, 'import']);
 
     Route::get('data-rombel', [RombelController::class, 'index']);
+    Route::get('data-rombel/tambah', [RombelController::class, 'create']);
+    Route::get('data-rombel/edit/{id}', [RombelController::class, 'edit']);
+    Route::post('data-rombel/simpan', [RombelController::class, 'store']);
+    Route::post('data-rombel/hapus', [RombelController::class, 'destroy']);
 });
 
 Route::get('ajax/getkabupaten/{id}', [IndoController::class, 'getkabupaten']);
