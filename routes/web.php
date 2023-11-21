@@ -117,6 +117,10 @@ Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function
     Route::get('data-peserta-didik/export-template', [Ms_PesertaDidikController::class, 'export_template']);
     Route::POST('data-peserta-didik/import', [Ms_PesertaDidikController::class, 'import']);
 
+    Route::get('admin/data-peserta-didik', [Ms_PesertaDidikController::class, 'index_admin']);
+    Route::get('admin/data-peserta-didik/show/{idwil}', [Ms_PesertaDidikController::class, 'detail_sekolah_admin']);
+    Route::get('admin/data-peserta-didik/detail/{idwil}', [Ms_PesertaDidikController::class, 'detail_pd_admin']);
+
     Route::get('data-rombel', [RombelController::class, 'index']);
     Route::get('data-rombel/tambah', [RombelController::class, 'create']);
     Route::get('data-rombel/edit/{id}', [RombelController::class, 'edit']);

@@ -50,8 +50,8 @@
                                 <tfoot>
                                     <tr>
                                         <th class="text-center" colspan="5">Total</th>                                       
-                                        <th class="text-right">{{ $total['ptk'] }}</th>
-                                        <th class="text-right">{{ $total['pegawai'] }}</th>                                       
+                                        <th class="text-right">{{ $total['guru'] }}</th>
+                                        <th class="text-right">{{ $total['tendik'] }}</th>                                       
                                     </tr>
                                 </tfoot>
                             </table>

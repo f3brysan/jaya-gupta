@@ -31,258 +31,138 @@
                                     <tr>
                                         <th class="text-center" rowspan="2">No</th>
                                         <th class="text-center" rowspan="2" style="width: 250px !important">Wilayah</th>
-                                        <th class="text-center" colspan="3" rowspan="1">Total</th>
-                                        <th class="text-center" colspan="3" rowspan="1">TK</th>
-                                        <th class="text-center" colspan="3" rowspan="1">KB</th>
-                                        <th class="text-center" colspan="3" rowspan="1">TPA</th>
-                                        <th class="text-center" colspan="3" rowspan="1">SPS</th>
-                                        <th class="text-center"colspan="3" rowspan="1">PKBM</th>
-                                        <th class="text-center" colspan="3" rowspan="1">SKB</th>
-                                        <th class="text-center" colspan="3" rowspan="1">SD</th>
-                                        <th class="text-center" colspan="3" rowspan="1">SMP</th>
-                                        <th class="text-center" colspan="3" rowspan="1">SMA</th>
-                                        <th class="text-center"colspan="3" rowspan="1">SMK</th>
-                                        <th class="text-center" colspan="3" rowspan="1">SLB</th>
+                                        <th class="text-center" rowspan="1">Total</th>
+                                        <th class="text-center" rowspan="1">TK</th>
+                                        <th class="text-center" rowspan="1">KB</th>
+                                        <th class="text-center" rowspan="1">TPA</th>
+                                        <th class="text-center" rowspan="1">SPS</th>
+                                        <th class="text-center" rowspan="1">PKBM</th>
+                                        <th class="text-center" rowspan="1">SKB</th>
+                                        <th class="text-center" rowspan="1">SD</th>
+                                        <th class="text-center" rowspan="1">SMP</th>
+                                        <th class="text-center" rowspan="1">SMA</th>
+                                        <th class="text-center" rowspan="1">SMK</th>
+                                        <th class="text-center" rowspan="1">SLB</th>
                                     </tr>
                                     <tr>
-                                        <th>Jml</th>
-                                        <th>N</th>
-                                        <th>S</th>
-                                        <th>Jml</th>
-                                        <th>N</th>
-                                        <th>S</th>
-                                        <th>Jml</th>
-                                        <th>N</th>
-                                        <th>S</th>
-                                        <th>Jml</th>
-                                        <th>N</th>
-                                        <th>S</th>
-                                        <th>Jml</th>
-                                        <th>N</th>
-                                        <th>S</th>
-                                        <th>Jml</th>
-                                        <th>N</th>
-                                        <th>S</th>
-                                        <th>Jml</th>
-                                        <th>N</th>
-                                        <th>S</th>
-                                        <th>Jml</th>
-                                        <th>N</th>
-                                        <th>S</th>
-                                        <th>Jml</th>
-                                        <th>N</th>
-                                        <th>S</th>
-                                        <th>Jml</th>
-                                        <th>N</th>
-                                        <th>S</th>
-                                        <th>Jml</th>
-                                        <th>N</th>
-                                        <th>S</th>
-                                        <th>Jml</th>
-                                        <th>N</th>
-                                        <th>S</th>
+                                        <th>Jml</th>                                                                        
+                                        <th>Jml</th>                                                                        
+                                        <th>Jml</th>                                                                        
+                                        <th>Jml</th>                                                                        
+                                        <th>Jml</th>                                                                        
+                                        <th>Jml</th>                                                                        
+                                        <th>Jml</th>                                                                        
+                                        <th>Jml</th>                                                                        
+                                        <th>Jml</th>                                                                        
+                                        <th>Jml</th>                                                                        
+                                        <th>Jml</th>                                                                        
+                                        <th>Jml</th>                                                                        
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody>            
                                     @php
-                                        $tk_n = 0;
-                                        $tk_s = 0;
-                                        $tk = 0;
-                                        $kb_n = 0;
-                                        $kb_s = 0;
-                                        $kb = 0;
-                                        $tpa_n = 0;
-                                        $tpa_s = 0;
-                                        $tpa = 0;
-                                        $sps_n = 0;
-                                        $sps_s = 0;
-                                        $sps = 0;
-                                        $pkbm_n = 0;
-                                        $pkbm_s = 0;
-                                        $pkbm = 0;
-                                        $skb_n = 0;
-                                        $skb_s = 0;
-                                        $skb = 0;
-                                        $sd_n = 0;
-                                        $sd_s = 0;
-                                        $sd = 0;
-                                        $smp_n = 0;
-                                        $smp_s = 0;
-                                        $smp = 0;
-                                        $sma_n = 0;
-                                        $sma_s = 0;
-                                        $sma = 0;
-                                        $smk_n = 0;
-                                        $smk_s = 0;
-                                        $smk = 0;
-                                        $slb_n = 0;
-                                        $slb_s = 0;
-                                        $slb = 0;
-                                        $sekolah_n = 0;
-                                        $sekolah_s = 0;
-                                        $sekolah = 0;
-                                    @endphp
+                                    $tk_n = 0;
+                                    $tk_s = 0;
+                                    $tk = 0;
+                                    $kb_n = 0;
+                                    $kb_s = 0;
+                                    $kb = 0;
+                                    $tpa_n = 0;
+                                    $tpa_s = 0;
+                                    $tpa = 0;
+                                    $sps_n = 0;
+                                    $sps_s = 0;
+                                    $sps = 0;
+                                    $pkbm_n = 0;
+                                    $pkbm_s = 0;
+                                    $pkbm = 0;
+                                    $skb_n = 0;
+                                    $skb_s = 0;
+                                    $skb = 0;
+                                    $sd_n = 0;
+                                    $sd_s = 0;
+                                    $sd = 0;
+                                    $smp_n = 0;
+                                    $smp_s = 0;
+                                    $smp = 0;
+                                    $sma_n = 0;
+                                    $sma_s = 0;
+                                    $sma = 0;
+                                    $smk_n = 0;
+                                    $smk_s = 0;
+                                    $smk = 0;
+                                    $slb_n = 0;
+                                    $slb_s = 0;
+                                    $slb = 0;
+                                    $sekolah_n = 0;
+                                    $sekolah_s = 0;
+                                    $sekolah = 0;
+                                @endphp                        
                                     @foreach ($getData as $item)
                                         <tr>
                                             <td class="text-right">{{ $loop->iteration }}</td>
                                             <td>
                                                 @php
-                                                    $kode_wil = trim($item['kode_wilayah']);
+                                                    $kode_wil = trim($item['kode_wil']);
                                                     $kode_wil = Crypt::encrypt($kode_wil);
                                                 @endphp
-                                                <a href="{{ URL::to('data-sekolah/show/'.$item['id_level_wilayah'].'/'.$kode_wil) }}" target="_blank">{{ $item['nama'] }}</a>
+                                                <a href="{{ URL::to('data-sekolah/show/' . $item['id_level_wilayah'] . '/' . $kode_wil) }}"
+                                                    target="_blank">{{ $item['nama'] }}</a>
                                             </td>
-                                            <td class="text-right">{{ $item['sekolah'] }} @php
-                                                $sekolah += $item['sekolah'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['sekolah_n'] }} @php
-                                                $sekolah_s += $item['sekolah_s'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['sekolah_s'] }} @php
-                                                $sekolah_n += $item['sekolah_n'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['tk'] }} @php
-                                                $tk += $item['tk'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['tk_n'] }} @php
-                                                $tk_n += $item['tk_n'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['tk_s'] }} @php
-                                                $tk_s += $item['tk_s'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['kb'] }} @php
-                                                $kb += $item['kb'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['kb_n'] }} @php
-                                                $kb_n += $item['kb_n'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['kb_s'] }} @php
-                                                $kb_s += $item['kb_s'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['tpa'] }} @php
-                                                $tpa += $item['kb'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['tpa_n'] }} @php
-                                                $tpa_n += $item['tpa_n'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['tpa_s'] }} @php
-                                                $tpa_s += $item['tpa_s'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['sps'] }} @php
-                                                $sps += $item['sps'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['sps_n'] }} @php
-                                                $sps_n += $item['sps_n'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['sps_s'] }} @php
-                                                $sps_s += $item['sps_s'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['pkbm'] }} @php
-                                                $pkbm += $item['pkbm'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['pkbm_n'] }} @php
-                                                $pkbm_n += $item['pkbm_n'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['pkbm_s'] }} @php
-                                                $pkbm_s += $item['pkbm_s'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['skb'] }} @php
-                                                $skb += $item['skb'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['skb_n'] }} @php
-                                                $skb_n += $item['skb_n'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['skb_s'] }} @php
-                                                $skb_s += $item['skb_s'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['sd'] }} @php
-                                                $sd += $item['sd'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['sd_n'] }} @php
-                                                $sd_n += $item['sd_n'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['sd_s'] }} @php
-                                                $sd_s += $item['sd_s'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['smp'] }} @php
-                                                $smp += $item['smp'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['smp_n'] }} @php
-                                                $smp_n += $item['smp_n'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['smp_s'] }} @php
-                                                $smp_s += $item['smp_s'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['sma'] }} @php
-                                                $sma += $item['sma'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['sma_n'] }} @php
-                                                $sma_n += $item['sma_n'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['sma_s'] }} @php
-                                                $sma_s += $item['sma_s'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['smk'] }} @php
-                                                $smk += $item['smk'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['smk_n'] }} @php
-                                                $smk_n += $item['smk_n'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['smk_s'] }} @php
-                                                $smk_s += $item['smk_s'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['slb'] }} @php
-                                                $slb += $item['slb'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['slb_n'] }} @php
-                                                $slb_n += $item['slb_n'];
-                                            @endphp</td>
-                                            <td class="text-right">{{ $item['slb_s'] }} @php
-                                                $slb_s += $item['slb_s'];
-                                            @endphp</td>
+                                            <td class="text-right">{{ $item['total'] }} @php
+                                                $sekolah += $item['total'];
+                                            @endphp</td>                                            
+                                            <td class="text-right">{{ $item['TK'] }} @php
+                                                $tk += $item['TK'];
+                                            @endphp</td>                                           
+                                            <td class="text-right">{{ $item['KB'] }} @php
+                                                $kb += $item['KB'];
+                                            @endphp</td>                                          
+                                            <td class="text-right">{{ $item['TPA'] }} @php
+                                                $tpa += $item['TPA'];
+                                            @endphp</td>                                            
+                                            <td class="text-right">{{ $item['SPS'] }} @php
+                                                $sps += $item['SPS'];
+                                            @endphp</td>                                           
+                                            <td class="text-right">{{ $item['PKBM'] }} @php
+                                                $pkbm += $item['PKBM'];
+                                            @endphp</td>                                
+                                            <td class="text-right">{{ $item['SKB'] }} @php
+                                                $skb += $item['SKB'];
+                                            @endphp</td>                                           
+                                            <td class="text-right">{{ $item['SD'] }} @php
+                                                $sd += $item['SD'];
+                                            @endphp</td>                                           
+                                            <td class="text-right">{{ $item['SMP'] }} @php
+                                                $smp += $item['SMP'];
+                                            @endphp</td>                                           
+                                            <td class="text-right">{{ $item['SMA'] }} @php
+                                                $sma += $item['SMA'];
+                                            @endphp</td>                                           
+                                            <td class="text-right">{{ $item['SMK'] }} @php
+                                                $smk += $item['SMK'];
+                                            @endphp</td>                                           
+                                            <td class="text-right">{{ $item['SLB'] }} @php
+                                                $slb += $item['SLB'];
+                                            @endphp</td>                                           
                                         </tr>
                                     @endforeach
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th class="text-center" colspan="2">Total</th>
-                                        <td class="text-right">{{ $sekolah }}</td>
-                                        <td class="text-right">{{ $sekolah_n }}</td>
-                                        <td class="text-right">{{ $sekolah_s }}</td>
-                                        <td class="text-right">{{ $tk }}</td>
-                                        <td class="text-right">{{ $tk_n }}</td>
-                                        <td class="text-right">{{ $tk_s }}</td>
-                                        <td class="text-right">{{ $kb }}</td>
-                                        <td class="text-right">{{ $kb_n }}</td>
-                                        <td class="text-right">{{ $kb_s }}</td>
-                                        <td class="text-right">{{ $tpa }}</td>
-                                        <td class="text-right">{{ $tpa_n }}</td>
-                                        <td class="text-right">{{ $tpa_s }}</td>
-                                        <td class="text-right">{{ $sps }}</td>
-                                        <td class="text-right">{{ $sps_n }}</td>
-                                        <td class="text-right">{{ $sps_s }}</td>
-                                        <td class="text-right">{{ $pkbm }}</td>
-                                        <td class="text-right">{{ $pkbm_n }}</td>
-                                        <td class="text-right">{{ $pkbm_s }}</td>
-                                        <td class="text-right">{{ $skb }}</td>
-                                        <td class="text-right">{{ $skb_n }}</td>
-                                        <td class="text-right">{{ $skb_s }}</td>
-                                        <td class="text-right">{{ $sd }}</td>
-                                        <td class="text-right">{{ $sd_n }}</td>
-                                        <td class="text-right">{{ $sd_s }}</td>
-                                        <td class="text-right">{{ $smp }}</td>
-                                        <td class="text-right">{{ $smp_n }}</td>
-                                        <td class="text-right">{{ $smp_s }}</td>
-                                        <td class="text-right">{{ $sma }}</td>
-                                        <td class="text-right">{{ $sma_n }}</td>
-                                        <td class="text-right">{{ $sma_s }}</td>
-                                        <td class="text-right">{{ $smk }}</td>
-                                        <td class="text-right">{{ $smk_n }}</td>
-                                        <td class="text-right">{{ $smk_s }}</td>
-                                        <td class="text-right">{{ $slb }}</td>
-                                        <td class="text-right">{{ $slb_n }}</td>
-                                        <td class="text-right">{{ $slb_s }}</td>
-
+                                        <td class="text-right">{{ $sekolah }}</td>                                        
+                                        <td class="text-right">{{ $tk }}</td>                                        
+                                        <td class="text-right">{{ $kb }}</td>                                       
+                                        <td class="text-right">{{ $tpa }}</td>                                       
+                                        <td class="text-right">{{ $sps }}</td>                                       
+                                        <td class="text-right">{{ $pkbm }}</td>                                        
+                                        <td class="text-right">{{ $skb }}</td>                                       
+                                        <td class="text-right">{{ $sd }}</td>                                       
+                                        <td class="text-right">{{ $smp }}</td>                                       
+                                        <td class="text-right">{{ $sma }}</td>                                        
+                                        <td class="text-right">{{ $smk }}</td>                                        
+                                        <td class="text-right">{{ $slb }}</td>                                        
                                     </tr>
                                 </tfoot>
                             </table>

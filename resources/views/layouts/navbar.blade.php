@@ -28,19 +28,6 @@
                             Aksi Nyata Praktik Baik</span></a></li>
             @endrole
 
-
-            @role(['superadmin'])
-                <li class="menu-header">GTK</li>
-                {{-- <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Profil
-                        Guru/Admin</span></a></li> --}}
-                <li><a class="nav-link" href="{{ URL::to('data-sekolah') }}"><i class="fas fa-list"></i> <span>Data
-                            Sekolah</span></a></li>
-                <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Data
-                            Guru dan Tendik</span></a></li>
-                {{-- <li><a class="nav-link" href="{{ URL::to('data-sekolah') }}"><i class="fas fa-list"></i> <span>Data
-                        Tendik</span></a></li>     --}}
-            @endrole
-
             @role(['kepalasekolah'])
                 <li class="menu-header">Sekolah dan GTK</li>
                 <li><a class="nav-link"
@@ -62,7 +49,30 @@
                 <li><a class="nav-link" href="{{ URL::to('data-rombel') }}"><i class="fas fa-list"></i> <span>Data
                             Rombongan Belajar</span></a></li>
             @endrole
-            @role('superadmin')
+
+            @role(['superadmin'])
+                <li class="menu-header">SI GTK</li>
+                {{-- <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Profil
+                    Guru/Admin</span></a></li> --}}
+                <li><a class="nav-link" href="{{ URL::to('data-sekolah') }}"><i class="fas fa-list"></i> <span>Data
+                            Sekolah</span></a></li>
+                <li><a class="nav-link" href="{{ URL::to('admin/data-peserta-didik') }}"><i class="fas fa-list"></i> <span>Data
+                            Peserta Didik</span></a></li>
+                <li><a class="nav-link" href="{{ URL::to('data-sekolah') }}"><i class="fas fa-list"></i> <span>Data
+                            Rombel</span></a></li>
+                <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Data
+                            Guru</span></a></li>
+                <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Data
+                            Tendik</span></a></li>
+                <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Data
+                            GTK Non Aktif</span></a></li>
+                <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Data
+                            Pengawas</span></a></li>
+                <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i>
+                        <span>Rekapitulasi</span></a></li>
+                {{-- <li><a class="nav-link" href="{{ URL::to('data-sekolah') }}"><i class="fas fa-list"></i> <span>Data
+                    Tendik</span></a></li>     --}}
+
                 <li class="menu-header">Data Master</li>
                 <li class="dropdown">
                     <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-list"></i>

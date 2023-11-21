@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Ms_DataSekolah;
 use Yajra\DataTables\DataTables;
@@ -25,6 +26,7 @@ class Ms_SekolahController extends Controller
             $sql = "SELECT
             kode_wilayah_induk_kecamatan as kode_wil,
             induk_kecamatan,
+            -- id_level_wilayah,
             SUM ( CASE bentuk_pendidikan WHEN '$bp->bentuk_pendidikan' THEN 1 ELSE 0 END ) AS value 	
         FROM
             ms_sekolah 
@@ -35,17 +37,17 @@ class Ms_SekolahController extends Controller
 
             foreach ($query as $q) {
                 $data[$q->kode_wil]['kode_wil'] = $q->kode_wil;
+                $data[$q->kode_wil]['id_level_wilayah'] = 3;
                 $data[$q->kode_wil]['nama'] = $q->induk_kecamatan;
                 $data[$q->kode_wil][$bp->bentuk_pendidikan] = $q->value;                
             }
-        }
-
+        }        
         $total_sekolah = Ms_DataSekolah::select("induk_kecamatan","kode_wilayah_induk_kecamatan as kode_wil", DB::raw('count(*) as total'))->groupBy("induk_kecamatan", "kode_wilayah_induk_kecamatan")->get();
 
         foreach ($total_sekolah as $item) {
             $data[$item->kode_wil]['total'] = $item->total;
         }
-        
+        $getData = $data;
         
         return view('master.sekolah.index', compact('getData'));
     }
@@ -58,7 +60,8 @@ class Ms_SekolahController extends Controller
         $url = "https://dapo.kemdikbud.go.id/rekap/progresSP?id_level_wilayah=" . $id_level_wil . "&kode_wilayah=" . $kode_wil . "&semester_id=20231&bentuk_pendidikan_id=";
         $source = Http::get($url);
         
-        $getData = Ms_DataSekolah::with('guru')->where('kode_wilayah_induk_kecamatan', $kode_wil)->get();
+        $getData = Ms_DataSekolah::with('guru')->where('kode_wilayah_induk_kecamatan', $kode_wil)->get();        
+        $sekolah_pluck = $getData->pluck('npsn');            
         
         if ($request->ajax()) {
             return DataTables::of($getData)
@@ -67,8 +70,20 @@ class Ms_SekolahController extends Controller
                 return '<a href="'.URL::to($url).'">'.$getData->nama.'</a>';
             })
             ->addColumn('total_guru', function ($getData) {
-                return count($getData->guru);
+                $npsn = $getData->npsn;
+                $user = User::with('bio')->whereHas('bio', function($q) use ($npsn){
+                    $q->where('asal_satuan_pendidikan', $npsn);
+                })->role('guru')->count();
+                return $user;                
             })
+            ->addColumn('total_tendik', function ($getData) {
+                $npsn = $getData->npsn;
+                $user = User::with('bio')->whereHas('bio', function($q) use ($npsn){
+                    $q->where('asal_satuan_pendidikan', $npsn);
+                })->role('tendik')->count();
+                return $user;                
+            })
+            
                 ->rawColumns(['nama'])
                 ->addIndexColumn()
                 ->make(true);
@@ -82,10 +97,16 @@ class Ms_SekolahController extends Controller
         $total['jml_lab'] = 0;
         $total['jml_rk'] = 0;
         $total['jml_perpus'] = 0;
-        foreach ($getData as $data) {           
-            $total['ptk'] += count($data['guru']);
-            $total['pegawai'] += $data['pegawai'];            
-        }
+        $total['tendik'] = User::with('bio')->whereHas('bio', function($q) use ($sekolah_pluck){
+            $q->whereIn('asal_satuan_pendidikan', $sekolah_pluck);
+        })->role('tendik')->count();
+        $total['guru'] = User::with('bio')->whereHas('bio', function($q) use ($sekolah_pluck){
+            $q->whereIn('asal_satuan_pendidikan', $sekolah_pluck);
+        })->role('guru')->count();
+        // foreach ($getData as $data) {           
+        //     $total['ptk'] += count($data['guru']);
+        //     $total['pegawai'] += $data['pegawai'];            
+        // }
         // return $total;
 
         $nm_induk_kecamatan = $getData[0]['induk_kecamatan'] ?? '';
