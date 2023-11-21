@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Data Sekolah')
+@section('title', 'Data Peserta Didik')
 @push('css-custom')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.css">
@@ -13,17 +13,10 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Data Sekolah di {{ $data_kec->induk_kecamatan }}</h1>
+                <h1>Data Peserta Didik di {{ $data_kec->induk_kecamatan }}</h1>
             </div>
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="alert alert-info mb-2 alert-dismissible fade show" role="alert"
-                        style="margin-bottom: 20px">
-                        Data Sekolah bersumber dari <code>dapo.kemdikbud.go.id</code>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                <div class="col-lg-12">                   
                     <div class="card">
                         <div class="row">                            
                         </div>
