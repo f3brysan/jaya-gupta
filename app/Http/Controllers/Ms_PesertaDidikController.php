@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\PesertaDidik;
 use Illuminate\Http\Request;
+use App\Models\Ms_DataSekolah;
+use Illuminate\Support\Facades\DB;
 use App\Imports\PesertaDidikImport;
 use Illuminate\Support\Facades\URL;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\PesertaDidikTemplateExport;
-use App\Models\Ms_DataSekolah;
 use Illuminate\Support\Facades\Crypt;
+use App\Exports\PesertaDidikTemplateExport;
 
 class Ms_PesertaDidikController extends Controller
 {
@@ -21,13 +22,13 @@ class Ms_PesertaDidikController extends Controller
 
     public function edit($id)
     {
-        $bio = PesertaDidik::where('id', $id)->first();        
+        $bio = PesertaDidik::where('id', $id)->first();
 
         return view('data_peserta_didik.edit', compact('bio'));
     }
 
     public function store(Request $request)
-    {        
+    {
         $record = $request->all();
         $id = Crypt::decrypt($request->id);
         unset($record['_token']);
@@ -36,13 +37,13 @@ class Ms_PesertaDidikController extends Controller
         $update = PesertaDidik::where('id', $id)->update($record);
 
         if ($update) {
-            return redirect(URL::to('data-peserta-didik/edit/'.$id))->with('success', 'Data berhasil diperbaharui.');
-        }        
+            return redirect(URL::to('data-peserta-didik/edit/' . $id))->with('success', 'Data berhasil diperbaharui.');
+        }
     }
 
     public function destroy(Request $request)
     {
-        
+
         $id = Crypt::decrypt($request->id);
         $delete = PesertaDidik::where('id', $id)->delete();
 
@@ -163,5 +164,83 @@ class Ms_PesertaDidikController extends Controller
         // alihkan halaman kembali
         // dd($import);
         return redirect(URL::to('data-peserta-didik'))->with('success', $new . ' data Baru. ' . $updated . ' data diperbaharui');
+    }
+
+    public function index_admin()
+    {        
+        $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->get("bentuk_pendidikan");
+        $npsn = Ms_DataSekolah::where('kode_wilayah_induk_kecamatan', '226002')->pluck('npsn');
+
+        $data = array();
+        foreach ($bentuk_pendidikan as $bp) {
+            $sekolah = Ms_DataSekolah::where('bentuk_pendidikan', $bp->bentuk_pendidikan)->get();
+            foreach ($sekolah as $s) {
+                $data[trim($s->kode_wilayah_induk_kecamatan)]['kode_wil'] = $s->kode_wilayah_induk_kecamatan;                
+                $data[trim($s->kode_wilayah_induk_kecamatan)]['nama'] = $s->induk_kecamatan;                
+                $data[trim($s->kode_wilayah_induk_kecamatan)][$bp->bentuk_pendidikan.'_l'] = 0;
+                $data[trim($s->kode_wilayah_induk_kecamatan)][$bp->bentuk_pendidikan.'_p'] = 0;
+                $data[trim($s->kode_wilayah_induk_kecamatan)][$bp->bentuk_pendidikan] = 0;
+                $data[trim($s->kode_wilayah_induk_kecamatan)]['total'] = 0;
+                $data[trim($s->kode_wilayah_induk_kecamatan)]['total_l'] = 0;
+                $data[trim($s->kode_wilayah_induk_kecamatan)]['total_p'] = 0;
+
+
+                $arnpsn[$s->npsn] = "'$s->npsn'";
+                // dd($arnpsn);
+                $list = implode(",", $arnpsn);                
+                
+            }
+
+        }
+
+        $sql_count = "SELECT
+                s.bentuk_pendidikan,
+                s.kode_wilayah_induk_kecamatan as kodewil,
+                SUM ( CASE WHEN pd.jk = 'L' THEN 1 ELSE 0 END ) AS L,
+                SUM ( CASE WHEN pd.jk = 'P' THEN 1 ELSE 0 END ) AS P,
+                COUNT ( pd.nik ) AS total 
+            FROM
+                tr_pesertadidik AS pd 
+                LEFT JOIN ms_sekolah as s on s.npsn = pd.sekolah_npsn
+            WHERE
+                s.npsn IN ($list) 
+            GROUP BY
+            s.bentuk_pendidikan, s.kode_wilayah_induk_kecamatan";
+
+                $hitung_siswa = DB::select($sql_count);
+                if (count($hitung_siswa) > 0) {
+                    foreach ($hitung_siswa as $item) {
+                        $data[trim($item->kodewil)][$item->bentuk_pendidikan.'_l'] += $item->l;
+                        $data[trim($item->kodewil)][$item->bentuk_pendidikan.'_p'] += $item->p;
+                        $data[trim($item->kodewil)][$item->bentuk_pendidikan] += $item->p+$item->l;
+                        $data[trim($item->kodewil)]['total'] += $data[trim($item->kodewil)][$item->bentuk_pendidikan];
+                        $data[trim($item->kodewil)]['total_l'] += $data[trim($item->kodewil)][$item->bentuk_pendidikan.'_l'];
+                        $data[trim($item->kodewil)]['total_p'] += $data[trim($item->kodewil)][$item->bentuk_pendidikan.'_p'];
+                    }
+                }                
+        return view('data_peserta_didik.index_admin', compact('data'));
+    }
+
+    public function detail_sekolah_admin($idwil)
+    {
+        $idwil = Crypt::decrypt($idwil);      
+        
+        $data_kec = Ms_DataSekolah::where('kode_wilayah_induk_kecamatan', $idwil)->first();
+
+        $sql_pd = "SELECT s.npsn, s.nama, s.bentuk_pendidikan, s.status_sekolah, COALESCE(pdl.l, 0) AS tot_l, COALESCE(pdp.p, 0) as tot_p
+        FROM ms_sekolah as s
+        LEFT JOIN (SELECT sekolah_npsn, COUNT(*) as l FROM tr_pesertadidik WHERE UPPER(jk) = 'L' GROUP BY sekolah_npsn) AS pdl on pdl.sekolah_npsn = s.npsn
+        LEFT JOIN (SELECT sekolah_npsn, COUNT(*) as p FROM tr_pesertadidik WHERE UPPER(jk) = 'P' GROUP BY sekolah_npsn) AS pdp on pdp.sekolah_npsn = s.npsn
+        WHERE s.kode_wilayah_induk_kecamatan = '$idwil'
+        ORDER BY s.nama";
+        $data_pd = DB::select($sql_pd);        
+
+        return view('data_peserta_didik.show_admin', compact('data_pd', 'data_kec'));
+    }
+
+    public function detail_pd_admin($npsn)
+    {
+        $data_peserta_didik = PesertaDidik::where('sekolah_npsn', $npsn)->orderBy('rombel')->orderBy('nama')->get();
+        return view('data_peserta_didik.detail_admin', compact('data_peserta_didik'));
     }
 }
