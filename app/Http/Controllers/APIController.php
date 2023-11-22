@@ -76,7 +76,7 @@ class APIController extends Controller
             $data[$item->id]['link_sumber'] = $item->link;
             $data[$item->id]['dokumen_pendukung'] = $item->document == NULL ? NULL : URL::to('/').'/'.$item->document;
             $data[$item->id]['slug'] = URL::to('/').'/api/praktik-baik/detail/'.$item->slug;
-            $data[$item->id]['iamge'] = $item->image == NULL ? NULL : URL::to('/').'/'.$item->image;
+            $data[$item->id]['image'] = $item->image == NULL ? NULL : URL::to('/').'/'.$item->image;
             $data[$item->id]['jenis'] = $item->jenis == 1 ? 'Inovasi Praktik Baik' : 'Aksi Nyata Praktik Baik';
         }
 
@@ -105,7 +105,7 @@ class APIController extends Controller
             $data['bidang_pengembangan'][$i++] = $bp->bidangpengembangan->nama;
         }
         $data['dokumen_pendukung'] = $getData->document == NULL ? NULL : URL::to('/').'/'.$getData->document;        
-        $data['iamge'] = $getData->image == NULL ? NULL : URL::to('/').'/'.$getData->image;
+        $data['image'] = $getData->image == NULL ? NULL : URL::to('/').'/'.$getData->image;
         $data['jenis'] = $getData->jenis == 1 ? 'Inovasi Praktik Baik' : 'Aksi Nyata Praktik Baik';
 
         return response()->json($data);
