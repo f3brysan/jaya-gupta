@@ -66,7 +66,11 @@ class APIController extends Controller
             $data[$item->id]['deskripsi'] = $item->deskripsi;
             $data[$item->id]['video'] = $item->video;
             $data[$item->id]['owner'] = $item->owner->nama;
-            $data[$item->id]['bidang_pengembangan'] = $item->inovasibidangpengembangan;
+            // $data[$item->id]['bidang_pengembangan'] = $item->inovasibidangpengembangan;
+            $i = 0;
+            foreach ($item->inovasibidangpengembangan as $bp) {
+                $data[$item->id]['bidang_pengembangan'][$i++] = $bp->bidangpengembangan->nama;
+            }
             $data[$item->id]['dikurasi_pada'] = $item->nilai->created_at;
             $data[$item->id]['dikurasi_oleh'] = $item->nilai->owner->nama;
             $data[$item->id]['link_sumber'] = $item->link;
@@ -92,10 +96,14 @@ class APIController extends Controller
         $data['deskripsi'] = $getData->deskripsi;
         $data['video'] = $getData->video;
         $data['owner'] = $getData->owner->nama;
-        $data['bidang_pengembangan'] = $getData->inovasibidangpengembangan;
+        
         $data['dikurasi_pada'] = $getData->nilai->created_at;
         $data['dikurasi_oleh'] = $getData->nilai->owner->nama;
         $data['link_sumber'] = $getData->link;
+        $i = 0;
+        foreach ($getData->inovasibidangpengembangan as $bp) {
+            $data['bidang_pengembangan'][$i++] = $bp->bidangpengembangan->nama;
+        }
         $data['dokumen_pendukung'] = $getData->document == NULL ? NULL : URL::to('/').'/'.$getData->document;        
         $data['iamge'] = $getData->image == NULL ? NULL : URL::to('/').'/'.$getData->image;
         $data['jenis'] = $getData->jenis == 1 ? 'Inovasi Praktik Baik' : 'Aksi Nyata Praktik Baik';
