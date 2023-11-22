@@ -169,7 +169,7 @@ class Ms_PesertaDidikController extends Controller
     public function index_admin()
     {        
         $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->get("bentuk_pendidikan");
-        $npsn = Ms_DataSekolah::where('kode_wilayah_induk_kecamatan', '226002')->pluck('npsn');
+        // $npsn = Ms_DataSekolah::where('kode_wilayah_induk_kecamatan', '226002')->pluck('npsn');
 
         $data = array();
         foreach ($bentuk_pendidikan as $bp) {

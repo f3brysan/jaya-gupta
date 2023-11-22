@@ -98,6 +98,10 @@ Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function
     Route::get('data-guru/export-template', [DataGuruController::class, 'export_template']);
     Route::POST('data-guru/import', [DataGuruController::class, 'import']);
 
+    route::get('admin/data-guru', [DataGuruController::class, 'index_admin']);
+    Route::get('admin/data-guru/show/{idwil}', [DataGuruController::class, 'show_admin']);
+    Route::get('admin/data-guru/detail/{npsn}', [DataGuruController::class, 'detail_admin']);
+
     route::get('data-tendik', [DataTendikController::class, 'index']);
     Route::get('data-tendik/export-template', [DataTendikController::class, 'export_template']);
     Route::POST('data-tendik/import', [DataTendikController::class, 'import']);
