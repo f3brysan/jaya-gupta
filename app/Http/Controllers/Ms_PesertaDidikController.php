@@ -184,7 +184,6 @@ class Ms_PesertaDidikController extends Controller
                 $data[trim($s->kode_wilayah_induk_kecamatan)]['total_l'] = 0;
                 $data[trim($s->kode_wilayah_induk_kecamatan)]['total_p'] = 0;
 
-
                 $arnpsn[$s->npsn] = "'$s->npsn'";
                 // dd($arnpsn);
                 $list = implode(",", $arnpsn);                

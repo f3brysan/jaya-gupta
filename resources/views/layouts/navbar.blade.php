@@ -58,7 +58,7 @@
                             Sekolah</span></a></li>
                 <li><a class="nav-link" href="{{ URL::to('admin/data-peserta-didik') }}"><i class="fas fa-list"></i> <span>Data
                             Peserta Didik</span></a></li>
-                <li><a class="nav-link" href="{{ URL::to('data-sekolah') }}"><i class="fas fa-list"></i> <span>Data
+                <li><a class="nav-link" href="{{ URL::to('admin/data-rombel') }}"><i class="fas fa-list"></i> <span>Data
                             Rombel</span></a></li>
                 <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Data
                             Guru</span></a></li>

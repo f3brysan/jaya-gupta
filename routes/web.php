@@ -126,6 +126,11 @@ Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function
     Route::get('data-rombel/edit/{id}', [RombelController::class, 'edit']);
     Route::post('data-rombel/simpan', [RombelController::class, 'store']);
     Route::post('data-rombel/hapus', [RombelController::class, 'destroy']);
+    
+    Route::get('admin/data-rombel', [RombelController::class, 'index_admin']);
+    Route::get('admin/data-rombel/show/{idwil}', [RombelController::class, 'show_admin']);
+    Route::get('admin/data-rombel/detail/{npsn}', [RombelController::class, 'detail_admin']);
+
 });
 
 Route::get('ajax/getkabupaten/{id}', [IndoController::class, 'getkabupaten']);
