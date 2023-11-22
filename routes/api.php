@@ -37,6 +37,9 @@ Route::post('encode', [APIController::class, 'encode']);
 Route::post('validate-password', [APIController::class, 'hashcheck']);
 Route::get('getBidangKompetensi', [APIController::class, 'getBidangKompetensi']);
 
+Route::get('praktik-baik', [APIController::class, 'get_praktik_baik']);
+Route::get('praktik-baik/detail/{slug}', [APIController::class, 'detail_praktik_baik']);
+
 
 // Route::controller(API_AuthController::class)->prefix('auth')->group(function () {
 //     Route::post('login', 'login');
