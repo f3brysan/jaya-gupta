@@ -5,6 +5,23 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>Jaya Gupta &mdash; Login</title>
+    <meta name="msapplication-TileImage" content="https://www.pendidikan.denpasarkota.go.id/public/images/favicon.png">
+    <meta name="msapplication-TileImage" content="https://www.pendidikan.denpasarkota.go.id/public/images/favicon.png">
+    <meta name="msapplication-TileColor" content="#f4e4d7">
+    <meta name="theme-color" content="#f4e4d7">
+
+    <link rel="shortcut icon" href="https://www.pendidikan.denpasarkota.go.id/public/images/favicon.png">
+    <link rel="apple-touch-icon" href="https://www.pendidikan.denpasarkota.go.id/public/images/favicon.png">
+    <link rel="apple-touch-icon" sizes="152x152"
+        href="https://www.pendidikan.denpasarkota.go.id/public/images/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="https://www.pendidikan.denpasarkota.go.id/public/images/favicon.png">
+    <link rel="apple-touch-icon" sizes="167x167"
+        href="https://www.pendidikan.denpasarkota.go.id/public/images/favicon.png">
+    <link rel="icon" href="https://www.pendidikan.denpasarkota.go.id/public/images/favicon.png" sizes="32x32" />
+    <link rel="icon" href="https://www.pendidikan.denpasarkota.go.id/public/images/favicon.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="https://www.pendidikan.denpasarkota.go.id/public/images/favicon.png" />
+    <link rel="mask-icon" href="https://www.pendidikan.denpasarkota.go.id/public/images/favicon.png" color="#f4e4d7">
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/bootstrap/css/bootstrap.min.css">
@@ -30,6 +47,20 @@
     </script>
     <!-- /END GA -->
 </head>
+<style>
+    .myimage {
+        display: block;
+        /* margin-left: auto;
+        margin-right: auto; */
+    }
+</style>
+{{-- <style>
+     body {
+   background-image: url("https://www.denpasarkota.go.id/assets/CKImages/images/Patung-Titi-Banda(1).jpg");
+   background-repeat: no-repeat;
+   background-size:cover
+}
+</style> --}}
 
 <body>
     <div id="app">
@@ -38,10 +69,11 @@
                 <div class="row">
                     <div
                         class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+                        <img src="https://www.pendidikan.denpasarkota.go.id/public/uploads/header_192106040650_.png"
+                            width="100%" alt="logo" class="myimage img-fluid">
                         <div class="login-brand">
-                            <img src="{{ URL::to('/') }}/assets/img/logo.png" alt="logo" width="100"
-                                class="shadow-light rounded-circle">
-                            <h4>JAYA GUPTA</h4>
+
+                            <h1 style="color: black">JAYA GUPTA</h1>
                         </div>
 
                         <div class="card card-primary">
@@ -49,7 +81,7 @@
                                 <h4>Login</h4>
                             </div>
                             <div class="card-body">
-                               
+
                                 {{-- @if (session()->has('LoginError'))
                                     <div class="alert alert-danger d-flex justify-content-center" role="alert">
                                         {{ session('LoginError') }}
