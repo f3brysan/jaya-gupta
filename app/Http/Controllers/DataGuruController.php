@@ -9,13 +9,14 @@ use App\Models\Province;
 use App\Models\Ms_Pangkat;
 use Illuminate\Http\Request;
 use App\Models\Ms_DataSekolah;
+use App\Imports\DataGuruImport;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Crypt;
 use App\Exports\DataGuruTemplateExport;
-use App\Imports\DataGuruImport;
 use App\Models\Ms_JenjangPendidikanDikti;
 
 class DataGuruController extends Controller
@@ -199,11 +200,11 @@ class DataGuruController extends Controller
             'siswa' => $request->siswa,
             'status_sekolah' => $request->status_sekolah,
             'gender' => $request->gender,
-            'asal_satuan_pendidikan' => $request->asal_satuan,            
+            'asal_satuan_pendidikan' => $request->asal_satuan,
             'lembaga_pengangkatan' => $request->lembaga_pengangkatan,
         ]);
 
-        
+
 
         if ($bio) {
             DB::commit();
@@ -324,10 +325,38 @@ class DataGuruController extends Controller
                     'asal_satuan_pendidikan' => auth()->user()->bio->asal_satuan_pendidikan,
                     'is_active' => 1,
                     'lembaga_pengangkatan' => $row[26],
-                ]);
+                ]);                
+
+                $asal_sekolah = Ms_DataSekolah::where('npsn', auth()->user()->bio->asal_satuan_pendidikan)->first();
+
+                // ! POST KE API SYNC HALO GURU
+                // if ($createBio) {
+                //     $send = Http::withHeaders([
+                //         'client_secret' => 'haloguru_secretkey',
+                //     ])->post('http://103.242.124.108:3033/sync-users', [
+                //                 'id' => $createUser->id,
+                //                 'email' => $createUser->email,
+                //                 'name' => $nama,
+                //                 'password' => $password,
+                //                 'roleId' => 'gtk',
+                //                 'foto' => null,
+                //                 'biografi' => null,
+                //                 'firebase_token' => null,
+                //                 'gtk' => [
+                //                     'nip_nuptk' => $row[2],
+                //                     'mata_pelajaran' => null,
+                //                     'media_pembelajaran' => [],
+                //                     'pangkat' => $row[7],
+                //                     'golongan' => $row[27],
+                //                     'jabatan' => null,
+                //                     'unit_kerja' => $asal_sekolah->nama,
+                //                     'riwayat_pendidikan' => $row[12]
+                //                 ]
+                //             ]);
+                // }
             }
         }
-
+        // dd($send);
         if ($createBio) {
             DB::commit();
             return redirect('data-guru')->with('success', 'Data berhasil disimpan.');
@@ -340,16 +369,16 @@ class DataGuruController extends Controller
     public function destroy(Request $request)
     {
         $id = Crypt::decrypt($request->id);
-        
-        DB::beginTransaction();       
-            $user = User::where('id', $id)->first();
-            $user->removeRole('guru');
-            $user->assignRole('nonaktif');
 
-            $delete = Biodata::where('id', $id)->update([
-                'is_active' => 0
-            ]);
-        
+        DB::beginTransaction();
+        $user = User::where('id', $id)->first();
+        $user->removeRole('guru');
+        $user->assignRole('nonaktif');
+
+        $delete = Biodata::where('id', $id)->update([
+            'is_active' => 0
+        ]);
+
 
         if ($delete) {
             DB::commit();
@@ -361,37 +390,37 @@ class DataGuruController extends Controller
     {
         $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->get("bentuk_pendidikan");
         $arrnpsn = Ms_DataSekolah::get()->pluck('npsn');
-        
+
         $data = array();
         foreach ($bentuk_pendidikan as $bp) {
             $sekolah = Ms_DataSekolah::where('bentuk_pendidikan', $bp->bentuk_pendidikan)->get();
             foreach ($sekolah as $s) {
-                $data[trim($s->kode_wilayah_induk_kecamatan)]['kode_wil'] = $s->kode_wilayah_induk_kecamatan;                
-                $data[trim($s->kode_wilayah_induk_kecamatan)]['nama'] = $s->induk_kecamatan;                
-                $data[trim($s->kode_wilayah_induk_kecamatan)][$bp->bentuk_pendidikan.'_l'] = 0;
-                $data[trim($s->kode_wilayah_induk_kecamatan)][$bp->bentuk_pendidikan.'_p'] = 0;
+                $data[trim($s->kode_wilayah_induk_kecamatan)]['kode_wil'] = $s->kode_wilayah_induk_kecamatan;
+                $data[trim($s->kode_wilayah_induk_kecamatan)]['nama'] = $s->induk_kecamatan;
+                $data[trim($s->kode_wilayah_induk_kecamatan)][$bp->bentuk_pendidikan . '_l'] = 0;
+                $data[trim($s->kode_wilayah_induk_kecamatan)][$bp->bentuk_pendidikan . '_p'] = 0;
                 $data[trim($s->kode_wilayah_induk_kecamatan)][$bp->bentuk_pendidikan] = 0;
                 $data[trim($s->kode_wilayah_induk_kecamatan)]['total'] = 0;
                 $data[trim($s->kode_wilayah_induk_kecamatan)]['total_l'] = 0;
-                $data[trim($s->kode_wilayah_induk_kecamatan)]['total_p'] = 0; 
-                
+                $data[trim($s->kode_wilayah_induk_kecamatan)]['total_p'] = 0;
+
             }
         }
 
         // dd($arrnpsn);
 
-        $id_guru = User::with('bio')->whereHas('bio', function($q) use($arrnpsn){
-            $q->whereIn('asal_satuan_pendidikan', $arrnpsn);                        
+        $id_guru = User::with('bio')->whereHas('bio', function ($q) use ($arrnpsn) {
+            $q->whereIn('asal_satuan_pendidikan', $arrnpsn);
         })->role('guru')->get('id');
 
-        
-        
+
+
         foreach ($id_guru as $id) {
             $arnpsn[$id->id] = "'$id->id'";
             // dd($arnpsn);
             $list = implode(",", $arnpsn);
         }
-        
+
 
         $sql_count = "SELECT
         s.kode_wilayah_induk_kecamatan, s.bentuk_pendidikan, 
@@ -404,17 +433,17 @@ class DataGuruController extends Controller
         WHERE
        u.id IN ($list)       
        GROUP BY s.kode_wilayah_induk_kecamatan, s.bentuk_pendidikan";
-       $query = DB::select($sql_count);
+        $query = DB::select($sql_count);
 
-       foreach ($query as $q) {
-        $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan.'_l'] += $q->laki;
-        $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan.'_p'] += $q->perempuan;
-        $data[trim($q->kode_wilayah_induk_kecamatan)]['total_l'] += $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan.'_l'];
-        $data[trim($q->kode_wilayah_induk_kecamatan)]['total_p'] += $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan.'_p'];
-        $data[trim($q->kode_wilayah_induk_kecamatan)]['total'] += $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan.'_p'] + $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan.'_l'];
-       }
-    
-       return view('data-guru.index_admin', compact('data'));        
+        foreach ($query as $q) {
+            $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan . '_l'] += $q->laki;
+            $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan . '_p'] += $q->perempuan;
+            $data[trim($q->kode_wilayah_induk_kecamatan)]['total_l'] += $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan . '_l'];
+            $data[trim($q->kode_wilayah_induk_kecamatan)]['total_p'] += $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan . '_p'];
+            $data[trim($q->kode_wilayah_induk_kecamatan)]['total'] += $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan . '_p'] + $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan . '_l'];
+        }
+
+        return view('data-guru.index_admin', compact('data'));
     }
 
     public function show_admin($idwil)
@@ -423,8 +452,8 @@ class DataGuruController extends Controller
         $data_kec = Ms_DataSekolah::where('kode_wilayah_induk_kecamatan', $idwil)->first();
         $sekolah = Ms_DataSekolah::where('kode_wilayah_induk_kecamatan', $idwil)->pluck('npsn');
         $data_sekolah = Ms_DataSekolah::where('kode_wilayah_induk_kecamatan', $idwil)->get();
-        $id_guru = User::with('bio')->whereHas('bio', function($q) use($sekolah){
-            $q->whereIn('asal_satuan_pendidikan', $sekolah);                        
+        $id_guru = User::with('bio')->whereHas('bio', function ($q) use ($sekolah) {
+            $q->whereIn('asal_satuan_pendidikan', $sekolah);
         })->role('guru')->get('id');
 
         foreach ($id_guru as $id) {
@@ -457,15 +486,15 @@ class DataGuruController extends Controller
        u.id IN ($list)
        GROUP BY  s.npsn";
 
-       $query = DB::select($sql_count);
+        $query = DB::select($sql_count);
 
-       foreach ($query as $q) {
+        foreach ($query as $q) {
             $data[$q->npsn]['total_l'] = $q->laki;
             $data[$q->npsn]['total_p'] = $q->perempuan;
             // $data[$q->npsn]['total'] = $q->tot;
-       }
-    //    dd($data);
-       return view('data-guru.show_admin', compact('data', 'data_kec'));
+        }
+        //    dd($data);
+        return view('data-guru.show_admin', compact('data', 'data_kec'));
     }
 
     public function detail_admin($npsn)
@@ -473,7 +502,7 @@ class DataGuruController extends Controller
         $sekolah = Ms_DataSekolah::where('npsn', $npsn)->first();
         $user_guru = User::role('guru')->pluck('id');
         $getData = Biodata::with('user', 'user.roles', 'asal_sekolah', 'user_bidang_pengembangan.bidangpengembangan')->whereIn('id', $user_guru)->where('asal_satuan_pendidikan', $npsn)->get();
-        
+
         return view('data-guru.detail_admin', compact('getData', 'sekolah'));
     }
 }
