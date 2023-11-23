@@ -59,7 +59,7 @@
                                                     <tr>
                                                         <td align="right">{{ $loop->iteration }}</td>
                                                         <td align="center">{{ $item->judul }}</td>
-                                                        <td align="center">{!! Str::words($item->deskripsi, 10) !!}</td>
+                                                        <td align="center">{!! Str::words(strip_tags($item->deskripsi), 10) !!}</td>
                                                         <td align="center"> <img
                                                                 src="{{ URL::to('/') }}/{{ $item->image }}"
                                                                 style="width: 80px" class="img-fluid img-thumbnail"
@@ -137,7 +137,7 @@
                                                 <tr>
                                                     <td align="right">{{ $loop->iteration }}</td>
                                                     <td align="center">{{ $item->judul }}</td>
-                                                    <td align="center">{!! Str::words($item->deskripsi, 10) !!}</td>
+                                                    <td align="center">{!! Str::words(strip_tags($item->deskripsi), 10) !!}</td>
                                                     <td align="center"> <img
                                                             src="{{ URL::to('/') }}/{{ $item->image }}"
                                                             style="width: 80px" class="img-fluid img-thumbnail"

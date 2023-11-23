@@ -121,7 +121,7 @@ class DashboardController extends Controller
         if ($request->ajax()) {
             return DataTables::of($getData)
                 ->addColumn('deskripsi_readmore', function ($getData) {
-                    return Str::words($getData->deskripsi, 15, '...');
+                    return Str::words(strip_tags($getData->deskripsi), 15, '...');
                 })
                 ->editColumn('images', function ($getData) {
                     return '<img src="' . URL::to('') . '/' . $getData->image . '" class="img-fluid img-thumbnail" style="height: 100px"/>';
