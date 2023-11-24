@@ -64,7 +64,7 @@
                             Guru</span></a></li>
                 <li><a class="nav-link" href="{{ URL::to('admin/data-tendik') }}"><i class="fas fa-list"></i> <span>Data
                             Tendik</span></a></li>
-                <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Data
+                <li><a class="nav-link" href="{{ URL::to('admin/data-gtk-nonaktif') }}"><i class="fas fa-list"></i> <span>Data
                             GTK Non Aktif</span></a></li>
                 <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Data
                             Pengawas</span></a></li>

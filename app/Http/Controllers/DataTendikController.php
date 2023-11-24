@@ -315,7 +315,6 @@ class DataTendikController extends Controller
 
         return view('data-tendik.index_admin', compact('data'));
     }
-
     public function show_admin($idwil)
     {
         $idwil = Crypt::decrypt($idwil);
