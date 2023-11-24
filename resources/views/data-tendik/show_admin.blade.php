@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Data Guru')
+@section('title', 'Data Tendik')
 @push('css-custom')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.css">
@@ -13,7 +13,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Data Guru di {{ $data_kec->induk_kecamatan }}</h1>
+                <h1>Data Tendik di {{ $data_kec->induk_kecamatan }}</h1>
             </div>
             <div class="row">
                 <div class="col-lg-12">                   
@@ -44,7 +44,7 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td class="text-right">{{ $loop->iteration }}</td>
-                                            <td><a href="{{ URL::to('admin/data-guru/detail/'.$item['npsn']) }}">{{ $item['nama'] }}</a></td>
+                                            <td><a href="{{ URL::to('admin/data-tendik/detail/'.$item['npsn']) }}">{{ $item['nama'] }}</a></td>
                                             <td>{{ $item['npsn'] }}</td>
                                             <td>{{ $item['bentuk_pendidikan'] }}</td>
                                             <td>{{ $item['status_sekolah'] }}</td>

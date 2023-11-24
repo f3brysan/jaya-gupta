@@ -109,6 +109,10 @@ Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function
     route::post('data-tendik/update', [DataTendikController::class, 'update']);
     Route::post('data-tendik/hapus', [DataTendikController::class, 'destroy']);
 
+    route::get('admin/data-tendik', [DataTendikController::class, 'index_admin']);
+    Route::get('admin/data-tendik/show/{idwil}', [DataTendikController::class, 'show_admin']);
+    Route::get('admin/data-tendik/detail/{npsn}', [DataTendikController::class, 'detail_admin']);
+
     route::get('data-gtk-nonaktif', [DataGTKNonAktifController::class, 'index']);
 
     Route::get('data-sekolah/edit-detail/{npsn}', [Ms_SekolahController::class, 'edit_sekolah']);
