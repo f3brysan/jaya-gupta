@@ -24,11 +24,8 @@ class DataGuruController extends Controller
     public function index()
     {
         $user_guru = User::role('guru')->pluck('id');
-        if (auth()->user()->hasRole('superadmin')) {
-            $getData = Biodata::with('user', 'user.roles', 'asal_sekolah', 'user_bidang_pengembangan.bidangpengembangan')->whereIn('id', $user_guru)->get();
-        } else {
-            $getData = Biodata::with('user', 'user.roles', 'asal_sekolah', 'user_bidang_pengembangan.bidangpengembangan')->whereIn('id', $user_guru)->where('asal_satuan_pendidikan', auth()->user()->bio->asal_satuan_pendidikan)->get();
-        }
+        
+            $getData = Biodata::with('user', 'user.roles', 'asal_sekolah', 'user_bidang_pengembangan.bidangpengembangan')->whereIn('id', $user_guru)->where('asal_satuan_pendidikan', auth()->user()->bio->asal_satuan_pendidikan)->get();        
 
         return view('data-guru.index', compact('getData'));
     }
@@ -204,7 +201,60 @@ class DataGuruController extends Controller
             'lembaga_pengangkatan' => $request->lembaga_pengangkatan,
         ]);
 
+        $check = Http::withHeaders([
+            'client_secret' => 'haloguru_secretkey',
+        ])->get('http://103.242.124.108:3033/sync-users/'.$id);     
+        
 
+        if ($check['message'] == 'User not found') {
+            $asal_sekolah = Ms_DataSekolah::where('npsn', auth()->user()->bio->asal_satuan_pendidikan)->first();
+            $password = '12345678';
+            $date = strtotime($request->tgllahir);
+                    $password = date('d', $date) . date("m", $date) . date("Y", $date);
+            $send = Http::withHeaders([
+                'client_secret' => 'haloguru_secretkey',
+            ])->post('http://103.242.124.108:3033/sync-users', [
+                        'id' => $id,
+                        'email' => $request->email,
+                        'nama' => $nama,
+                        'password' => $password,
+                        'roleId' => 'gtk',
+                        'foto' => null,
+                        'biografi' => null,
+                        'firebase_token' => null,
+                        'gtk' => [
+                            'nip_nuptk' => $request->nuptk,
+                            'mata_pelajaran' => null,
+                            'media_pembelajaran' => [                                
+                            ],
+                            'pangkat' => $request->status_kepegawaian,
+                            'golongan' => $request->golongan,
+                            'jabatan' => null,
+                            'unit_kerja' => $asal_sekolah->nama,
+                            'riwayat_pendidikan' => $request->jurusan,
+                        ]
+                    ]);
+        } else {
+            $send = Http::withHeaders([
+                'client_secret' => 'haloguru_secretkey',
+            ])->patch('http://103.242.124.108:3033/sync-users/'.$id, [                    
+                        'email' => $request->email,
+                        'nama' => $nama,                                                           
+                        'biografi' => null,                    
+                        'gtk' => [
+                            'nip_nuptk' => $request->nuptk,
+                            'mata_pelajaran' => null,
+                            'media_pembelajaran' => [],
+                            'pangkat' => $request->status_kepegawaian,
+                            'golongan' => $request->golongan,
+                            'jabatan' => null,                        
+                            'riwayat_pendidikan' => $request->jurusan
+                        ]
+                    ]);
+        }
+        
+
+        return $send;
 
         if ($bio) {
             DB::commit();
@@ -330,34 +380,36 @@ class DataGuruController extends Controller
                 $asal_sekolah = Ms_DataSekolah::where('npsn', auth()->user()->bio->asal_satuan_pendidikan)->first();
 
                 // ! POST KE API SYNC HALO GURU
-                // if ($createBio) {
-                //     $send = Http::withHeaders([
-                //         'client_secret' => 'haloguru_secretkey',
-                //     ])->post('http://103.242.124.108:3033/sync-users', [
-                //                 'id' => $createUser->id,
-                //                 'email' => $createUser->email,
-                //                 'name' => $nama,
-                //                 'password' => $password,
-                //                 'roleId' => 'gtk',
-                //                 'foto' => null,
-                //                 'biografi' => null,
-                //                 'firebase_token' => null,
-                //                 'gtk' => [
-                //                     'nip_nuptk' => $row[2],
-                //                     'mata_pelajaran' => null,
-                //                     'media_pembelajaran' => [],
-                //                     'pangkat' => $row[7],
-                //                     'golongan' => $row[27],
-                //                     'jabatan' => null,
-                //                     'unit_kerja' => $asal_sekolah->nama,
-                //                     'riwayat_pendidikan' => $row[12]
-                //                 ]
-                //             ]);
-                // }
+                if ($createBio) {
+                    $send = Http::withHeaders([
+                        'client_secret' => 'haloguru_secretkey',
+                    ])->post('http://103.242.124.108:3033/sync-users', [
+                                'id' => $createUser->id,
+                                'email' => $createUser->email,
+                                'nama' => $nama,
+                                'password' => $password,
+                                'roleId' => 'gtk',
+                                'foto' => null,
+                                'biografi' => null,
+                                'firebase_token' => null,
+                                'gtk' => [
+                                    'nip_nuptk' => $row[2],
+                                    'mata_pelajaran' => null,
+                                    'media_pembelajaran' => [],
+                                    'pangkat' => $row[7],
+                                    'golongan' => $row[27],
+                                    'jabatan' => null,
+                                    'unit_kerja' => $asal_sekolah->nama,
+                                    'riwayat_pendidikan' => $row[12]
+                                ]
+                            ]);
+                }
             }
         }
+
+        
         // dd($send);
-        if ($createBio) {
+        if ($send) {
             DB::commit();
             return redirect('data-guru')->with('success', 'Data berhasil disimpan.');
         } else {
@@ -378,6 +430,10 @@ class DataGuruController extends Controller
         $delete = Biodata::where('id', $id)->update([
             'is_active' => 0
         ]);
+
+        $del_haloguru = Http::withHeaders([
+            'client_secret' => 'haloguru_secretkey',
+        ])->delete('http://103.242.124.108:3033/sync-users/'.$id);
 
 
         if ($delete) {

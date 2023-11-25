@@ -16,6 +16,8 @@ use App\Http\Controllers\Ms_SatuanPendidikanController;
 use App\Http\Controllers\Ms_Sekolah;
 use App\Http\Controllers\Ms_SekolahController;
 use App\Http\Controllers\Ms_UsersController;
+use App\Http\Controllers\RekapController;
+use App\Http\Controllers\RekapPensiunController;
 use App\Http\Controllers\RombelController;
 use App\Http\Controllers\StatusInovasiController;
 use App\Models\Ms_MataPelajaran;
@@ -81,6 +83,8 @@ Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
     Route::get('master/user', [Ms_UsersController::class, 'index']);
     Route::get('master/user-role/{id}', [Ms_UsersController::class, 'user_role']);
     Route::post('master/user-role/store', [Ms_UsersController::class, 'user_role_store']);
+
+    Route::get('rekap/data-pensiun', [RekapPensiunController::class, 'index']);
 });
 
 Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function () {

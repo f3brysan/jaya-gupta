@@ -398,11 +398,18 @@
                             <td valign="top">{!! $item->deskripsi !!}</td>
                         </tr>
                         @if ($item->video !== NULL)
+                        @php
+                            $link = explode('=',$item->video);
+                            if ($link  > 1) {
+                                $link = end($link);                                
+                            }
+                           
+                        @endphp
                         <tr>
                             <td style="width: 15%" valign="top">Video : </td>
                             <td valign="top">
                                 <iframe width="560" height="315"
-                                    src="https://www.youtube.com/embed/{{ $item->video }}"
+                                    src="https://www.youtube.com/embed/{{ $link }}"
                                     title="YouTube video player" frameborder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     allowfullscreen></iframe>
