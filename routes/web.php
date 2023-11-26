@@ -85,6 +85,8 @@ Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
     Route::post('master/user-role/store', [Ms_UsersController::class, 'user_role_store']);
 
     Route::get('rekap/data-pensiun', [RekapPensiunController::class, 'index']);
+    Route::get('rekap/data-pensiun/negeri/{thn}/{bp}', [RekapPensiunController::class, 'show_pendidikan']);
+    Route::get('rekap/data-pensiun/sekolah/{npsn}/{thn}', [RekapPensiunController::class, 'show_sekolah']);
 });
 
 Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function () {
