@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Rekapitulasi Perkiraan Pensiun')
+@section('title', 'Rekapitulasi Sebaran Guru')
 @push('css-custom')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.css">
@@ -13,7 +13,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Rekapitulasi Perkiraan Pensiun Tahun {{ $thn }}</h1>
+                <h1>Rekapitulasi Sebaran Guru</h1>
             </div>
             <div class="row">
                 <div class="col-lg-12">
@@ -23,36 +23,35 @@
                                 <table id="example" class="table table-bordered table-hover table-bordered">
                                     <thead>
                                         <tr>
-                                            <th class="text-center">No</th>
-                                            <th class="text-center">Nama Guru</th>
-                                            <th class="text-center">Asal Sekolah</th>
-                                            <th class="text-center">Pangkat Gol</th>
-                                            <th class="text-center">Tanggal Lahir</th>
-                                            <th class="text-center">Tanggal Pensiun</th>
+                                            <td>Bentuk Pendidikan</td>
+                                            <td>Jenis Guru</td>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($getBio as $item)
+                                        @foreach ($data as $item)
                                             <tr>
-                                                <td class="text-right">{{ $loop->iteration }}</td>
-                                                <td>{{ $item->nama }}</td>
-                                                <td>{{ $item->nm_sekolah }}</td>
-                                                <td class="text-center">{{ $item->golongan }}</td>
-                                                <td class="text-center">{{ $item->tanggallahir }}</td>
-                                                <td class="text-center">@php
-                                                    $date = date_create($item->tanggallahir);
-                                                @endphp {{ $thn }}-{{ date_format($date, 'm') }}-{{ date_format($date, 'd') }}</td>
-                                            </tr>
+                                                <td>{{ $item['nama'] }}</td>
+
+                                                <td>
+                                                    @if ($item['matpel'])
+                                                        @foreach ($item['matpel'] as $matpel => $value)
+                                                        @if ($value == 'Guru Kelas')
+                                                        <li><a href="{{ URL::to('rekap/sebaran-guru/'.$item['nama'].'/'.$value) }}" class="btn btn-link">{{ $value }}</a></li>
+                                                        @else
+                                                        <li><a href="" class="btn btn-link disabled">{{ $value }}</a></li>
+                                                        @endif
+                                                        @endforeach
+                                                </td>
+                                            @else
+                                                Data masih kosong.
+                                        @endif
+                                        </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th class="text-center">No</th>
-                                            <th class="text-center">Nama Guru</th>
-                                            <th class="text-center">Asal Sekolah</th>
-                                            <th class="text-center">Pangkat Gol</th>
-                                            <th class="text-center">Tanggal Lahir</th>
-                                            <th class="text-center">Tanggal Pensiun</th>
+                                            <td>Bentuk Pendidikan</td>
+                                            <td>Jenis Guru</td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -68,8 +67,7 @@
 @push('js-custom')
     <!-- JS Libraies -->
     <script src="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.js"></script>
-    <script src="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js">
-    </script>
+    <script src="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script src="{{ URL::to('/') }}/assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
     <script src="{{ URL::to('/') }}/assets/modules/jquery-ui/jquery-ui.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

@@ -76,8 +76,8 @@
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ URL::to('rekap/data-pensiun') }}">Perkiraan Pensiun</a></li>
                         <li><a class="nav-link" href="{{ URL::to('rekap/data-sebaran-guru') }}">Sebaran Guru</a></li>
-                        <li><a class="nav-link" href="{{ URL::to('rekap/data-sebaran-tendik') }}">Sebaran Tendik</a></li>
-                        <li><a class="nav-link" href="{{ URL::to('rekap/data-guru-penggerak') }}">Guru Guru Penggerak</a>
+                        <li><a class="nav-link" href="{{ URL::to('rekap/data-sebaran-tendik') }}">Sebaran Tendik <i class="badge badge-danger float-right"><span class="fa fa-wrench"></span></i></a></li>
+                        <li><a class="nav-link" href="{{ URL::to('rekap/data-guru-penggerak') }}">Guru Penggerak <i class="badge badge-danger float-right"><span class="fa fa-wrench"></span></i></a>
                         </li>
                     </ul>
                 </li>

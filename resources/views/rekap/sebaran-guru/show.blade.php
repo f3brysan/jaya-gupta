@@ -24,35 +24,24 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center">No</th>
-                                            <th class="text-center">Nama Guru</th>
-                                            <th class="text-center">Asal Sekolah</th>
-                                            <th class="text-center">Pangkat Gol</th>
-                                            <th class="text-center">Tanggal Lahir</th>
-                                            <th class="text-center">Tanggal Pensiun</th>
+                                            <th class="text-center">Nama Sekolah</th>
+                                            <th class="text-center">Jumlah Pensiun</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach ($getBio as $item)
+                                    <tbody>   
+                                        @foreach ($data as $item)
                                             <tr>
                                                 <td class="text-right">{{ $loop->iteration }}</td>
-                                                <td>{{ $item->nama }}</td>
-                                                <td>{{ $item->nm_sekolah }}</td>
-                                                <td class="text-center">{{ $item->golongan }}</td>
-                                                <td class="text-center">{{ $item->tanggallahir }}</td>
-                                                <td class="text-center">@php
-                                                    $date = date_create($item->tanggallahir);
-                                                @endphp {{ $thn }}-{{ date_format($date, 'm') }}-{{ date_format($date, 'd') }}</td>
+                                                <td>{{ $item['nama'] }}</td>
+                                                <td class="text-center"><a href="{{ URL::to('rekap/data-pensiun/sekolah/'.$item['npsn'].'/'.$thn) }}">{{ $item['pensiun'] }}</a></td>
                                             </tr>
-                                        @endforeach
+                                        @endforeach                                                                          
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <th class="text-center">No</th>
-                                            <th class="text-center">Nama Guru</th>
-                                            <th class="text-center">Asal Sekolah</th>
-                                            <th class="text-center">Pangkat Gol</th>
-                                            <th class="text-center">Tanggal Lahir</th>
-                                            <th class="text-center">Tanggal Pensiun</th>
+                                            <th class="text-center">Nama Sekolah</th>
+                                            <th class="text-center">Jumlah Pensiun</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -68,8 +57,7 @@
 @push('js-custom')
     <!-- JS Libraies -->
     <script src="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.js"></script>
-    <script src="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js">
-    </script>
+    <script src="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script src="{{ URL::to('/') }}/assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
     <script src="{{ URL::to('/') }}/assets/modules/jquery-ui/jquery-ui.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
