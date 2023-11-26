@@ -307,6 +307,7 @@ class DataGuruController extends Controller
         foreach ($rows[0] as $row) {
             // * check email apakah sudah ada?
             if ($email->contains($row[20]) == false) {
+                // dd($row[20]);
                 // buat password dari tgl lahir
                 if ($row[5] == NULL) {
                     $password = '123456';
@@ -315,70 +316,73 @@ class DataGuruController extends Controller
                     $password = date('d', $date) . date("m", $date) . date("Y", $date);
                 }
                 $nama = $row[9] . ' ' . $row[1] . ' ' . $row[10];
-
+                $newEmail = $row[20];
                 $createUser = User::create([
                     'email' => $row[20],
                     'name' => $nama,
                     'password' => bcrypt($password),
                     'nuptk' => $row[2]
                 ]);
-
+                // dd($createUser);
                 $createUser->assignRole('guru');
 
-                $createBio = Biodata::create([
-                    'id' => $createUser->id,
-                    'nama' => $nama,
-                    'nama_lengkap' => $row[1],
-                    'gelar_depan' => $row[9],
-                    'gelar_belakang' => $row[10],
-                    'nuptk' => $row[2],
-                    'tempatlahir' => $row[4],
-                    'tanggallahir' => $row[5],
-                    'kecdom' => $row[16],
-                    'keldom' => $row[15],
-                    'alamatdom' => $row[14],
-                    'kodepos' => $row[17],
-                    'telepon' => $row[18],
-                    'wa' => $row[19],
-                    'nip' => $row[6],
-                    'golongan' => $row[27],
-                    'status_kepegawaian' => $row[7],
-                    'pendidikan_terakhir' => $row[11],
-                    'mengajar' => $row[8],
-                    'prodi' => $row[12],
-                    'sertifikasi' => $row[13],
-                    'tugas_tambahan' => $row[21],
-                    'sk_cpns' => $row[22],
-                    'tgl_cpns' => $row[23],
-                    'sk_pengangkatan' => $row[24],
-                    'tmt_pengangkatan' => $row[25],
-                    'sumber_gaji' => $row[28],
-                    'nm_ibu' => $row[29],
-                    'status_perkawinan' => $row[30],
-                    'nm_pasangan' => $row[31],
-                    'nip_pasangan' => $row[32],
-                    'pekerjaan_pasangan' => $row[33],
-                    'tmt_pns' => $row[34],
-                    'npwp' => $row[35],
-                    'bank' => $row[36],
-                    'norek_bank' => $row[37],
-                    'nama_norek' => $row[38],
-                    'nik' => $row[39],
-                    'no_kk' => $row[40],
-                    'is_penggerak' => $row[41],
-                    'jam_tgs_tambahan' => $row[42],
-                    'jjm' => $row[43],
-                    'total_jjm' => $row[44],
-                    'siswa' => $row[45],
-                    'status_sekolah' => $row[46],
-                    'gender' => $request->gender,
-                    'asal_satuan_pendidikan' => auth()->user()->bio->asal_satuan_pendidikan,
-                    'is_active' => 1,
-                    'lembaga_pengangkatan' => $row[26],
-                ]);                
+                if ($createUser) {  
+                    $createBio = Biodata::create([
+                        'id' => $createUser->id,
+                        'nama' => $nama,
+                        'nama_lengkap' => $row[1],
+                        'gelar_depan' => $row[9],
+                        'gelar_belakang' => $row[10],
+                        'nuptk' => $row[2],
+                        'tempatlahir' => $row[4],
+                        'tanggallahir' => $row[5],
+                        'kecdom' => $row[16],
+                        'keldom' => $row[15],
+                        'alamatdom' => $row[14],
+                        'kodepos' => $row[17],
+                        'telepon' => $row[18],
+                        'wa' => $row[19],
+                        'nip' => $row[6],
+                        'golongan' => $row[27],
+                        'status_kepegawaian' => $row[7],
+                        'pendidikan_terakhir' => $row[11],
+                        'mengajar' => $row[8],
+                        'prodi' => $row[12],
+                        'sertifikasi' => $row[13],
+                        'tugas_tambahan' => $row[21],
+                        'sk_cpns' => $row[22],
+                        'tgl_cpns' => $row[23],
+                        'sk_pengangkatan' => $row[24],
+                        'tmt_pengangkatan' => $row[25],
+                        'sumber_gaji' => $row[28],
+                        'nm_ibu' => $row[29],
+                        'status_perkawinan' => $row[30],
+                        'nm_pasangan' => $row[31],
+                        'nip_pasangan' => $row[32],
+                        'pekerjaan_pasangan' => $row[33],
+                        'tmt_pns' => $row[34],
+                        'npwp' => $row[35],
+                        'bank' => $row[36],
+                        'norek_bank' => $row[37],
+                        'nama_norek' => $row[38],
+                        'nik' => $row[39],
+                        'no_kk' => $row[40],
+                        'is_penggerak' => $row[41],
+                        'jam_tgs_tambahan' => $row[42],
+                        'jjm' => $row[43],
+                        'total_jjm' => $row[44],
+                        'siswa' => $row[45],
+                        'status_sekolah' => $row[46],
+                        'gender' => $request->gender,
+                        'asal_satuan_pendidikan' => auth()->user()->bio->asal_satuan_pendidikan,
+                        'is_active' => 1,
+                        'lembaga_pengangkatan' => $row[26],
+                    ]); 
+                } 
+                
+                             
 
-                $asal_sekolah = Ms_DataSekolah::where('npsn', auth()->user()->bio->asal_satuan_pendidikan)->first();
-
+                $asal_sekolah = Ms_DataSekolah::where('npsn', auth()->user()->bio->asal_satuan_pendidikan)->first();                
                 // ! POST KE API SYNC HALO GURU
                 if ($createBio) {
                     $send = Http::withHeaders([
@@ -406,10 +410,8 @@ class DataGuruController extends Controller
                 }
             }
         }
-
-        
-        // dd($send);
-        if ($send) {
+                
+        if ($createUser) {
             DB::commit();
             return redirect('data-guru')->with('success', 'Data berhasil disimpan.');
         } else {
