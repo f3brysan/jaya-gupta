@@ -9,13 +9,14 @@ use App\Models\Regency;
 use App\Models\Province;
 use App\Models\Ms_Pangkat;
 use Illuminate\Http\Request;
+use App\Models\Ms_DataSekolah;
 use App\Models\Ms_MataPelajaran;
 use Illuminate\Support\Facades\DB;
 use App\Models\Ms_SatuanPendidikan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use App\Models\Ms_BidangPengembangan;
-use App\Models\Ms_DataSekolah;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\UserBidangPengembangan;
 use Illuminate\Support\Facades\Session;
@@ -107,6 +108,14 @@ class BiodataController extends Controller
             'password' => Hash::make($request->newpswd),
         ]);
 
+        $send = Http::withHeaders([
+            'client_secret' => 'haloguru_secretkey',
+        ])->patch('http://103.242.124.108:3033/sync-users/change-password/'.$id , [
+            'oldPassword' => $request->oldpswd,
+            'newPassword' => $request->newpswd
+        ]);
+        
+        
         request()->session()->invalidate();
 
         request()->session()->regenerateToken();
@@ -126,11 +135,39 @@ class BiodataController extends Controller
                 'bidang_pengembangan_id' => $bidang_pengembangan_id,
                 'created_by' => auth()->user()->id
             ]);
-// dd($insert);
+
             if ($insert) {
                 DB::commit();
-                return redirect('/biodata')->with('success', 'Data Bidang Pengembangan berhasil disimpan.');
+               
+                // $get_user_bidang_pengembangan = UserBidangPengembangan::where('bio_id', $bio_id)->get();                
+                // foreach ($get_user_bidang_pengembangan as $bp) {
+                //     $arnpsn[$bp->bidang_pengembangan_id] = "'$bp->bidang_pengembangan_id'";                    
+                //     $list = implode(",", $arnpsn);
+                // }
+                // $user = User::with('bio')->first();                
+                // $send = Http::withHeaders([
+                //     'client_secret' => 'haloguru_secretkey',
+                // ])->patch('http://103.242.124.108:3033/sync-users/'.$bio_id, [                    
+                //             // 'email' => $user->email,
+                //             // 'nama' => $user->bio->nama,                                                           
+                //             // 'biografi' => null,                    
+                //             'gtk' => [
+                //                 // 'nip_nuptk' => $user->nuptk,
+                //                 // 'mata_pelajaran' => null,
+                //                 'media_pembelajaran' => [
+                //                     $list
+                //                 ],
+                //                 // 'pangkat' => $user->bio->status_kepegawaian,
+                //                 // 'golongan' => $user->bio->golongan,
+                //                 // 'jabatan' => null,                        
+                //                 // 'riwayat_pendidikan' => $user->bio->jurusan
+                //             ]
+                //         ]);
             }
+
+            return $send;
+
+            return redirect('/biodata')->with('success', 'Data Bidang Pengembangan berhasil disimpan.');
         } catch (\Exception $e) {
             return $e->getMessage();
                 DB::rollBack();
