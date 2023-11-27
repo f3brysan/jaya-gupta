@@ -60,7 +60,8 @@ class BiodataController extends Controller
             }                    
         }
 
-        $nama = $request->gelardepan . ' ' . $request->nama_lengkap . ' ' . $request->gelar_blkg;        
+        $nama = $request->gelar_depan . ' ' . $request->nama_lengkap . ' ' . $request->gelar_blkg;     
+        // dd($nama);   
         $update = Biodata::where('id', $request->id)->update([
             'nama' => $nama,
             'nama_lengkap' => $request->nama_lengkap,
@@ -72,6 +73,14 @@ class BiodataController extends Controller
             'wa' => $request->wa,
             'profile_picture' => $path
         ]);
+
+        $send = Http::withHeaders([
+            'client_secret' => 'haloguru_secretkey',
+        ])->patch('http://103.242.124.108:3033/sync-users/'.$request->id, [                                        
+                    'nama' => $nama                                                                                                                    
+                ]);
+
+        // return $send;
 
         return redirect('/biodata')->with('success', 'Perubahan berhasil disimpan.');
     }
@@ -155,6 +164,8 @@ class BiodataController extends Controller
                             ]
                         ]);
             }
+
+            // return $send;
 
             if($send['message'] == "success"){
                 DB::commit();
