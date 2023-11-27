@@ -139,30 +139,21 @@ class BiodataController extends Controller
             if ($insert) {
                 DB::commit();
                
-                // $get_user_bidang_pengembangan = UserBidangPengembangan::where('bio_id', $bio_id)->get();                
-                // foreach ($get_user_bidang_pengembangan as $bp) {
-                //     $arnpsn[$bp->bidang_pengembangan_id] = "'$bp->bidang_pengembangan_id'";                    
-                //     $list = implode(",", $arnpsn);
-                // }
-                // $user = User::with('bio')->first();                
-                // $send = Http::withHeaders([
-                //     'client_secret' => 'haloguru_secretkey',
-                // ])->patch('http://103.242.124.108:3033/sync-users/'.$bio_id, [                    
-                //             // 'email' => $user->email,
-                //             // 'nama' => $user->bio->nama,                                                           
-                //             // 'biografi' => null,                    
-                //             'gtk' => [
-                //                 // 'nip_nuptk' => $user->nuptk,
-                //                 // 'mata_pelajaran' => null,
-                //                 'media_pembelajaran' => [
-                //                     $list
-                //                 ],
-                //                 // 'pangkat' => $user->bio->status_kepegawaian,
-                //                 // 'golongan' => $user->bio->golongan,
-                //                 // 'jabatan' => null,                        
-                //                 // 'riwayat_pendidikan' => $user->bio->jurusan
-                //             ]
-                //         ]);
+                $get_user_bidang_pengembangan = UserBidangPengembangan::where('bio_id', $bio_id)->get();                
+                foreach ($get_user_bidang_pengembangan as $bp) {
+                    $arnpsn[$bp->bidang_pengembangan_id] = '"'.$bp->bidang_pengembangan_id.'"';                    
+                    $list =implode(",", $arnpsn);
+                }            
+                $rec['media_pembelajaran'] = $list;
+                // return $rec;
+                $user = User::with('bio')->first();                
+                $send = Http::withHeaders([
+                    'client_secret' => 'haloguru_secretkey',
+                ])->patch('http://103.242.124.108:3033/sync-users/'.$bio_id, [                    
+                            "gtk" => [                                
+                                $rec
+                            ]
+                        ]);
             }
 
             return $send;
