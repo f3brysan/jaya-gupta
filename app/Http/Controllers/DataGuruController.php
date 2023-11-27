@@ -254,9 +254,9 @@ class DataGuruController extends Controller
         }
         
 
-        return $send;
+        // return $send;
 
-        if ($bio) {
+        if ($send['message'] == 'success') {
             DB::commit();
             return redirect('data-guru')->with('success', 'Data berhasil disimpan.');
         } else {
@@ -410,8 +410,8 @@ class DataGuruController extends Controller
                 }
             }
         }
-                
-        if ($createUser) {
+                // return $send;
+        if ($createBio) {
             DB::commit();
             return redirect('data-guru')->with('success', 'Data berhasil disimpan.');
         } else {
