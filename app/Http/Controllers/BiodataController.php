@@ -137,7 +137,7 @@ class BiodataController extends Controller
             ]);
 
             if ($insert) {
-                DB::commit();
+                
                
                 $get_user_bidang_pengembangan = UserBidangPengembangan::where('bio_id', $bio_id)->get();                
                 foreach ($get_user_bidang_pengembangan as $bp) {
@@ -156,9 +156,12 @@ class BiodataController extends Controller
                         ]);
             }
 
-            return $send;
+            if($send['message'] == "success"){
+                DB::commit();
+                return redirect('/biodata')->with('success', 'Data Bidang Pengembangan berhasil disimpan.');
+            }
 
-            return redirect('/biodata')->with('success', 'Data Bidang Pengembangan berhasil disimpan.');
+            
         } catch (\Exception $e) {
             return $e->getMessage();
                 DB::rollBack();
