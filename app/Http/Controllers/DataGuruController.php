@@ -446,12 +446,13 @@ class DataGuruController extends Controller
 
     public function index_admin()
     {
-        $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->get("bentuk_pendidikan");
+        $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->whereIn('bentuk_pendidikan', ['TK','SD','SMP'])->get("bentuk_pendidikan");
         $arrnpsn = Ms_DataSekolah::get()->pluck('npsn');
-
+        // return $bentuk_pendidikan;
         $data = array();
         foreach ($bentuk_pendidikan as $bp) {
             $sekolah = Ms_DataSekolah::where('bentuk_pendidikan', $bp->bentuk_pendidikan)->get();
+            // return $sekolah;
             foreach ($sekolah as $s) {
                 $data[trim($s->kode_wilayah_induk_kecamatan)]['kode_wil'] = $s->kode_wilayah_induk_kecamatan;
                 $data[trim($s->kode_wilayah_induk_kecamatan)]['nama'] = $s->induk_kecamatan;
@@ -465,7 +466,7 @@ class DataGuruController extends Controller
             }
         }
 
-        // dd($arrnpsn);
+        // dd($data);
 
         $id_guru = User::with('bio')->whereHas('bio', function ($q) use ($arrnpsn) {
             $q->whereIn('asal_satuan_pendidikan', $arrnpsn);
@@ -489,7 +490,8 @@ class DataGuruController extends Controller
        ms_biodatauser AS u 
        LEFT JOIN ms_sekolah as s on s.npsn = u.asal_satuan_pendidikan
         WHERE
-       u.id IN ($list)       
+       u.id IN ($list)    
+       AND s.bentuk_pendidikan IN ('TK','SD','SMP')   
        GROUP BY s.kode_wilayah_induk_kecamatan, s.bentuk_pendidikan";
         $query = DB::select($sql_count);
 
