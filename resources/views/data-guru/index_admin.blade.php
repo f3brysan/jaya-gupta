@@ -25,17 +25,9 @@
                                         <th class="text-center" rowspan="2">No</th>
                                         <th class="text-center" rowspan="2" style="width: 250px !important">Wilayah</th>
                                         <th class="text-center" colspan="3" rowspan="1">Total</th>
-                                        <th class="text-center" colspan="3" rowspan="1">TK</th>
-                                        <th class="text-center" colspan="3" rowspan="1">KB</th>
-                                        <th class="text-center" colspan="3" rowspan="1">TPA</th>
-                                        <th class="text-center" colspan="3" rowspan="1">SPS</th>
-                                        <th class="text-center" colspan="3" rowspan="1">PKBM</th>
-                                        <th class="text-center" colspan="3" rowspan="1">SKB</th>
+                                        <th class="text-center" colspan="3" rowspan="1">TK</th>                                                                                                                                                                                                       
                                         <th class="text-center" colspan="3" rowspan="1">SD</th>
                                         <th class="text-center" colspan="3" rowspan="1">SMP</th>
-                                        <th class="text-center" colspan="3" rowspan="1">SMA</th>
-                                        <th class="text-center" colspan="3" rowspan="1">SMK</th>
-                                        <th class="text-center" colspan="3" rowspan="1">SLB</th>
                                     </tr>
                                     <tr>
                                         <th>Jml</th>  
@@ -43,37 +35,13 @@
                                         <th>P</th>                                                                      
                                         <th>Jml</th>  
                                         <th>L</th>
-                                        <th>P</th>                                                                      
+                                        <th>P</th>   
                                         <th>Jml</th>  
                                         <th>L</th>
-                                        <th>P</th>                                                                      
+                                        <th>P</th>   
                                         <th>Jml</th>  
                                         <th>L</th>
-                                        <th>P</th>                                                                      
-                                        <th>Jml</th>  
-                                        <th>L</th>
-                                        <th>P</th>                                                                      
-                                        <th>Jml</th>  
-                                        <th>L</th>
-                                        <th>P</th>                                                                      
-                                        <th>Jml</th>  
-                                        <th>L</th>
-                                        <th>P</th>                                                                      
-                                        <th>Jml</th>  
-                                        <th>L</th>
-                                        <th>P</th>                                                                      
-                                        <th>Jml</th>  
-                                        <th>L</th>
-                                        <th>P</th>                                                                      
-                                        <th>Jml</th>  
-                                        <th>L</th>
-                                        <th>P</th>                                                                      
-                                        <th>Jml</th>  
-                                        <th>L</th>
-                                        <th>P</th>                                                                      
-                                        <th>Jml</th>  
-                                        <th>L</th>
-                                        <th>P</th>                                                                                                                                                                                 
+                                        <th>P</th>                                                                                                                                                                       
                                     </tr>
                                 </thead>
                                 <tbody>            
@@ -143,52 +111,7 @@
                                             @endphp</td>                                           
                                             <td class="text-right">{{ $item['TK_p'] ?? '0'}} @php
                                                 $tk_p += $item['TK_p'] ?? 0;
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['KB'] ?? '0'}} @php
-                                                $kb += $item['KB'] ?? 0;
-                                            @endphp</td>                                          
-                                            <td class="text-right">{{ $item['KB_l'] ?? '0'}} @php
-                                                $kb_l += $item['KB_l'] ?? 0;
-                                            @endphp</td>                                          
-                                            <td class="text-right">{{ $item['KB_p'] ?? '0'}} @php
-                                                $kb_p += $item['KB_p'] ?? 0;
-                                            @endphp</td>                                          
-                                            <td class="text-right">{{ $item['TPA'] ?? '0'}} @php
-                                                $tpa += $item['TPA'] ?? 0;
-                                            @endphp</td>                                            
-                                            <td class="text-right">{{ $item['TPA_l'] ?? '0'}} @php
-                                                $tpa_l += $item['TPA_l'] ?? 0;
-                                            @endphp</td>                                            
-                                            <td class="text-right">{{ $item['TPA_p'] ?? '0'}} @php
-                                                $tpa_p += $item['TPA_p'] ?? 0;
-                                            @endphp</td>                                            
-                                            <td class="text-right">{{ $item['SPS'] ?? '0'}} @php
-                                                $sps += $item['SPS'] ?? 0;
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['SPS_l'] ?? '0'}} @php
-                                                $sps_l += $item['SPS_l'] ?? 0;
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['SPS_p'] ?? '0'}} @php
-                                                $sps_p += $item['SPS_p'] ?? 0;
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['PKBM'] ?? '0'}} @php
-                                                $pkbm += $item['PKBM'] ?? 0;
-                                            @endphp</td>                                
-                                            <td class="text-right">{{ $item['PKBM_l'] ?? '0'}} @php
-                                                $pkbm_l += $item['PKBM_l'] ?? 0;
-                                            @endphp</td>                                
-                                            <td class="text-right">{{ $item['PKBM_p'] ?? '0'}} @php
-                                                $pkbm_p += $item['PKBM_p'] ?? 0;
-                                            @endphp</td>                                
-                                            <td class="text-right">{{ $item['SKB'] ?? '0'}} @php
-                                                $skb += $item['SKB'] ?? 0;
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['SKB_l'] ?? '0'}} @php
-                                                $skb_l += $item['SKB_l'] ?? 0;
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['SKB_p'] ?? '0'}} @php
-                                                $skb_p += $item['SKB_p'] ?? 0;
-                                            @endphp</td>                                           
+                                            @endphp</td>                                                                                       
                                             <td class="text-right">{{ $item['SD'] ?? '0'}} @php
                                                 $sd += $item['SD'] ?? 0;
                                             @endphp</td>                                           
@@ -206,34 +129,7 @@
                                             @endphp</td>                                           
                                             <td class="text-right">{{ $item['SMP_p'] ?? '0'}} @php
                                                 $smp_p += $item['SMP_p'] ?? 0;
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['SMA'] ?? '0'}} @php
-                                                $sma += $item['SMA'] ?? 0;
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['SMA_l'] ?? '0'}} @php
-                                                $sma_l += $item['SMA_l'] ?? 0;
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['SMA_p'] ?? '0'}} @php
-                                                $sma_p += $item['SMA_p'] ?? 0;
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['SMK'] ?? '0'}} @php
-                                                $smk += $item['SMK'] ?? 0;
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['SMK_l'] ?? '0'}} @php
-                                                $smk_l += $item['SMK_l'] ?? 0;
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['SMK_p'] ?? '0'}} @php
-                                                $smk_p += $item['SMK_p'] ?? 0;
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['SLB'] ?? '0'}} @php
-                                                $slb += $item['SLB'] ?? 0;
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['SLB_l'] ?? '0'}} @php
-                                                $slb_l += $item['SLB_l'] ?? 0;
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['SLB_p'] ?? '0'}} @php
-                                                $slb_p += $item['SLB_p'] ?? 0;
-                                            @endphp</td>                                           
+                                            @endphp</td>                                                                                                         
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -245,37 +141,13 @@
                                         <td class="text-right">{{ $sekolah_p }}</td>                                        
                                         <td class="text-right">{{ $tk }}</td>                                        
                                         <td class="text-right">{{ $tk_l }}</td>                                        
-                                        <td class="text-right">{{ $tk_p }}</td>                                        
-                                        <td class="text-right">{{ $kb }}</td>                                       
-                                        <td class="text-right">{{ $kb_l }}</td>                                       
-                                        <td class="text-right">{{ $kb_p }}</td>                                       
-                                        <td class="text-right">{{ $tpa }}</td>                                       
-                                        <td class="text-right">{{ $tpa_l }}</td>                                       
-                                        <td class="text-right">{{ $tpa_p }}</td>                                       
-                                        <td class="text-right">{{ $sps }}</td>                                       
-                                        <td class="text-right">{{ $sps_l }}</td>                                       
-                                        <td class="text-right">{{ $sps_p }}</td>                                       
-                                        <td class="text-right">{{ $pkbm }}</td>                                        
-                                        <td class="text-right">{{ $pkbm_l }}</td>                                        
-                                        <td class="text-right">{{ $pkbm_p }}</td>                                        
-                                        <td class="text-right">{{ $skb }}</td>                                       
-                                        <td class="text-right">{{ $skb_l }}</td>                                       
-                                        <td class="text-right">{{ $skb_p }}</td>                                       
+                                        <td class="text-right">{{ $tk_p }}</td>                                                                                                                   
                                         <td class="text-right">{{ $sd }}</td>                                       
                                         <td class="text-right">{{ $sd_l }}</td>                                       
                                         <td class="text-right">{{ $sd_p }}</td>                                       
                                         <td class="text-right">{{ $smp }}</td>                                       
                                         <td class="text-right">{{ $smp_l }}</td>                                       
-                                        <td class="text-right">{{ $smp_p }}</td>                                       
-                                        <td class="text-right">{{ $sma }}</td>                                        
-                                        <td class="text-right">{{ $sma_l }}</td>                                        
-                                        <td class="text-right">{{ $sma_p }}</td>                                        
-                                        <td class="text-right">{{ $smk }}</td>                                        
-                                        <td class="text-right">{{ $smk_l }}</td>                                        
-                                        <td class="text-right">{{ $smk_p }}</td>                                        
-                                        <td class="text-right">{{ $slb }}</td>                                        
-                                        <td class="text-right">{{ $slb_l }}</td>                                        
-                                        <td class="text-right">{{ $slb_p }}</td>                                        
+                                        <td class="text-right">{{ $smp_p }}</td>                                                                                                                    
                                     </tr>
                                 </tfoot>
                             </table>
