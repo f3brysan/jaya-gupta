@@ -6,6 +6,7 @@ use App\Http\Controllers\BiodataController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataGTKNonAktifController;
 use App\Http\Controllers\DataGuruController;
+use App\Http\Controllers\DataPengawasController;
 use App\Http\Controllers\DataTendikController;
 use App\Http\Controllers\IndoController;
 use App\Http\Controllers\InovasiController;
@@ -154,7 +155,8 @@ Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function
     Route::get('admin/data-rombel', [RombelController::class, 'index_admin']);
     Route::get('admin/data-rombel/show/{idwil}', [RombelController::class, 'show_admin']);
     Route::get('admin/data-rombel/detail/{npsn}', [RombelController::class, 'detail_admin']);
-
+    
+    Route::get('admin/data-pengawas', [DataPengawasController::class, 'index_admin']);
 });
 
 Route::get('ajax/getkabupaten/{id}', [IndoController::class, 'getkabupaten']);

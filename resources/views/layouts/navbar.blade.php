@@ -39,7 +39,7 @@
                         <span>GTK</span></a>
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ URL::to('data-guru') }}">Data Guru</a></li>
-                        <li><a class="nav-link" href="{{ URL::to('data-tendik') }}">Data Tenik</a></li>
+                        <li><a class="nav-link" href="{{ URL::to('data-tendik') }}">Data Tendik</a></li>
                         <li><a class="nav-link" href="{{ URL::to('data-gtk-nonaktif') }}">Guru Non Aktif</a>
                         </li>
                     </ul>
@@ -68,7 +68,7 @@
                 <li><a class="nav-link" href="{{ URL::to('admin/data-gtk-nonaktif') }}"><i class="fas fa-list"></i>
                         <span>Data
                             GTK Non Aktif</span></a></li>
-                <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Data
+                <li><a class="nav-link" href="{{ URL::to('admin/data-pengawas') }}"><i class="fas fa-list"></i> <span>Data
                             Pengawas</span></a></li>
                 <li class="dropdown">
                     <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-list"></i>

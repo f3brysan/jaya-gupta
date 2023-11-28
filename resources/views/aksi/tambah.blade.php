@@ -33,8 +33,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>ID Video Youtube</label>
-                                        <input type="text" name="video" id="video" class="form-control">
+                                        <label>Link Youtube</label>
+                                        <input type="text" name="video" id="video" class="form-control" placeholder="Contoh : https://www.youtube.com/watch?v=Wi15J1p-LD8">
                                     </div>
                                 </div>
                                 <div class="form-group">

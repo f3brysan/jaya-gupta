@@ -41,7 +41,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Link Video Youtube</label>
-                                        <input type="text" name="video" id="video" class="form-control" value="{{ old('video') }}">
+                                        <input type="text" name="video" id="video" class="form-control" value="{{ old('video') }}" placeholder="Contoh : https://www.youtube.com/watch?v=Wi15J1p-LD8">
                                     </div>
                                 </div>
                                 <div class="form-group">
