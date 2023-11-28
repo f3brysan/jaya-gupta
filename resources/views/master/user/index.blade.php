@@ -28,9 +28,9 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</th>
-                                        <th class="text-center">Nama Pengguna</th>                                        
-                                        <th class="text-center">Email</th>                                        
-                                        <th class="text-center">Peran</th>                                        
+                                        <th class="text-center">Nama Pengguna</th>
+                                        <th class="text-center">Email</th>
+                                        <th class="text-center">Peran</th>
                                         <th class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
@@ -57,20 +57,80 @@
                 </div>
                 <div class="modal-body">
                     <form id="form-tambah-edit">
-                        <input type="hidden" id="id" name="id">                        
+                        <input type="hidden" id="id" name="id">
                         <div class="form-group">
                             <div class="control-label">Peran</div>
                             <select class="js-example-basic-multiple form-control" id="roles" name="roles[]"
-                            multiple="multiple" style="width: 100%" required>
-                            @foreach ($roles as $item)
-                                <option value="{{ $item->name }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
+                                multiple="multiple" style="width: 100%" required>
+                                @foreach ($roles as $item)
+                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                     <button type="submit" class="btn btn-primary" id="tombol-simpan">Simpan</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="tambah-modal" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambah-judul"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{URL::to('master/user/store')}}" method="POST">
+                        @csrf
+                        <input type="hidden" id="id" name="id">
+                        <div class="form-group">
+                            <div class="control-label">Email</div>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <div class="control-label">Nama</div>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <div class="control-label">NUPTK</div>
+                            <input type="text" id="nuptk" name="nuptk" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <div class="control-label">Password</div>
+                            <input type="text" id="password" name="password" class="form-control" value="123456" readonly>
+                        </div>
+                        <div class="form-group">
+                            <div class="control-label">Peran</div>
+                            <select class="js-example-basic-multiple2 form-control" id="newroles" name="newroles[]"
+                                multiple="multiple" style="width: 100%" required>
+                                @foreach ($roles_add as $item)
+                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="control-label">Asal Sekolah </div>
+                            <code style="font-size: 8pt">*Untuk Kepala Sekolah, Operator, dan Tendik. Harap memilih asal sekolah.</code>
+                            <select name="asal_satuan_sekolah" id="asal_satuan_sekolah" class="form-control js-example-basic-single" style="width: 100%">
+                                <option value="">Pilih</option>
+                                @foreach ($sekolah as $item)
+                                    <option value="{{ $item->npsn }}">{{ $item->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
                 </form>
             </div>
@@ -103,15 +163,15 @@
                     {
                         data: 'nama',
                         name: 'nama',
-                    },                    
+                    },
                     {
                         data: 'email',
                         name: 'email',
-                    },      
+                    },
                     {
                         data: 'roles',
                         name: 'roles',
-                    },              
+                    },
                     {
                         data: 'aksi',
                         name: 'aksi',
@@ -129,12 +189,16 @@
                 $('.js-example-basic-multiple').select2({
                     theme: "classic",
                 });
+                $('.js-example-basic-multiple2').select2({
+                    theme: "classic",
+                });
+                $('.js-example-basic-single').select2();
             });
         });
 
         $("#add-btn").click(function() {
-            $("#tambah-edit-modal").modal('show');
-            $("#modal-judul").html("Tambah Mata Pelajaran Baru");
+            $("#tambah-modal").modal('show');
+            $("#tambah-judul").html("Tambah Pengguna Baru");
         });
 
         // ** TAMBAH DATA BARU * //
@@ -157,20 +221,20 @@
                             oTable.fnDraw(false);
                             if (data == false) {
                                 iziToast.danger({
-                                title: 'Berhasil !',
-                                message: "Peran " + data +
-                                    " berhasil disimpan.",
-                                position: 'topRight'
-                            });
+                                    title: 'Berhasil !',
+                                    message: "Peran " + data +
+                                        " berhasil disimpan.",
+                                    position: 'topRight'
+                                });
                             } else {
                                 iziToast.success({
-                                title: 'Berhasil !',
-                                message: "Peran " + data +
-                                    " berhasil disimpan.",
-                                position: 'topRight'
-                            });
+                                    title: 'Berhasil !',
+                                    message: "Peran " + data +
+                                        " berhasil disimpan.",
+                                    position: 'topRight'
+                                });
                             }
-                            
+
                         },
                         error: function(data) {
                             console.log('Error', data);
@@ -196,7 +260,7 @@
             });
         });
 
-        $(document).on('click', ".delete",function() {
+        $(document).on('click', ".delete", function() {
             var dataId = $(this).data('id');
             var dataName = $(this).data('name');
             console.log(dataId);
