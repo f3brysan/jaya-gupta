@@ -147,22 +147,19 @@ class BiodataController extends Controller
 
             if ($insert) {
                 
-               
+               $temp = array();
                 $get_user_bidang_pengembangan = UserBidangPengembangan::where('bio_id', $bio_id)->get();                
-                foreach ($get_user_bidang_pengembangan as $bp) {
-                    $arnpsn[$bp->bidang_pengembangan_id] = '"'.$bp->bidang_pengembangan_id.'"';                    
-                    $list =implode(",", $arnpsn);
-                }            
-                $rec['media_pembelajaran'] = $list;
-                // return $rec;
-                $user = User::with('bio')->first();                
+                foreach ($get_user_bidang_pengembangan as $bp) {                    
+                    array_push($temp, $bp->bidang_pengembangan_id);
+                }                            
+
                 $send = Http::withHeaders([
                     'client_secret' => 'haloguru_secretkey',
                 ])->patch('http://103.242.124.108:3033/sync-users/'.$bio_id, [                    
-                            "gtk" => [                                
-                                $rec
-                            ]
-                        ]);
+                            "gtk" => [  
+                                "media_pembelajaran" => $temp
+                        ]
+                    ]);
             }
 
             // return $send;
@@ -181,6 +178,20 @@ class BiodataController extends Controller
     }
     public function hapus_bidang_pengembangan($id){        
         $delete = UserBidangPengembangan::destroy($id);
+        $temp = array();
+        $bio_id = auth()->user()->bio->id;
+                $get_user_bidang_pengembangan = UserBidangPengembangan::where('bio_id', $bio_id)->get();                
+                foreach ($get_user_bidang_pengembangan as $bp) {                    
+                    array_push($temp, $bp->bidang_pengembangan_id);
+                }                            
+                                    
+                $send = Http::withHeaders([
+                    'client_secret' => 'haloguru_secretkey',
+                ])->patch('http://103.242.124.108:3033/sync-users/'.$bio_id, [                    
+                            "gtk" => [  
+                                "media_pembelajaran" => $temp
+                        ]
+                    ]);
         return response()->json($delete);
     }
 }
