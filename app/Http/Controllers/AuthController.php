@@ -22,15 +22,16 @@ class AuthController extends Controller
         // dd($request->all());
 
         $request->validate([
-            'email' => ['required', 'email:dns'],
+            'email' => ['required', 'email'],
             'password' => ['required']
         ]);
 
         $credentials = $request->validate([
-            'email' => ['required', 'email:dns'],
+            'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
+        // dd($credentials);
         
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();            
