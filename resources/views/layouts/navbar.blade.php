@@ -75,9 +75,19 @@
                         <span>Rekapitulasi</span></a>
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ URL::to('rekap/data-pensiun') }}">Perkiraan Pensiun</a></li>
-                        <li><a class="nav-link" href="{{ URL::to('rekap/data-sebaran-guru') }}">Sebaran Guru</a></li>
-                        <li><a class="nav-link" href="{{ URL::to('rekap/data-sebaran-tendik') }}">Sebaran Tendik <i class="badge badge-danger float-right"><span class="fa fa-wrench"></span></i></a></li>
-                        <li><a class="nav-link" href="{{ URL::to('rekap/data-guru-penggerak') }}">Guru Penggerak <i class="badge badge-danger float-right"><span class="fa fa-wrench"></span></i></a>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
+                                <span>Sebaran Guru</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="{{ URL::to('rekap/data-sebaran-guru/tk') }}">TK</a></li>
+                                <li><a class="nav-link" href="{{ URL::to('rekap/data-sebaran-guru/sd') }}">SD</a></li>
+                                <li><a class="nav-link" href="{{ URL::to('rekap/data-sebaran-guru/smp') }}">SMP</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="nav-link" href="{{ URL::to('rekap/data-sebaran-tendik') }}">Sebaran Tendik <i
+                                    class="badge badge-danger float-right"><span class="fa fa-wrench"></span></i></a></li>
+                        <li><a class="nav-link" href="{{ URL::to('rekap/data-guru-penggerak') }}">Guru Penggerak <i
+                                    class="badge badge-danger float-right"><span class="fa fa-wrench"></span></i></a>
                         </li>
                     </ul>
                 </li>
@@ -91,7 +101,8 @@
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ URL::to('master/user') }}">Peran Pengguna</a></li>
                         {{-- <li><a class="nav-link" href="{{ URL::to('master/satuan-pendidikan') }}">Satuan Pendidikan</a></li> --}}
-                        <li><a class="nav-link" href="{{ URL::to('master/bidang-pengembangan') }}">Bidang Pengembangan</a>
+                        <li><a class="nav-link" href="{{ URL::to('master/bidang-pengembangan') }}">Bidang
+                                Pengembangan</a>
                         </li>
                     </ul>
                 </li>

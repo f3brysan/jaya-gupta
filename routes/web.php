@@ -23,6 +23,7 @@ use App\Http\Controllers\RekapPensiunController;
 use App\Http\Controllers\RekapSebaranGuru;
 use App\Http\Controllers\RekapSebaranTendik;
 use App\Http\Controllers\RombelController;
+use App\Http\Controllers\SebaranGuruKelasController;
 use App\Http\Controllers\StatusInovasiController;
 use App\Models\Ms_MataPelajaran;
 use Illuminate\Support\Facades\Route;
@@ -93,7 +94,13 @@ Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
     Route::get('rekap/data-pensiun/negeri/{thn}/{bp}', [RekapPensiunController::class, 'show_pendidikan']);
     Route::get('rekap/data-pensiun/sekolah/{npsn}/{thn}', [RekapPensiunController::class, 'show_sekolah']);
 
-    Route::get('rekap/data-sebaran-guru', [RekapSebaranGuru::class, 'index']);
+    // Route::get('rekap/data-sebaran-guru', [RekapSebaranGuru::class, 'index']);
+    Route::get('rekap/data-sebaran-guru/{bentuk_pendidikan}', [SebaranGuruKelasController::class, 'index']);
+    Route::get('rekap/data-sebaran-guru/kelas/{bentuk_pendidikan}', [SebaranGuruKelasController::class, 'guru_kelas']);
+    Route::get('rekap/data-sebaran-guru/kelas/rombel/{bentuk_pendidikan}/{status_sekolah}', [SebaranGuruKelasController::class, 'rombel_sekolah']);
+    Route::get('rekap/data-sebaran-guru/kelas/guru-kelas/{bentuk_pendidikan}/{status_sekolah}', [SebaranGuruKelasController::class, 'guru_kelas_sekolah']);
+    Route::get('rekap/data-sebaran-guru/kelas/kekurangan/{bentuk_pendidikan}/{status_sekolah}', [SebaranGuruKelasController::class, 'kurang_guru']);
+    Route::get('rekap/data-sebaran-guru/kelas/detil-guru-kelas/{npsn}', [SebaranGuruKelasController::class, 'detil_guru_kelas_sekolah']);
     Route::get('rekap/data-sebaran-tendik', [RekapSebaranTendik::class, 'index']);
     Route::get('rekap/data-guru-penggerak', [RekapGuruPenggerak::class, 'index']);
 });

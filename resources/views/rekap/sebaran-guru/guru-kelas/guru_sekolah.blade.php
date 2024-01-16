@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Rekapitulasi Sebaran Guru')
+@section('title', 'Rekapitulasi Sebaran Guru Kelas'.$bentuk_pendidikan.' '.$status_sekolah)
 @push('css-custom')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.css">
@@ -13,7 +13,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Rekapitulasi Sebaran Guru {{ $bentuk_pendidikan }}</h1>
+                <h1>Rekapitulasi Sebaran Guru Kelas {{ $bentuk_pendidikan }} {{ $status_sekolah }}</h1>
             </div>
             <div class="row">
                 <div class="col-lg-12">
@@ -23,20 +23,30 @@
                                 <table id="example" class="table table-bordered table-hover table-bordered">
                                     <thead>
                                         <tr>
-                                            <td>No.</td>
-                                            <td>Jenis Guru</td>
+                                            <th>No</th>
+                                            <th>Nama Sekolah</th>
+                                            <th>Jumlah Guru Kelas</th>                                            
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td><a href="{{ URL::to('rekap/data-sebaran-guru/kelas/'.$bentuk_pendidikan) }}" class="btn btn-link">Guru Kelas</a></td>
-                                        </tr>
+                                        @php                                        
+                                            $total_guru = 0;                                            
+                                        @endphp
+                                        @foreach ($getData as $item)
+                                        @php
+                                            $total_guru += $item->guru_kelas;                                           
+                                        @endphp
+                                            <tr>
+                                                <td class="text-center"><b>{{ $loop->iteration }}</b></td>
+                                                <td class="text-left"><a href="{{ URL::to('rekap/data-sebaran-guru/kelas/detil-guru-kelas/'.$item->npsn) }}" class="btn btn-link">({{ $item->npsn }}) {{ $item->nama }}</a></td>
+                                                <td class="text-center">{{ $item->guru_kelas }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                     <tfoot>
-                                        <tr>
-                                            <td>No.</td>
-                                            <td>Jenis Guru</td>
+                                        <tr>                                        
+                                            <th colspan="2" class="text-center">Jumlah</th>                                            
+                                            <th class="text-center">{{ $total_guru }}</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -52,14 +62,15 @@
 @push('js-custom')
     <!-- JS Libraies -->
     <script src="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.js"></script>
-    <script src="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js">
+    </script>
     <script src="{{ URL::to('/') }}/assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
     <script src="{{ URL::to('/') }}/assets/modules/jquery-ui/jquery-ui.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#example').DataTable({
-                "paging": false
+                // "paging": false
             });
         });
 
