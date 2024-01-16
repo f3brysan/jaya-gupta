@@ -76,14 +76,15 @@ ksort($total);
     {
         // dd($thn);
         $lahir = $thn - 65;       
-        
+        // dd($lahir);
         $data = array();       
         $sql_pensiun = "SELECT b.asal_satuan_pendidikan, s.nama, COALESCE(count(b.*),0) as tot
         FROM ms_biodatauser as b
         LEFT JOIN ms_sekolah as s on s.npsn = b.asal_satuan_pendidikan
-        WHERE date_part('year', b.tanggallahir) <= '$lahir' 
+        WHERE date_part('year', b.tanggallahir) = '$lahir' 
         GROUP BY b.asal_satuan_pendidikan, s.nama";
         $q_pensiun = DB::select($sql_pensiun);
+        
         
         if (count($q_pensiun) > 0) {
             foreach ($q_pensiun as $p) {
@@ -106,7 +107,7 @@ ksort($total);
         $sql = "SELECT b.*, s.nama as nm_sekolah
         FROM ms_biodatauser as b
         LEFT JOIN ms_sekolah as s on s.npsn = b.asal_satuan_pendidikan
-        WHERE date_part('year', b.tanggallahir) <= '$lahir'";
+        WHERE date_part('year', b.tanggallahir) = '$lahir'";
 
         $getBio = DB::select($sql);
 
