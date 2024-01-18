@@ -79,9 +79,9 @@
                             <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
                                 <span>Sebaran Guru</span></a>
                             <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="{{ URL::to('rekap/data-sebaran-guru/tk') }}">TK</a></li>
+                                {{-- <li><a class="nav-link" href="{{ URL::to('rekap/data-sebaran-guru/tk') }}">TK</a></li> --}}
                                 <li><a class="nav-link" href="{{ URL::to('rekap/data-sebaran-guru/sd') }}">SD</a></li>
-                                <li><a class="nav-link" href="{{ URL::to('rekap/data-sebaran-guru/smp') }}">SMP</a></li>
+                                {{-- <li><a class="nav-link" href="{{ URL::to('rekap/data-sebaran-guru/smp') }}">SMP</a></li> --}}
                             </ul>
                         </li>
                         <li><a class="nav-link" href="{{ URL::to('rekap/data-sebaran-tendik') }}">Sebaran Tendik <i
