@@ -167,19 +167,26 @@
                                 <td valign="top">{!! $item->deskripsi !!}</td>
                             </tr>
                             <tr>
-                                <td style="width: 15%" valign="top">Video : </td>
-                                <td valign="top">
-                                    @if ($item->video == null)
-                                        <strong>Tidak ada video pendukung.</strong>
+                                <td style="width: 15%" valign="top">Video : </td>                                
+                                @if ($item->video !== null)
+                                    @if (str_contains($item->video, 'www.youtube.com/watch?'))                                    
+                                        @php
+                                            $link = explode('=', $item->video);
+                                            if ($link > 1) {
+                                                $link = end($link);
+                                            }
+                                        @endphp
+                                        <td valign="top">
+                                            <iframe width="560" height="315"
+                                                src="https://www.youtube.com/embed/{{ $link }}"
+                                                title="YouTube video player" frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                allowfullscreen></iframe>
+                                        </td>
                                     @else
-                                        <iframe width="560" height="315"
-                                            src="https://www.youtube.com/embed/{{ $item->video }}"
-                                            title="YouTube video player" frameborder="0"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                            allowfullscreen></iframe>
+                                    <td><strong>Link Video Salah</strong></td>
                                     @endif
-
-                                </td>
+                                @endif
                             </tr>
                             <tr>
                                 <td style="width: 15%" valign="top">Gambar : </td>

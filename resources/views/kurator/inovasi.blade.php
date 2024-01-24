@@ -85,15 +85,17 @@
                                                                 <form action="{{ URL::to('kurator/nilai') }}"
                                                                     method="POST">
                                                                     @csrf
-                                                                    <input type="hidden" name="id" 
+                                                                    <input type="hidden" name="id"
                                                                         value="{{ $encryptUrl }}">
                                                                     <button type="submit" class="btn btn-success m-1"
                                                                         id="status-trm" title="Terima Inovasi"
                                                                         name="status" value="terima"><i
-                                                                            class="fas fa-check"></i></button>                                                                    
+                                                                            class="fas fa-check"></i></button>
                                                                 </form>
                                                                 <button type="button" class="btn btn-danger m-1"
-                                                                        title="Tolak Inovasi" value="tolak" onclick="tolak('{{ $encryptUrl }}','{{ $item->judul }}')"><i class="fas fa-times"></i></button>
+                                                                    title="Tolak Inovasi" value="tolak"
+                                                                    onclick="tolak('{{ $encryptUrl }}','{{ $item->judul }}')"><i
+                                                                        class="fas fa-times"></i></button>
                                                         </td>
                                     </div>
                                     </tr>
@@ -149,13 +151,15 @@
                                                         @if ($item->nilai->status == 0)
                                                             <span class="badge badge-danger">Telah ditolak oleh :
                                                                 {{ $item->nilai->owner->nama ?? '' }} <br> Pada :
-                                                                {{ $item->nilai->created_at }}</span>
+                                                                {{ $item->nilai->created_at }}
+                                                                <br>
+                                                                Memo : {{ $item->nilai->memo }}
+                                                            </span>
                                                             <br>
                                                         @else
                                                             <span class="badge badge-success">Telah disetujui oleh :
                                                                 {{ $item->nilai->owner->nama ?? '' }} <br> Pada :
                                                                 {{ $item->nilai->created_at }}</span>
-                                                            <br>
                                                         @endif
 
                                                         <div class="btn-group m-1" role="group"
@@ -170,7 +174,7 @@
                                                             <form action="{{ URL::to('guru/inovasi/hapus') }}"
                                                                 method="POST">
                                                                 @csrf
-                                                                <input type="hidden" name="id" 
+                                                                <input type="hidden" name="id"
                                                                     value="{{ $encryptUrl }}">
                                                                 @if ($item->nilai->status == 0)
                                                                     <button type="submit" class="btn btn-success m-1"
@@ -231,9 +235,11 @@
                             </tr>
                             <tr>
                                 <td style="width: 15%" valign="top">Bidang Pengembangan : </td>
-                                <td valign="top">  @foreach ($item->inovasibidangpengembangan as $item_inovasi)
-                                    <li>{{ $item_inovasi->bidangpengembangan->nama }}</li>
-                                @endforeach</td>
+                                <td valign="top">
+                                    @foreach ($item->inovasibidangpengembangan as $item_inovasi)
+                                        <li>{{ $item_inovasi->bidangpengembangan->nama }}</li>
+                                    @endforeach
+                                </td>
                             </tr>
                             <tr>
                                 <td style="width: 20%" valign="top">Deskripsi : </td>
@@ -241,13 +247,27 @@
                             </tr>
                             <tr>
                                 <td style="width: 15%" valign="top">Video : </td>
-                                <td valign="top">
-                                    <iframe width="560" height="315"
-                                        src="https://www.youtube.com/embed/{{ $item->video }}"
-                                        title="YouTube video player" frameborder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                        allowfullscreen></iframe>
-                                </td>
+                                @if ($item->video !== null)
+                                    @if (str_contains($item->video, 'www.youtube.com/watch?'))
+                                        @php
+                                            $link = explode('=', $item->video);
+                                            if ($link > 1) {
+                                                $link = end($link);
+                                            }
+                                        @endphp
+                                        <td valign="top">
+                                            <iframe width="560" height="315"
+                                                src="https://www.youtube.com/embed/{{ $link }}"
+                                                title="YouTube video player" frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                allowfullscreen></iframe>
+                                        </td>
+                                    @else
+                                        <td><strong>Link Video Salah</strong></td>
+                                    @endif
+                                @else
+                                    <td>Tidak ada video pendukung.</td>
+                                @endif
                             </tr>
                             <tr>
                                 <td style="width: 15%" valign="top">Gambar : </td>
@@ -265,33 +285,34 @@
     @endforeach
 
     <!-- Modal -->
-<div class="modal fade" id="modal-memo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Memo Kurator</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+    <div class="modal fade" id="modal-memo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Memo Kurator</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ URL::to('kurator/nilai') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="status" value="tolak">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Memo</label>
+                            <textarea class="form-control" id="memo" name="memo" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <form action="{{ URL::to('kurator/nilai') }}" method="POST">
-            @csrf
-            <input type="hidden" name="id" id="id">
-            <input type="hidden" name="status" value="tolak">
-        <div class="modal-body">
-            <div class="form-group">
-                <label for="exampleFormControlTextarea1">Memo</label>
-                <textarea class="form-control" id="memo" name="memo" rows="3"></textarea>
-              </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Simpan</button>
-        </div>
-    </form>
-      </div>
     </div>
-  </div>
 
 @endsection
 @push('js-custom')
@@ -308,30 +329,25 @@
             $('.table').DataTable();
             // $('#example2').DataTable();
         });
-
-        $('.aksi-btn').on('click', function(e) {
-            // console.log($(this).val());
-            e.preventDefault();
-            var form = $(this).parents('form');
+    </script>
+    <script>
+        function tolak(id, judul) {
             swal({
                     title: 'Apakah Anda Yakin?',
-                    text: 'Data akan dihapus',
+                    text: 'Rubrik ' + judul + ' ditolak',
                     icon: 'warning',
                     buttons: true,
                     dangerMode: true,
                 })
                 .then((isConfirm) => {
                     if (isConfirm) {
-                        swal('Data Telah dihapus', {
-                            icon: 'success',
-                        });
-                        console.log(form);
-                        if (isConfirm) form.submit();
+                        $("#id").val(id);
+                        $("#modal-memo").modal('show');
                     } else {
                         swal('Tidak Ada perubahan');
                     }
                 });
-        });
+        }
     </script>
     @if (session()->has('success'))
         <script>
@@ -344,24 +360,4 @@
             });
         </script>
     @endif
-    <script>
-        function tolak(id, judul) {
-            swal({
-                    title: 'Apakah Anda Yakin?',
-                    text: 'Rubrik '+ judul +' ditolak',
-                    icon: 'warning',
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((isConfirm) => {
-                    if (isConfirm) {
-                        $("#modal-memo").modal('show');
-                        $("#id").val(id);
-                    } else {
-                        swal('Tidak Ada perubahan');
-                    }
-                });
-        }
-    </script>
-
 @endpush

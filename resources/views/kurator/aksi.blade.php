@@ -4,7 +4,8 @@
 @push('css-custom')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.css">
-    <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet"
+        href="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/izitoast/css/iziToast.min.css">
 @endpush
@@ -37,7 +38,7 @@
                                 <div class="card-body">
 
 
-                                    <h6>Inovasi Belum Dinilai</h6>
+                                    <h6>Aksi Nyata Belum Dinilai</h6>
                                     <br>
                                     <div class="table-responsive">
                                         <table id="example1" class="table table-bordered table-hover table-bordered"
@@ -78,14 +79,17 @@
                                                                 <form action="{{ URL::to('kurator/nilai') }}"
                                                                     method="POST">
                                                                     @csrf
-                                                                    <input type="hidden" name="id" id="id"
+                                                                    <input type="hidden" name="id"
                                                                         value="{{ $encryptUrl }}">
-                                                                    <button type="submit" class="btn btn-success m-1" id="status-trm" title="Terima Inovasi" name="status" value="terima"><i
+                                                                    <button type="submit" class="btn btn-success m-1"
+                                                                        id="status-trm" title="Terima Inovasi"
+                                                                        name="status" value="terima"><i
                                                                             class="fas fa-check"></i></button>
-                                                                    <button type="submit" class="btn btn-danger m-1"
-                                                                        title="Tolak Inovasi" name="submit"
-                                                                        value="tolak"><i class="fas fa-times"></i></button>
                                                                 </form>
+                                                                <button type="button" class="btn btn-danger m-1"
+                                                                    title="Tolak Inovasi" value="tolak"
+                                                                    onclick="tolak('{{ $encryptUrl }}','{{ $item->judul }}')"><i
+                                                                        class="fas fa-times"></i></button>
                                                         </td>
                                     </div>
                                     </tr>
@@ -108,7 +112,7 @@
 
                         <div class="tab-pane" id="service-center" aria-labelledby="service-tab-center" role="tabpanel">
                             <div class="card-body">
-                                <h6>Inovasi Sudah Dinilai</h6>
+                                <h6>Aksi Nyata Sudah Dinilai</h6>
                                 <br>
                                 <div class="table-responsive">
                                     <table id="example2" class="table table-bordered table-hover table-bordered"
@@ -140,12 +144,15 @@
                                                         @if ($item->nilai->status == 0)
                                                             <span class="badge badge-danger">Telah ditolak oleh :
                                                                 {{ $item->nilai->owner->nama }} <br> Pada :
-                                                                {{ $item->nilai->created_at }}</span>
+                                                                {{ $item->nilai->created_at }}
+                                                                <br>
+                                                                Memo : {{ $item->nilai->memo }}
+                                                            </span>
                                                             <br>
                                                         @else
-                                                        <span class="badge badge-success">Telah disetujui oleh :
-                                                            {{ $item->nilai->owner->nama }} <br> Pada :
-                                                            {{ $item->nilai->created_at }}</span>
+                                                            <span class="badge badge-success">Telah disetujui oleh :
+                                                                {{ $item->nilai->owner->nama }} <br> Pada :
+                                                                {{ $item->nilai->created_at }}</span>
                                                             <br>
                                                         @endif
 
@@ -161,7 +168,7 @@
                                                             <form action="{{ URL::to('guru/aksi-nyata/ubah') }}"
                                                                 method="POST">
                                                                 @csrf
-                                                                <input type="hidden" name="id" id="id"
+                                                                <input type="hidden" name="id"
                                                                     value="{{ $encryptUrl }}">
                                                                 @if ($item->nilai->status == 0)
                                                                     <button type="submit" class="btn btn-success m-1"
@@ -204,7 +211,37 @@
     </section>
     </div>
 
+
     <!-- Modal -->
+    <div class="modal fade" id="modal-memo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Memo Kurator</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ URL::to('kurator/nilai') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="status" value="tolak">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Memo</label>
+                            <textarea class="form-control" id="memo" name="memo" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     @foreach ($all as $item)
         <div class="modal fade" id="modal{{ $item->id }}" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -228,13 +265,27 @@
                             </tr>
                             <tr>
                                 <td style="width: 15%" valign="top">Video : </td>
-                                <td valign="top">
-                                    <iframe width="560" height="315"
-                                        src="https://www.youtube.com/embed/{{ $item->video }}"
-                                        title="YouTube video player" frameborder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                        allowfullscreen></iframe>
-                                </td>
+                                @if ($item->video !== null)
+                                    @if (str_contains($item->video, 'www.youtube.com/watch?'))
+                                        @php
+                                            $link = explode('=', $item->video);
+                                            if ($link > 1) {
+                                                $link = end($link);
+                                            }
+                                        @endphp
+                                        <td valign="top">
+                                            <iframe width="560" height="315"
+                                                src="https://www.youtube.com/embed/{{ $link }}"
+                                                title="YouTube video player" frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                allowfullscreen></iframe>
+                                        </td>
+                                    @else
+                                        <td><strong>Link Video Salah</strong></td>
+                                    @endif
+                                @else
+                                    <td>Tidak ada video pendukung.</td>
+                                @endif
                             </tr>
                             <tr>
                                 <td style="width: 15%" valign="top">Gambar : </td>
@@ -272,34 +323,54 @@
             e.preventDefault();
             var form = $(this).parents('form');
             swal({
-                        title: 'Apakah Anda Yakin?',
-                        text: 'Data akan dihapus',
-                        icon: 'warning',
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                    .then((isConfirm) => {
-                        if (isConfirm) {
-                            swal('Data Telah dihapus', {
-                                icon: 'success',
-                            });
-                            console.log(form);
-                            if (isConfirm) form.submit();
-                        } else {
-                            swal('Tidak Ada perubahan');
-                        }
-                    });
+                    title: 'Apakah Anda Yakin?',
+                    text: 'Data akan dihapus',
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((isConfirm) => {
+                    if (isConfirm) {
+                        swal('Data Telah dihapus', {
+                            icon: 'success',
+                        });
+                        console.log(form);
+                        if (isConfirm) form.submit();
+                    } else {
+                        swal('Tidak Ada perubahan');
+                    }
+                });
         });
+    </script>
+    <script>
+        function tolak(id, judul) {
+            console.log(id);
+            swal({
+                    title: 'Apakah Anda Yakin?',
+                    text: 'Rubrik ' + judul + ' ditolak',
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((isConfirm) => {
+                    if (isConfirm) {
+                        $("#modal-memo").modal('show');
+                        $("#id").val(id);
+                    } else {
+                        swal('Tidak Ada perubahan');
+                    }
+                });
+        }
     </script>
     @if (session()->has('success'))
-    <script>
-        $(document).ready(function() {
-            iziToast.success({
-                title: 'Berhasil !',
-                message: "{{ session('success') }}",
-                position: 'topRight'
+        <script>
+            $(document).ready(function() {
+                iziToast.success({
+                    title: 'Berhasil !',
+                    message: "{{ session('success') }}",
+                    position: 'topRight'
+                });
             });
-        });
-    </script>
+        </script>
     @endif
 @endpush

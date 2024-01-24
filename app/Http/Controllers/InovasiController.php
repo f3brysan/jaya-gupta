@@ -17,7 +17,7 @@ class InovasiController extends Controller
 {
     public function index()
     {
-        $inovasi = Inovasi::with('nilai.owner','inovasibidangpengembangan.bidangpengembangan')->where('bio_id', auth()->user()->id)->where('jenis', 1)->get();        
+        $inovasi = Inovasi::with('nilai.owner','inovasibidangpengembangan.bidangpengembangan')->where('bio_id', auth()->user()->id)->where('jenis', 1)->get();            
         return view('inovasi.index', compact('inovasi'));
     }
 

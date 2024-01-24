@@ -28,8 +28,7 @@ class StatusInovasiController extends Controller
     }
 
     public function nilai(Request $request)
-    {
-        // dd($request->all());
+    {        
         $id = Crypt::decrypt($request->id);
         $inovasi = Inovasi::where('id', $id)->first();
         // dd($inovasi);

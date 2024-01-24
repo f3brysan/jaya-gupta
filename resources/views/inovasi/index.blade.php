@@ -11,7 +11,7 @@
         .center {
             display: block;
             margin-left: auto;
-            margin-right: auto;            
+            margin-right: auto;
         }
     </style>
 @endpush
@@ -108,7 +108,7 @@
                                                         } else {
                                                             $disabled = '';
                                                         }
-                                                        
+
                                                     @endphp
                                                     <a href="{{ URL::to('guru/inovasi/edit') . '/' . $encryptUrl }}"
                                                         class="btn btn-primary m-1 {{ $disabled }}"
@@ -183,18 +183,28 @@
                                 <td style="width: 20%" valign="top">Deskripsi : </td>
                                 <td valign="top">{!! $item->deskripsi !!}</td>
                             </tr>
-                            @if ($item->video !== NULL)
                             <tr>
-                                <td style="width: 15%" valign="top">Video : </td>
-                                <td valign="top">
-                                    <iframe width="560" height="315"
-                                        src="https://www.youtube.com/embed/{{ $item->video }}"
-                                        title="YouTube video player" frameborder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                        allowfullscreen></iframe>
-                                </td>
-                            </tr>        
-                            @endif
+                                <td style="width: 15%" valign="top">Video : </td>                                
+                                @if ($item->video !== null)
+                                    @if (str_contains($item->video, 'www.youtube.com/watch?'))                                    
+                                        @php
+                                            $link = explode('=', $item->video);
+                                            if ($link > 1) {
+                                                $link = end($link);
+                                            }
+                                        @endphp
+                                        <td valign="top">
+                                            <iframe width="560" height="315"
+                                                src="https://www.youtube.com/embed/{{ $link }}"
+                                                title="YouTube video player" frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                allowfullscreen></iframe>
+                                        </td>
+                                    @else
+                                    <td><strong>Link Video Salah</strong></td>
+                                    @endif
+                                @endif
+                            </tr>
                         </table>
                     </div>
                     <div class="modal-footer">
