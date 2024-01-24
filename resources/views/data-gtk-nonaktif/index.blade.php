@@ -77,8 +77,8 @@
                                         @foreach ($getData as $dt)
                                             <tr>
                                                 <td class="text-center">
-                                                    <a href="{{ URL::to('data-guru/ubah/' . $dt->id) }}"
-                                                        target="_blank" title="Ubah Data" class="btn btn-sm btn-info m-1 disabled"><i
+                                                    <a href="{{ URL::to('data-gtk-nonaktif/ubah/' . $dt->id) }}"
+                                                        target="_blank" title="Ubah Data" class="btn btn-sm btn-info m-1"><i
                                                             class="fa fa-edit"></i></a>                                                   
                                                 </td>
                                                 <td class="text-right">{{ $loop->iteration }}</td>

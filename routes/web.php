@@ -136,6 +136,8 @@ Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function
     Route::get('admin/data-tendik/detail/{npsn}', [DataTendikController::class, 'detail_admin']);
 
     route::get('data-gtk-nonaktif', [DataGTKNonAktifController::class, 'index']);
+    route::get('data-gtk-nonaktif/ubah/{id}', [DataGTKNonAktifController::class, 'edit']);
+    route::post('data-gtk-nonaktif/update', [DataGTKNonAktifController::class, 'update']);
     route::get('admin/data-gtk-nonaktif', [DataGTKNonAktifController::class, 'index_admin']);
     route::get('admin/data-gtk-nonaktif/show/{idwil}', [DataGTKNonAktifController::class, 'show_admin']);
     route::get('admin/data-gtk-nonaktif/detail/{npsn}', [DataGTKNonAktifController::class, 'detail_admin']);

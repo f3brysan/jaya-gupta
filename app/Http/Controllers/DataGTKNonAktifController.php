@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ms_JenjangPendidikanDikti;
+use App\Models\Ms_Pangkat;
 use App\Models\User;
 use App\Models\Biodata;
+use App\Models\Regency;
+use App\Models\Province;
 use Illuminate\Http\Request;
 use App\Models\Ms_DataSekolah;
 use Illuminate\Support\Facades\DB;
@@ -14,13 +18,111 @@ class DataGTKNonAktifController extends Controller
     public function index()
     {
         $user_guru = User::role('nonaktif')->pluck('id');
-        if (auth()->user()->hasRole('superadmin')) {
-            $getData = Biodata::with('user', 'user.roles', 'asal_sekolah', 'user_bidang_pengembangan.bidangpengembangan')->whereIn('id', $user_guru)->get();
-        } else {
-            $getData = Biodata::with('user', 'user.roles', 'asal_sekolah', 'user_bidang_pengembangan.bidangpengembangan')->whereIn('id', $user_guru)->where('asal_satuan_pendidikan', auth()->user()->bio->asal_satuan_pendidikan)->get();
-        }
+
+        $getData = Biodata::with('user', 'user.roles', 'asal_sekolah', 'user_bidang_pengembangan.bidangpengembangan')->whereIn('id', $user_guru)->where('asal_satuan_pendidikan', auth()->user()->bio->asal_satuan_pendidikan)->get();
 
         return view('data-gtk-nonaktif.index', compact('getData'));
+    }
+
+    public function edit($id)
+    {
+        // $id = Crypt::decrypt($id);
+        $data['get'] = Biodata::with('user')->find($id);
+        $data['asal_satuan'] = Ms_DataSekolah::orderBy('kode_wilayah_induk_kecamatan', 'ASC')->orderBy('created_at', 'ASC')->get();
+        $data['kab'] = Regency::all();
+        $data['prov'] = Province::all();
+        $data['pangkat'] = Ms_Pangkat::where('is_aktif', true)->orderBy('gol', 'DESC')->get();
+        $data['jenjang'] = Ms_JenjangPendidikanDikti::all();
+        // return $data['getData'];
+        return view('data-gtk-nonaktif.edit', $data);
+    }
+
+    public function update(Request $request)
+    {
+        $id = Crypt::decrypt($request->id);        
+        $nama = $request->gelar_depan . ' ' . $request->nama_lengkap . ' ' . $request->gelar_blkg;
+        
+        DB::beginTransaction();
+        
+        $user = User::where('id', $id)->update([
+            'name' => $nama,
+            'email' => $request->email,
+            'nuptk' => $request->nuptk
+        ]);
+
+        if ($request->file('image')) {
+            $path =$request->file('image')->store('/images/profile', ['disk' =>   'my_files']);
+        }else{
+            $check = Biodata::where('id', $id)->first();
+            if ($check) {
+                $path = $check->profile_picture;
+            } else {
+                $path = NULL;
+            }                    
+        }
+
+        $bio = Biodata::where('id', $id)->update([
+            'nama' => $nama,
+            'nama_lengkap' => $request->nama_lengkap,
+            'gelar_depan' => $request->gelar_depan,
+            'gelar_belakang' => $request->gelar_blkg,
+            'nuptk' => $request->nuptk,
+            'tempatlahir' => $request->tempatlahir,
+            'tanggallahir' => $request->tgllahir,
+            'provdom' => $request->provdom,
+            'kabdom' => $request->kabdom,
+            'kecdom' => $request->kecdom,
+            'keldom' => $request->keldom,
+            'alamatdom' => $request->desadom,
+            'kodepos' => $request->kodepos,
+            'telepon' => $request->telepon,
+            'wa' => $request->wa,
+            'nip' => $request->nip,
+            'golongan' => $request->golongan,
+            'status_kepegawaian' => $request->status_kepegawaian,
+            'pendidikan_terakhir' => $request->jenjang,
+            'mengajar' => $request->mengajar,
+            'prodi' => $request->jurusan,
+            'sertifikasi' => $request->sertifikasi,
+            'tugas_tambahan' => $request->tugas_tambahan,
+            'sk_cpns' => $request->sk_cpns,
+            'tgl_cpns' => $request->tgl_cpns,
+            'sk_pengangkatan' => $request->sk_pengangkatan,
+            'tmt_pengangkatan' => $request->tmt_pengangkatan,
+            'sumber_gaji' => $request->sumber_gaji,
+            'nm_ibu' => $request->nm_ibu,
+            'status_perkawinan' => $request->status_perkawinan,
+            'nm_pasangan' => $request->nm_pasangan,
+            'nip_pasangan' => $request->nip_pasangan,
+            'pekerjaan_pasangan' => $request->pekerjaan_pasangan,
+            'tmt_pns' => $request->tmt_pns,
+            'npwp' => $request->npwp,
+            'bank' => $request->bank,
+            'norek_bank' => $request->norek_bank,
+            'nama_norek' => $request->nama_norek,
+            'nik' => $request->nik,
+            'no_kk' => $request->no_kk,
+            'is_penggerak' => $request->is_penggerak,
+            'jam_tgs_tambahan' => $request->jam_tgs_tambahan,
+            'jjm' => $request->jjm,
+            'total_jjm' => $request->jjm + $request->jam_tgs_tambahan,
+            'siswa' => $request->siswa,
+            'status_sekolah' => $request->status_sekolah,
+            'gender' => $request->gender,
+            'asal_satuan_pendidikan' => $request->asal_satuan,
+            'lembaga_pengangkatan' => $request->lembaga_pengangkatan,
+            'profile_picture' => $path
+        ]);
+        
+        
+        if ($bio) {
+            DB::commit();
+            return redirect('data-gtk-nonaktif')->with('success', 'Data berhasil disimpan.');
+        } else {
+            DB::rollBack();
+            return redirect('data-gtk-nonaktif/ubah/'.$id)->with('error', 'Data gagal disimpan.');
+        }
+
     }
 
     public function index_admin()
@@ -127,7 +229,7 @@ class DataGTKNonAktifController extends Controller
 
             foreach ($query as $q) {
                 $data[$q->npsn]['total_l'] = $q->laki;
-                $data[$q->npsn]['total_p'] = $q->perempuan;                
+                $data[$q->npsn]['total_p'] = $q->perempuan;
             }
         }
         return view('data-gtk-nonaktif.show_admin', compact('data', 'data_kec'));
