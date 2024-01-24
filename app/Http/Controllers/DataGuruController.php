@@ -141,14 +141,27 @@ class DataGuruController extends Controller
 
     public function update(Request $request)
     {
-        $id = Crypt::decrypt($request->id);
+        $id = Crypt::decrypt($request->id);        
         $nama = $request->gelardepan . ' ' . $request->nama_lengkap . ' ' . $request->gelar_blkg;
         DB::beginTransaction();
+        
         $user = User::where('id', $id)->update([
             'name' => $nama,
             'email' => $request->email,
             'nuptk' => $request->nuptk
         ]);
+
+        if ($request->file('image')) {
+            $path =$request->file('image')->store('/images/profile', ['disk' =>   'my_files']);
+        }else{
+            $check = Biodata::where('id', $id)->first();
+            if ($check) {
+                $path = $check->profile_picture;
+            } else {
+                $path = NULL;
+            }                    
+        }
+
         $bio = Biodata::where('id', $id)->update([
             'nama' => $nama,
             'nama_lengkap' => $request->nama_lengkap,
@@ -199,6 +212,7 @@ class DataGuruController extends Controller
             'gender' => $request->gender,
             'asal_satuan_pendidikan' => $request->asal_satuan,
             'lembaga_pengangkatan' => $request->lembaga_pengangkatan,
+            'profile_picture' => $path
         ]);
 
         $check = Http::withHeaders([
@@ -253,15 +267,13 @@ class DataGuruController extends Controller
                     ]);
         }
         
-
-        // return $send;
-
+        
         if ($send['message'] == 'success') {
             DB::commit();
             return redirect('data-guru')->with('success', 'Data berhasil disimpan.');
         } else {
             DB::rollBack();
-            return redirect('data-guru/edit/')->with('error', 'Data gagal disimpan.');
+            return redirect('data-guru/ubah/'.$id)->with('error', 'Data gagal disimpan. '.$send['message']);
         }
 
     }

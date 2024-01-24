@@ -23,10 +23,27 @@
                             <h5>Data Guru</h5>
                         </div>
                         <div class="card-body">
-                            <form action="{{ URL('data-guru/update') }}" method="POST">
+                            <form action="{{ URL('data-guru/update') }}" enctype="multipart/form-data"  method="POST">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ Crypt::encrypt($get->id) }}">
                                 <h6>Profil Guru</h6>
+                                <div class="form-group">
+                                    <div class="col-md-12">                                       
+                                     <div class="col-md-12">
+                                        <img id="preview-image-before-upload"
+                                        src="{{ URL::to('/') }}/{{ $get->profile_picture }}" alt="preview image"
+                                        style="max-height: 250px;">
+                                     </div>
+                                            <label class="mt-2">Foto Guru</label>
+                                        <input type="file" name="image" placeholder="Choose image" id="image"
+                                            accept="image/*" class="form-control @error('picture') is-invalid @enderror">
+                                        @error('picture')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Nama Guru <code>*Tanpa Gelar</code></label>
@@ -53,8 +70,10 @@
                                         <label>Jenis Kelamin</label>
                                         <select name="gender" id="gender" class="form-control">
                                             <option value="">Pilih</option>
-                                            <option value="L" {{ $get->gender == 'L' ? 'selected' : '' }}>Laki - Laki</option>
-                                            <option value="P" {{ $get->gender == 'P' ? 'selected' : '' }}>Perempuan</option>                                            
+                                            <option value="L" {{ $get->gender == 'L' ? 'selected' : '' }}>Laki - Laki
+                                            </option>
+                                            <option value="P" {{ $get->gender == 'P' ? 'selected' : '' }}>Perempuan
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -81,7 +100,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="">Tempat Lahir</label>
-                                       <input type="text" name="tempatlahir" class="form-control" id=""
+                                        <input type="text" name="tempatlahir" class="form-control" id=""
                                             value="{{ $get->tempatlahir }}">
                                     </div>
                                 </div>
@@ -140,7 +159,7 @@
                                             value="{{ $get->sertifikasi }}">
                                     </div>
                                 </div>
-                                <h6>Domisili</h6>                               
+                                <h6>Domisili</h6>
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="">Kecamatan</label>
@@ -258,8 +277,8 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="">Status Perkawinan</label>
-                                        <input type="text" name="status_perkawinan" class="form-control" id=""
-                                            value="{{ $get->status_perkawinan }}">
+                                        <input type="text" name="status_perkawinan" class="form-control"
+                                            id="" value="{{ $get->status_perkawinan }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -336,7 +355,7 @@
                                     <div class="col-md-12">
                                         <label for="">Guru Penggerak</label>
                                         <input type="text" name="is_penggerak" class="form-control" id=""
-                                        value="{{ $get->is_penggerak }}">
+                                            value="{{ $get->is_penggerak }}">
                                     </div>
                                 </div>
                                 <h6>Lain - Lain</h6>
@@ -396,6 +415,19 @@
             $('#provdom').val('{{ $get->provdom }}').trigger('change');
             $('#kabdom').val('{{ $get->kabdom }}').trigger('change');
             $('#kecdom').val('{{ $get->kecdom }}').trigger('change');
+
+            $('#image').change(function() {
+
+                let reader = new FileReader();
+
+                reader.onload = (e) => {
+
+                    $('#preview-image-before-upload').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+
+            });
         });
 
         $('.hapus-btn').on('click', function(e) {
@@ -508,4 +540,30 @@
             }
         });
     </script>
+    <script>
+        function previewImage() {
+            const image = document.querySelector('#image');
+            const imgPreview = document.querySelector('.image-preview');
+
+            imgPreview.style.display = 'block';
+
+            const oFReader = new FileReader();
+            oFReader.readAsDataURL(image.files[0]);
+            oFReader.onload = function(ofREvent) {
+                imgPreview.src = ofREvent.target.result;
+            }
+        }
+    </script>
+
+@if (session()->has('error'))
+<script>
+    $(document).ready(function() {
+        iziToast.warning({
+            title: 'Gagal !',
+            message: "{{ session('error') }}",
+            position: 'topRight'
+        });
+    });
+</script>
+@endif
 @endpush
