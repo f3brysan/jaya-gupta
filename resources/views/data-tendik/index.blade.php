@@ -107,7 +107,7 @@
                                                 <td>{{ $dt->mengajar }}</td>
                                                 <td>{{ $dt->gelar_depan }}</td>
                                                 <td>{{ $dt->gelar_belakang }}</td>
-                                                <td>{{ $dt->pendidikan_terakhir }}</td>
+                                                <td>{{ $dt->pendidikan_dikti->nama ?? '' }}</td>
                                                 <td>{{ $dt->prodi }}</td>
                                                 <td>{{ $dt->sertifikasi }}</td>
                                                 <td>{{ $dt->alamat }}</td>

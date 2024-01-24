@@ -30,4 +30,10 @@ class Biodata extends Model
     {
         return $this->hasMany(UserBidangPengembangan::class, 'bio_id', 'id');
     }
+
+    public function pendidikan_dikti()
+    {
+        return $this->belongsTo(Ms_JenjangPendidikanDikti::class, 'pendidikan_terakhir', 'kode');
+    }
+    
 }

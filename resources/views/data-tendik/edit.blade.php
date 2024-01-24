@@ -23,7 +23,7 @@
                             <h5>Data Tendik</h5>
                         </div>
                         <div class="card-body">
-                            <form action="{{ URL('data-Tendik/update') }}" method="POST">
+                            <form action="{{ URL('data-tendik/update') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ Crypt::encrypt($get->id) }}">
                                 <h6>Profil Tendik</h6>
@@ -61,7 +61,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="">Asal Sekolah</label>
-                                        <select name="asal_satuan" class="form-control select2" id="">
+                                        <select name="asal_satuan" class="form-control select2" id="" readonly>
                                             <option value="">-- Pilih Asal Sekolah --</option>
                                             @foreach ($asal_satuan as $item)
                                                 <option value="{{ $item->npsn }}"
@@ -106,6 +106,13 @@
                                             id="" value="{{ $get->status_kepegawaian }}">
                                     </div>
                                 </div>
+                                 <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label for="">Jenis PTK</label>
+                                        <input type="text" name="jenis_ptk" class="form-control" id=""
+                                            value="{{ $get->jenis_ptk }}">
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="">Jenjang Pendidikan Terakhir</label>
@@ -113,7 +120,7 @@
                                             <option value="">-- Pilih Jenjang --</option>
                                             @foreach ($jenjang as $item)
                                                 <option value="{{ $item->kode }}"
-                                                    {{ $get->pendidikan_terakhir == $item->nama ? 'selected' : '' }}>
+                                                    {{ $get->pendidikan_terakhir == $item->kode ? 'selected' : '' }}>
                                                     {{ $item->nama }}</option>
                                             @endforeach
                                         </select>
@@ -128,246 +135,50 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label for="">Mengajar</label>
-                                        <input type="text" name="mengajar" class="form-control" id=""
-                                            value="{{ $get->mengajar }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
                                         <label for="">Sertifikasi</label>
                                         <input type="text" name="sertifikasi" class="form-control" id=""
                                             value="{{ $get->sertifikasi }}">
                                     </div>
-                                </div>
-                                <h6>Domisili</h6>                               
+                                </div>      
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label for="">Kecamatan</label>
-                                        <input type="text" name="kecdom" class="form-control" id=""
-                                            value="{{ $get->kecdom }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Kelurahan</label>
-                                        <input type="text" name="keldom" class="form-control" id=""
-                                            value="{{ $get->keldom }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Alamat/Nama Dusun</label>
-                                        <input type="text" name="alamat" class="form-control" id=""
-                                            value="{{ $get->alamat }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Kodepos</label>
-                                        <input type="text" class="form-control" name="kodepos"
-                                            onkeypress="return isNumber(event)" value="{{ $get->kodepos }}">
-                                    </div>
-                                </div>
-                                <h6>Narahubung</h6>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">No Telepon</label>
-                                        <input type="text" class="form-control" name="telepon"
-                                            onkeypress="return isNumber(event)" value="{{ $get->telepon }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">No HP/WA</label>
-                                        <input type="text" class="form-control" name="wa"
-                                            onkeypress="return isNumber(event)" {{ $get->wa }}>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Email</label>
-                                        <input type="text" class="form-control" name="email"
-                                            value="{{ $get->user->email }}">
-                                    </div>
-                                </div>
-                                <h6>Kepegawaian</h6>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Tugas Tambahan</label>
-                                        <input type="text" class="form-control" name="tugas_tambahan"
-                                            value="{{ $get->tugas_tambahan }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">SK CPNS</label>
-                                        <input type="text" class="form-control" name="sk_cpns" {{ $get->sk_cpns }}>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Tanggal CPNS</label>
-                                        <input type="date" class="form-control" name="tgl_cpns"
-                                            value="{{ $get->tgl_cpns }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">SK Pengangkatan</label>
-                                        <input type="text" class="form-control" name="sk_pengangkatan"
-                                            value="{{ $get->sk_pengangkatan }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">TMT Pengangkatan</label>
-                                        <input type="date" class="form-control" name="tmt_pengangkatan"
-                                            value="{{ $get->tmt_pengangkatan }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Lembaga Pengangkatan</label>
-                                        <input type="text" class="form-control" name="lembaga_pengangkatan"
-                                            value="{{ $get->lembaga_pengangkatan }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Pangkat Golongan</label>
-                                        <input type="text" name="golongan" class="form-control" id=""
-                                            value="{{ $get->golongan }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Sumber Gaji</label>
-                                        <input type="text" class="form-control" name="sumber_gaji"
-                                            value="{{ $get->sumber_gaji }}">
-                                    </div>
-                                </div>
-                                <h6>Keluarga/Pribadi</h6>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Nama Ibu Kandung</label>
-                                        <input type="text" class="form-control" name="nm_ibu"
-                                            value="{{ $get->nm_ibu }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Status Perkawinan</label>
-                                        <input type="text" name="status_perkawinan" class="form-control" id=""
-                                            value="{{ $get->status_perkawinan }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Nama Suami/Istri</label>
-                                        <input type="text" class="form-control" name="nm_pasangan"
-                                            value="{{ $get->nm_pasangan }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">NIP Suami/Istri</label>
-                                        <input type="text" class="form-control" name="nip_pasangan"
-                                            value="{{ $get->nip_pasangan }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Pekerjaan Suami/Istri</label>
-                                        <input type="text" class="form-control" name="pekerjaan_pasangan"
-                                            value="{{ $get->pekerjaan_pasangan }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">TMT PNS</label>
+                                        <label for="">TMT Kerja</label>
                                         <input type="text" class="form-control" name="tmt_pns"
                                             value="{{ $get->tmt_pns }}">
                                     </div>
-                                </div>
+                                </div>                                                                                        
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label for="">NPWP</label>
-                                        <input type="text" class="form-control" name="npwp"
-                                            value="{{ $get->npwp }}">
+                                        <label for="">Periode Penugasan (untuk Kepala Sekolah)</label>
+                                        <select class="form-control" name="periode_penugasan" id="periode_penugasan">
+                                            <option value="">Pilih</option>
+                                            <option value="1" {{ $get->periode_penugasan == '1' ? 'selected' : ''}}>Pertama</option>
+                                            <option value="2" {{ $get->periode_penugasan == '2' ? 'selected' : ''}}>Kedua</option>
+                                            <option value="3" {{ $get->periode_penugasan == '3' ? 'selected' : ''}}>Ketiga</option>
+                                            <option value="4" {{ $get->periode_penugasan == '4' ? 'selected' : ''}}>Keempat</option>
+                                        </select>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Bank</label>
-                                        <input type="text" class="form-control" name="bank"
-                                            value="{{ $get->bank }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Nomor Rekening Bank</label>
-                                        <input type="text" class="form-control" name="norek_bank"
-                                            value="{{ $get->norek_bank }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Rekening Atas Nama</label>
-                                        <input type="text" class="form-control" name="nama_norek"
-                                            value="{{ $get->nama_norek }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">NIK (Nomor Induk Kependudukan)</label>
-                                        <input type="text" class="form-control" name="nik"
-                                            onkeypress="return isNumber(event)" value="{{ $get->nik }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">No KK</label>
-                                        <input type="text" class="form-control" name="no_kk"
-                                            value="{{ $get->no_kk }}">
-                                    </div>
-                                </div>
+                                </div>                                                          
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="">Tendik Penggerak</label>
-                                        <input type="text" name="is_penggerak" class="form-control" id=""
-                                        value="{{ $get->is_penggerak }}">
+                                        <select name="is_penggerak" id="is_penggerak" class="form-control">
+                                            <option value="iya" {{ $get->is_penggerak == 'iya' ? 'selected' : ''}}>Iya</option>
+                                            <option value="tidak" {{ $get->is_penggerak == NULL || $get->is_penggerak == 'tidak' ? 'selected' : ''}}>Tidak</option>
+                                        </select>                                       
                                     </div>
-                                </div>
-                                <h6>Lain - Lain</h6>
+                                </div>      
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label for="">Jam Tugas Tambahan</label>
-                                        <input type="text" class="form-control" name="jam_tgs_tambahan"
-                                            onkeypress="return isNumber(event)" value="{{ $get->jam_tgs_tambahan }}">
+                                        <label for="">Angkatan GP</label>
+                                        <select class="form-control" name="angkatan_gp" id="angkatan_gp">
+                                            <option value="">Pilih</option>
+                                            @for ($x = 0; $x <= 20; $x++)
+                                            <option value="{{ $x }}" {{ $get->angkatan_gp == $x ? 'selected' : '' }}> {{ $x }}</option>
+                                            @endfor                                    
+                                        </select>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">JJM</label>
-                                        <input type="text" class="form-control" name="jjm"
-                                            onkeypress="return isNumber(event)" value="{{ $get->jjm }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Siswa</label>
-                                        <input type="text" class="form-control" name="siswa"
-                                            onkeypress="return isNumber(event)" value="{{ $get->siswa }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label for="">Status Sekolah</label>
-                                        <input type="text" class="form-control" name="status_sekolah"
-                                            value="{{ $get->status_sekolah }}">
-                                    </div>
-                                </div>
+                                </div>                                     
                                 <div class="col-md-12">
                                     <button type="submit" class="btn btn-info pull-right float-right"><i
                                             class="fa fa-save"></i>

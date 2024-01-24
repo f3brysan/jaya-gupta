@@ -20,11 +20,8 @@ class DataTendikController extends Controller
     public function index()
     {
         $user_guru = User::role('tendik')->pluck('id');
-        if (auth()->user()->hasRole('superadmin')) {
-            $getData = Biodata::with('user', 'user.roles', 'asal_sekolah', 'user_bidang_pengembangan.bidangpengembangan')->whereIn('id', $user_guru)->get();
-        } else {
-            $getData = Biodata::with('user', 'user.roles', 'asal_sekolah', 'user_bidang_pengembangan.bidangpengembangan')->whereIn('id', $user_guru)->where('asal_satuan_pendidikan', auth()->user()->bio->asal_satuan_pendidikan)->get();
-        }
+
+        $getData = Biodata::with('user', 'user.roles', 'asal_sekolah', 'user_bidang_pengembangan.bidangpengembangan', 'pendidikan_dikti')->whereIn('id', $user_guru)->where('asal_satuan_pendidikan', auth()->user()->bio->asal_satuan_pendidikan)->get();        
 
         return view('data-tendik.index', compact('getData'));
     }
@@ -170,9 +167,9 @@ class DataTendikController extends Controller
         DB::beginTransaction();
         $user = User::where('id', $id)->update([
             'name' => $nama,
-            'email' => $request->email,
             'nuptk' => $request->nuptk
         ]);
+        // dd($request->all());
         $bio = Biodata::where('id', $id)->update([
             'nama' => $nama,
             'nama_lengkap' => $request->nama_lengkap,
@@ -223,16 +220,19 @@ class DataTendikController extends Controller
             'gender' => $request->gender,
             'asal_satuan_pendidikan' => $request->asal_satuan,
             'lembaga_pengangkatan' => $request->lembaga_pengangkatan,
+            'jenis_ptk' => $request->jenis_ptk,
+            'periode_penugasan' => $request->periode_penugasan,
+            'angkatan_gp' => $request->angkatan_gp,
         ]);
 
 
 
         if ($bio) {
             DB::commit();
-            return redirect('data-guru')->with('success', 'Data berhasil disimpan.');
+            return redirect('data-tendik')->with('success', 'Data berhasil disimpan.');
         } else {
             DB::rollBack();
-            return redirect('data-guru/edit/')->with('error', 'Data gagal disimpan.');
+            return redirect('data-tendik/edit/')->with('error', 'Data gagal disimpan.');
         }
 
     }
