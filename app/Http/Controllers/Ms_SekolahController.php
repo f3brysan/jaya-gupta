@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Ms_DataSekolah;
+use App\Models\PesertaDidik;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
@@ -47,9 +48,9 @@ class Ms_SekolahController extends Controller
         foreach ($total_sekolah as $item) {
             $data[$item->kode_wil]['total'] = $item->total;
         }
-        $getData = $data;
+        $getData = $data;        
         
-        return view('master.sekolah.index', compact('getData'));
+        return view('master.sekolah.index', compact('getData', 'siswa'));
     }
 
     public function sekolah_kec($id_level_wil, $kode_wil, Request $request)
@@ -118,14 +119,16 @@ class Ms_SekolahController extends Controller
     {
         $npsn = Crypt::decrypt($npsn);
         $getData = Ms_DataSekolah::where('npsn', $npsn)->first();
-        return view('master.sekolah.show_detil', compact('getData'));
+        $siswa = PesertaDidik::where('sekolah_npsn', $npsn)->whereNotNull('rombel')->count();
+        return view('master.sekolah.show_detil', compact('getData', 'siswa'));
     }
 
     public function edit_sekolah($npsn)
     {
         $npsn = Crypt::decrypt($npsn);
+        $siswa = PesertaDidik::where('sekolah_npsn', $npsn)->whereNotNull('rombel')->count();
         $getData = Ms_DataSekolah::where('npsn', $npsn)->first();
-        return view('master.sekolah.edit_detil', compact('getData'));
+        return view('master.sekolah.edit_detil', compact('getData', 'siswa'));
     }
 
     public function update_sekolah(Request $request)

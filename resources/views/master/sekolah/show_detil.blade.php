@@ -161,7 +161,7 @@
                                     <tr>
                                         <td style="width: 30%">19. Nominal/Siswa</td>
                                         <td style="width: 1%">:</td>
-                                        <td>{{ $getData->induk_negara }}</td>
+                                        <td>{{ $siswa }} Siswa</td>
                                     </tr>
                                     <tr>
                                         <td style="width: 30%">20. Nama Wajib Pajak</td>

@@ -210,7 +210,7 @@
                                     <tr>
                                         <td style="width: 30%">19. Nominal/Siswa</td>
                                         <td style="width: 1%">:</td>
-                                        <td><input type="text" class="form-control text-right"value="99" readonly></td>
+                                        <td><input type="text" class="form-control text-right" value="{{ $siswa }}" readonly></td>
                                     </tr>
                                     <tr>
                                         <td style="width: 30%">20. Nama Wajib Pajak</td>
