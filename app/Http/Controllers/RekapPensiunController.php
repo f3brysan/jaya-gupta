@@ -17,7 +17,7 @@ class RekapPensiunController extends Controller
         $j = 0;
         $l = 0;
 
-        $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->get("bentuk_pendidikan");
+        $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->whereIn('bentuk_pendidikan', ['TK','SD','SMP'])->get("bentuk_pendidikan");
         for ($i = 0; $i < $limit; $i++) {
             $tahun[$j++]['tahun'] = $yearNow++;
             $tahun[$l++]['lahir'] = $lahir++;
