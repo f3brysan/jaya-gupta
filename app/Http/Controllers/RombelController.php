@@ -116,8 +116,8 @@ class RombelController extends Controller
 
     public function index_admin()
     {
-        $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->get("bentuk_pendidikan");
-        $npsn = Ms_DataSekolah::where('kode_wilayah_induk_kecamatan', '226002')->pluck('npsn');
+        $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->whereIn('bentuk_pendidikan', ['TK','SD','SMP'])->get("bentuk_pendidikan");
+        // $npsn = Ms_DataSekolah::where('kode_wilayah_induk_kecamatan', '226002')->pluck('npsn');
 
         $data = array();
         foreach ($bentuk_pendidikan as $bp) {
@@ -140,6 +140,7 @@ class RombelController extends Controller
         $sql_count = "SELECT kode_wilayah_induk_kecamatan, bentuk_pendidikan, COUNT(r.sekolah_npsn)
         FROM ms_sekolah as s
         LEFT JOIN ms_rombel as r on r.sekolah_npsn = s.npsn
+        WHERE s.bentuk_pendidikan IN ('TK','SD','SMP')
         GROUP BY  kode_wilayah_induk_kecamatan, bentuk_pendidikan
         ORDER BY kode_wilayah_induk_kecamatan ASC";
 

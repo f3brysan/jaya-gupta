@@ -20,7 +20,7 @@ class Ms_SekolahController extends Controller
         $source = Http::get("https://dapo.kemdikbud.go.id/rekap/dataSekolah?id_level_wilayah=2&kode_wilayah=226000&semester_id=" . $semester_id . "");
 
         $getData = $source->json();           
-        $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->get("bentuk_pendidikan");
+        $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->whereIn('bentuk_pendidikan', ['TK','SD','SMP'])->get("bentuk_pendidikan");
 
         $data = array();
         foreach ($bentuk_pendidikan as $bp) {
@@ -43,14 +43,14 @@ class Ms_SekolahController extends Controller
                 $data[$q->kode_wil][$bp->bentuk_pendidikan] = $q->value;                
             }
         }        
-        $total_sekolah = Ms_DataSekolah::select("induk_kecamatan","kode_wilayah_induk_kecamatan as kode_wil", DB::raw('count(*) as total'))->groupBy("induk_kecamatan", "kode_wilayah_induk_kecamatan")->get();
+        $total_sekolah = Ms_DataSekolah::select("induk_kecamatan","kode_wilayah_induk_kecamatan as kode_wil", DB::raw('count(*) as total'))->whereIn('bentuk_pendidikan', ['TK','SD','SMP'])->groupBy("induk_kecamatan", "kode_wilayah_induk_kecamatan")->get();
 
         foreach ($total_sekolah as $item) {
             $data[$item->kode_wil]['total'] = $item->total;
         }
         $getData = $data;        
         
-        return view('master.sekolah.index', compact('getData', 'siswa'));
+        return view('master.sekolah.index', compact('getData'));
     }
 
     public function sekolah_kec($id_level_wil, $kode_wil, Request $request)
@@ -61,7 +61,7 @@ class Ms_SekolahController extends Controller
         $url = "https://dapo.kemdikbud.go.id/rekap/progresSP?id_level_wilayah=" . $id_level_wil . "&kode_wilayah=" . $kode_wil . "&semester_id=20231&bentuk_pendidikan_id=";
         $source = Http::get($url);
         
-        $getData = Ms_DataSekolah::with('guru')->where('kode_wilayah_induk_kecamatan', $kode_wil)->get();        
+        $getData = Ms_DataSekolah::with('guru')->where('kode_wilayah_induk_kecamatan', $kode_wil)->whereIn('bentuk_pendidikan', ['TK','SD','SMP'])->get();        
         $sekolah_pluck = $getData->pluck('npsn');            
         
         if ($request->ajax()) {

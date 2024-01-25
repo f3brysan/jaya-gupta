@@ -167,8 +167,9 @@ class Ms_PesertaDidikController extends Controller
     }
 
     public function index_admin()
-    {        
-        $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->get("bentuk_pendidikan");
+    {   
+
+        $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->whereIn('bentuk_pendidikan', ['TK','SD','SMP'])->get("bentuk_pendidikan");
         // $npsn = Ms_DataSekolah::where('kode_wilayah_induk_kecamatan', '226002')->pluck('npsn');
 
         $data = array();
@@ -191,6 +192,8 @@ class Ms_PesertaDidikController extends Controller
             }
 
         }
+
+        // dd($data);
 
         $sql_count = "SELECT
                 s.bentuk_pendidikan,

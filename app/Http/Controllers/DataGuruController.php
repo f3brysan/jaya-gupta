@@ -136,7 +136,6 @@ class DataGuruController extends Controller
         $data['jenjang'] = Ms_JenjangPendidikanDikti::all();
         // return $data['getData'];
         return view('data-guru.edit', $data);
-
     }
 
     public function update(Request $request)
@@ -576,5 +575,6 @@ class DataGuruController extends Controller
         $getData = Biodata::with('user', 'user.roles', 'asal_sekolah', 'user_bidang_pengembangan.bidangpengembangan')->whereIn('id', $user_guru)->where('asal_satuan_pendidikan', $npsn)->get();
 
         return view('data-guru.detail_admin', compact('getData', 'sekolah'));
+
     }
 }

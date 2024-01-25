@@ -33,31 +33,15 @@
                                             <th class="text-center" rowspan="2">No</th>
                                             <th class="text-center" rowspan="2" style="width: 250px !important">Wilayah</th>
                                             <th class="text-center">Total</th>
-                                            <th class="text-center">TK</th>
-                                            <th class="text-center">KB</th>
-                                            <th class="text-center">TPA</th>
-                                            <th class="text-center">SPS</th>
-                                            <th class="text-center">PKBM</th>
-                                            <th class="text-center">SKB</th>
+                                            <th class="text-center">TK</th>                                            
                                             <th class="text-center">SD</th>
-                                            <th class="text-center">SMP</th>
-                                            <th class="text-center">SMA</th>
-                                            <th class="text-center">SMK</th>
-                                            <th class="text-center">SLB</th>
+                                            <th class="text-center">SMP</th>                                            
                                         </tr>
                                         <tr>
                                             <th>Jml</th>                                                                        
                                             <th>Jml</th>                                                                        
                                             <th>Jml</th>                                                                        
-                                            <th>Jml</th>                                                                        
-                                            <th>Jml</th>                                                                        
-                                            <th>Jml</th>                                                                        
-                                            <th>Jml</th>                                                                        
-                                            <th>Jml</th>                                                                        
-                                            <th>Jml</th>                                                                        
-                                            <th>Jml</th>                                                                        
-                                            <th>Jml</th>                                                                        
-                                            <th>Jml</th>                                                                        
+                                            <th>Jml</th>                                                                                                                                                                                 
                                         </tr>
                                     </thead>
                                     <tbody>            
@@ -115,37 +99,13 @@
                                                 @endphp</td>                                            
                                                 <td class="text-right">{{ $item['TK'] ?? '0'}} @php
                                                     $tk += $item['TK'] ?? 0;
-                                                @endphp</td>                                           
-                                                <td class="text-right">{{ $item['KB'] ?? '0'}} @php
-                                                    $kb += $item['KB'] ?? 0;
-                                                @endphp</td>                                          
-                                                <td class="text-right">{{ $item['TPA'] ?? '0'}} @php
-                                                    $tpa += $item['TPA'] ?? 0;
-                                                @endphp</td>                                            
-                                                <td class="text-right">{{ $item['SPS'] ?? '0'}} @php
-                                                    $sps += $item['SPS'] ?? 0;
-                                                @endphp</td>                                           
-                                                <td class="text-right">{{ $item['PKBM'] ?? '0'}} @php
-                                                    $pkbm += $item['PKBM'] ?? 0;
-                                                @endphp</td>                                
-                                                <td class="text-right">{{ $item['SKB'] ?? '0'}} @php
-                                                    $skb += $item['SKB'] ?? 0;
-                                                @endphp</td>                                           
+                                                @endphp</td>                                                                                                    
                                                 <td class="text-right">{{ $item['SD'] ?? '0'}} @php
                                                     $sd += $item['SD'] ?? 0;
                                                 @endphp</td>                                           
                                                 <td class="text-right">{{ $item['SMP'] ?? '0'}} @php
                                                     $smp += $item['SMP'] ?? 0;
-                                                @endphp</td>                                           
-                                                <td class="text-right">{{ $item['SMA'] ?? '0'}} @php
-                                                    $sma += $item['SMA'] ?? 0;
-                                                @endphp</td>                                           
-                                                <td class="text-right">{{ $item['SMK'] ?? '0'}} @php
-                                                    $smk += $item['SMK'] ?? 0;
-                                                @endphp</td>                                           
-                                                <td class="text-right">{{ $item['SLB'] ?? '0' }} @php
-                                                    $slb += $item['SLB'] ?? 0;
-                                                @endphp</td>                                           
+                                                @endphp</td>                                                                                                            
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -153,17 +113,9 @@
                                         <tr>
                                             <th class="text-center" colspan="2">Total</th>
                                             <td class="text-right">{{ $sekolah }}</td>                                        
-                                            <td class="text-right">{{ $tk }}</td>                                        
-                                            <td class="text-right">{{ $kb }}</td>                                       
-                                            <td class="text-right">{{ $tpa }}</td>                                       
-                                            <td class="text-right">{{ $sps }}</td>                                       
-                                            <td class="text-right">{{ $pkbm }}</td>                                        
-                                            <td class="text-right">{{ $skb }}</td>                                       
+                                            <td class="text-right">{{ $tk }}</td>                                                                                                                
                                             <td class="text-right">{{ $sd }}</td>                                       
-                                            <td class="text-right">{{ $smp }}</td>                                       
-                                            <td class="text-right">{{ $sma }}</td>                                        
-                                            <td class="text-right">{{ $smk }}</td>                                        
-                                            <td class="text-right">{{ $slb }}</td>                                        
+                                            <td class="text-right">{{ $smp }}</td>                                                                                                              
                                         </tr>
                                     </tfoot>
                                 </table>
