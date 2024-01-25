@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Rekapitulasi Sebaran Guru')
+@section('title', 'Data Guru Kelas ' . $sekolah->nama)
 @push('css-custom')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.css">
@@ -13,7 +13,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Rekapitulasi Sebaran Guru {{ $bentuk_pendidikan }}</h1>
+                <h1>Data Guru Mapel {{ $mata_pelajaran->nama }} Di {{ $sekolah->nama }}</h1>
             </div>
             <div class="row">
                 <div class="col-lg-12">
@@ -23,27 +23,48 @@
                                 <table id="example" class="table table-bordered table-hover table-bordered">
                                     <thead>
                                         <tr>
-                                            <td>No.</td>
-                                            <td>Jenis Guru</td>
+                                            <th rowspan="2" class="text-center">No</th>
+                                            <th rowspan="2" class="text-center">Nama Guru Kelas</th>
+                                            <th colspan="2" class="text-center">Status Kepegawaian</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center">ASN</th>
+                                            <th class="text-center">NON ASN</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>
-                                                <a href="{{ URL::to('rekap/data-sebaran-guru/kelas/'.$bentuk_pendidikan) }}" class="btn btn-link">Guru Kelas</a>
-                                                <br>
-                                                @foreach ($mapel as $mapel)
-                                                <a href="{{ URL::to('rekap/data-sebaran-guru/mapel/'.$bentuk_pendidikan.'/'.$mapel->nama) }}" class="btn btn-link">Guru {{ $mapel->nama }}</a>
-                                                <br>
-                                                @endforeach
-                                            </td>
-                                        </tr>
+                                        @php
+                                            $tot_asn = 0;
+                                            $tot_non_asn = 0;
+                                        @endphp
+                                        @foreach ($dataGuruKelas as $item)
+                                            <tr>
+                                                <td class="text-right">{{ $loop->iteration }}</td>
+                                                <td>{{ $item->nama }}</td>
+                                                <td class="text-center">
+                                                    @if ($item->status_pns == 'ASN')
+                                                        @php
+                                                            $tot_asn += 1;
+                                                        @endphp
+                                                        <i class="fa fa-check"></i>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">
+                                                    @if ($item->status_pns == 'NON ASN')
+                                                    @php
+                                                        $tot_non_asn += 1;
+                                                    @endphp
+                                                    <i class="fa fa-check"></i>
+                                                @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td>No.</td>
-                                            <td>Jenis Guru</td>
+                                            <th colspan="2" class="text-center">Jumlah</th>
+                                            <th class="text-center">{{ $tot_asn }}</th>
+                                            <th class="text-center">{{ $tot_non_asn }}</th>                                            
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -66,7 +87,7 @@
     <script>
         $(document).ready(function() {
             $('#example').DataTable({
-                "paging": false
+                // "paging": false
             });
         });
 
