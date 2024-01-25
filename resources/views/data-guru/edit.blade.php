@@ -148,8 +148,12 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="">Mengajar</label>
-                                        <input type="text" name="mengajar" class="form-control" id=""
-                                            value="{{ $get->mengajar }}">
+                                        <select name="mengajar" class="form-control" id="">
+                                            <option value="">Pilih</option>
+                                            @foreach ($mapel as $item)
+                                                <option value="{{ $item->nama }}" {{ $item->nama == $get->mengajar ? 'selected' : '' }}>{{ $item->nama }}</option>
+                                            @endforeach
+                                        </select>                                       
                                     </div>
                                 </div>
                                 <div class="form-group">

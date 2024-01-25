@@ -18,6 +18,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Crypt;
 use App\Exports\DataGuruTemplateExport;
 use App\Models\Ms_JenjangPendidikanDikti;
+use App\Models\Ms_MataPelajaran;
 
 class DataGuruController extends Controller
 {
@@ -134,6 +135,7 @@ class DataGuruController extends Controller
         $data['prov'] = Province::all();
         $data['pangkat'] = Ms_Pangkat::where('is_aktif', true)->orderBy('gol', 'DESC')->get();
         $data['jenjang'] = Ms_JenjangPendidikanDikti::all();
+        $data['mapel'] = Ms_MataPelajaran::all();
         // return $data['getData'];
         return view('data-guru.edit', $data);
     }
@@ -218,7 +220,7 @@ class DataGuruController extends Controller
             'client_secret' => 'haloguru_secretkey',
         ])->get('http://103.242.124.108:3033/sync-users/'.$id);     
         
-
+dd($id);
         if ($check['message'] == 'User not found') {
             $asal_sekolah = Ms_DataSekolah::where('npsn', auth()->user()->bio->asal_satuan_pendidikan)->first();
             $password = '12345678';
