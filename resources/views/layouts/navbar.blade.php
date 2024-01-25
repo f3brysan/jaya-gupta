@@ -100,6 +100,7 @@
                         <span>Master Data</span></a>
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ URL::to('master/user') }}">Peran Pengguna</a></li>
+                        <li><a class="nav-link" href="{{ URL::to('master/mata-pelajaran') }}">Mata Pelajaran</a></li>
                         {{-- <li><a class="nav-link" href="{{ URL::to('master/satuan-pendidikan') }}">Satuan Pendidikan</a></li> --}}
                         <li><a class="nav-link" href="{{ URL::to('master/bidang-pengembangan') }}">Bidang
                                 Pengembangan</a>
@@ -107,7 +108,6 @@
                     </ul>
                 </li>
             @endrole
-
         </ul>
 
         {{-- <div class="mt-4 mb-4 p-3 hide-sidebar-mini">

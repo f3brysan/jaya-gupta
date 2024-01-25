@@ -11,6 +11,7 @@ use App\Http\Controllers\DataTendikController;
 use App\Http\Controllers\IndoController;
 use App\Http\Controllers\InovasiController;
 use App\Http\Controllers\Ms_BidangPengembanganController;
+use App\Http\Controllers\Ms_MapelController;
 use App\Http\Controllers\Ms_MataPelajaranController;
 use App\Http\Controllers\Ms_PesertaDidikController;
 use App\Http\Controllers\Ms_SatuanPendidikanController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\RekapPensiunController;
 use App\Http\Controllers\RekapSebaranGuru;
 use App\Http\Controllers\RekapSebaranTendik;
 use App\Http\Controllers\RombelController;
+use App\Http\Controllers\SebaranGuruController;
 use App\Http\Controllers\SebaranGuruKelasController;
 use App\Http\Controllers\StatusInovasiController;
 use App\Models\Ms_MataPelajaran;
@@ -85,6 +87,11 @@ Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
     Route::get('master/bidang-pengembangan/edit/{id}', [Ms_BidangPengembanganController::class, 'show']);
     Route::delete('master/bidang-pengembangan/delete/{id}', [Ms_BidangPengembanganController::class, 'delete']);
 
+    Route::get('master/mata-pelajaran', [Ms_MapelController::class, 'index']);
+    Route::post('master/mata-pelajaran/store', [Ms_MapelController::class, 'store']);
+    Route::get('master/mata-pelajaran/edit/{id}', [Ms_MapelController::class, 'show']);
+    Route::delete('master/mata-pelajaran/delete/{id}', [Ms_MapelController::class, 'delete']);
+
     Route::get('master/user', [Ms_UsersController::class, 'index']);
     Route::get('master/user-role/{id}', [Ms_UsersController::class, 'user_role']);
     Route::post('master/user-role/store', [Ms_UsersController::class, 'user_role_store']);
@@ -95,12 +102,17 @@ Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
     Route::get('rekap/data-pensiun/sekolah/{npsn}/{thn}', [RekapPensiunController::class, 'show_sekolah']);
 
     // Route::get('rekap/data-sebaran-guru', [RekapSebaranGuru::class, 'index']);
-    Route::get('rekap/data-sebaran-guru/{bentuk_pendidikan}', [SebaranGuruKelasController::class, 'index']);
-    Route::get('rekap/data-sebaran-guru/kelas/{bentuk_pendidikan}', [SebaranGuruKelasController::class, 'guru_kelas']);
-    Route::get('rekap/data-sebaran-guru/kelas/rombel/{bentuk_pendidikan}/{status_sekolah}', [SebaranGuruKelasController::class, 'rombel_sekolah']);
-    Route::get('rekap/data-sebaran-guru/kelas/guru-kelas/{bentuk_pendidikan}/{status_sekolah}', [SebaranGuruKelasController::class, 'guru_kelas_sekolah']);
-    Route::get('rekap/data-sebaran-guru/kelas/kekurangan/{bentuk_pendidikan}/{status_sekolah}', [SebaranGuruKelasController::class, 'kurang_guru']);
-    Route::get('rekap/data-sebaran-guru/kelas/detil-guru-kelas/{npsn}', [SebaranGuruKelasController::class, 'detil_guru_kelas_sekolah']);
+    Route::get('rekap/data-sebaran-guru/{bentuk_pendidikan}', [SebaranGuruController::class, 'index']);
+    Route::get('rekap/data-sebaran-guru/kelas/{bentuk_pendidikan}', [SebaranGuruController::class, 'guru_kelas']);
+    Route::get('rekap/data-sebaran-guru/kelas/rombel/{bentuk_pendidikan}/{status_sekolah}', [SebaranGuruController::class, 'rombel_sekolah']);
+    Route::get('rekap/data-sebaran-guru/kelas/guru-kelas/{bentuk_pendidikan}/{status_sekolah}', [SebaranGuruController::class, 'guru_kelas_sekolah']);
+    Route::get('rekap/data-sebaran-guru/kelas/kekurangan/{bentuk_pendidikan}/{status_sekolah}', [SebaranGuruController::class, 'kurang_guru']);
+    Route::get('rekap/data-sebaran-guru/kelas/detil-guru-kelas/{npsn}', [SebaranGuruController::class, 'detil_guru_kelas_sekolah']);
+
+    Route::get('rekap/data-sebaran-guru/mapel/{bentuk_pendidikan}/{mapel}', [SebaranGuruController::class, 'guru_mapel']);
+    Route::get('rekap/data-sebaran-guru/mapel/sekolah/{bentuk_pendidikan}/{mapel}/{status_sekolah}', [SebaranGuruController::class, 'guru_mapel_sekolah']);
+    Route::get('rekap/data-sebaran-guru/mapel/detil-guru-mapel/{npsn}/{mapel}', [SebaranGuruController::class, 'detil_guru_mapel_sekolah']);
+
     Route::get('rekap/data-sebaran-tendik', [RekapSebaranTendik::class, 'index']);
     Route::get('rekap/data-guru-penggerak', [RekapGuruPenggerak::class, 'index']);
 });
