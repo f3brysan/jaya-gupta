@@ -220,7 +220,7 @@ class DataGuruController extends Controller
             'client_secret' => 'haloguru_secretkey',
         ])->get('http://103.242.124.108:3033/sync-users/'.$id);     
         
-dd($id);
+
         if ($check['message'] == 'User not found') {
             $asal_sekolah = Ms_DataSekolah::where('npsn', auth()->user()->bio->asal_satuan_pendidikan)->first();
             $password = '12345678';
