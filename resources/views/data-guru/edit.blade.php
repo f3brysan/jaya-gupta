@@ -150,6 +150,7 @@
                                         <label for="">Mengajar</label>
                                         <select name="mengajar" class="form-control" id="">
                                             <option value="">Pilih</option>
+                                            <option value="Guru Kelas" {{ 'Guru Kelas' == $get->mengajar ? 'selected' : '' }}>Guru Kelas</option>
                                             @foreach ($mapel as $item)
                                                 <option value="{{ $item->nama }}" {{ $item->nama == $get->mengajar ? 'selected' : '' }}>{{ $item->nama }}</option>
                                             @endforeach
