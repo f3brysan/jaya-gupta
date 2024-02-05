@@ -266,7 +266,7 @@
             console.log(dataId);
             swal({
                 title: 'Apakah Anda Yakin?',
-                text: 'Data akan dihapus',
+                text: 'User '+ dataName+' akan dihapus',
                 icon: 'warning',
                 buttons: true,
                 dangerMode: true,
@@ -274,13 +274,13 @@
                 if (isConfirm) {
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ URL::to('master/mata-pelajaran/delete') }}/" + dataId,
+                        url: "{{ URL::to('master/user/delete') }}/" + dataId,
                         success: function(data) {
                             var oTable = $("#example").dataTable();
                             oTable.fnDraw(false);
                             iziToast.success({
                                 title: 'Berhasil !',
-                                message: "Data Mata Pelajaran " + dataName +
+                                message: "Data User " + dataName +
                                     " berhasil dihapus.",
                                 position: 'topRight'
                             });

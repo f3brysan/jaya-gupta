@@ -96,6 +96,7 @@ Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
     Route::get('master/user-role/{id}', [Ms_UsersController::class, 'user_role']);
     Route::post('master/user-role/store', [Ms_UsersController::class, 'user_role_store']);
     Route::post('master/user/store', [Ms_UsersController::class, 'user_store']);
+    Route::delete('master/user/delete/{id}', [Ms_UsersController::class, 'destroy']);
 
     Route::get('rekap/data-pensiun', [RekapPensiunController::class, 'index']);
     Route::get('rekap/data-pensiun/negeri/{thn}/{bp}', [RekapPensiunController::class, 'show_pendidikan']);

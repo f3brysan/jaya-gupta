@@ -151,7 +151,9 @@ class BiodataController extends Controller
                 $get_user_bidang_pengembangan = UserBidangPengembangan::where('bio_id', $bio_id)->get();                
                 foreach ($get_user_bidang_pengembangan as $bp) {                    
                     array_push($temp, $bp->bidang_pengembangan_id);
-                }                            
+                }             
+                
+                // dd($temp);
 
                 $send = Http::withHeaders([
                     'client_secret' => 'haloguru_secretkey',

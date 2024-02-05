@@ -10,6 +10,8 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Crypt;
 
 class Ms_UsersController extends Controller
 {
@@ -25,7 +27,7 @@ class Ms_UsersController extends Controller
                     ->addColumn('aksi', function ($user) {
                         $result = '<div class="btn-group" role="group" aria-label="Basic mixed styles example">
                 <button type="button" data-id="' . $user->id . '" data-name="' . $user->bio->nama . '" class="btn btn-info edit"><i class="fa fa-wrench"></i></button>
-                <button type="button" data-id="' . $user->id . '" class="btn btn-danger delete"><i class="fa fa-trash"></i></button>                
+                <button type="button" data-id="' . $user->id . '" data-name="' . $user->bio->nama . '" class="btn btn-danger delete"><i class="fa fa-trash"></i></button>                
               </div>';
                         return $result;
                     })
@@ -119,5 +121,30 @@ class Ms_UsersController extends Controller
                 return redirect('master/user')->with('error', 'Data gagal disimpan.');
             }
                     
+    }
+
+    public function destroy($id)
+    {
+        try {                        
+            DB::beginTransaction();
+            $user = User::where('id', $id)->delete();
+            if ($user) {
+                 $bio = Biodata::where('id', $id)->delete();
+            }
+
+            if ($bio) {
+                $send = Http::withHeaders([
+                    'client_secret' => 'haloguru_secretkey',
+                ])->delete('http://103.242.124.108:3033/sync-users/'.$id);
+
+                DB::commit();
+                return response()->json($bio);
+            }          
+
+           
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json($e->getMessage());
+        }
     }
 }
