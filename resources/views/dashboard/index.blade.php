@@ -383,7 +383,7 @@
                         </tr>
                         <tr>
                             <td style="width: 15%" valign="top">Penulis : </td>
-                            <td valign="top"><strong>{{ $item->owner->nama }}</strong></td>
+                            <td valign="top"><strong>{{ $item->owner->nama ?? ''}}</strong></td>
                         </tr>
                         <tr>
                             <td style="width: 20%" valign="top">Bid Pengembangan : </td>
