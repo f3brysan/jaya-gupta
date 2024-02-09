@@ -143,7 +143,7 @@
                                                     <td align="center">
                                                         @if ($item->nilai->status == 0)
                                                             <span class="badge badge-danger">Telah ditolak oleh :
-                                                                {{ $item->nilai->owner->nama }} <br> Pada :
+                                                                {{ $item->nilai->owner->nama ?? '' }} <br> Pada :
                                                                 {{ $item->nilai->created_at }}
                                                                 <br>
                                                                 Memo : {{ $item->nilai->memo }}
