@@ -25,121 +25,125 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="float-right">
-                            <a href="{{ URL::to('guru/inovasi/tambah') }}" class="btn btn-primary mb-3"> Tambah</a>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="example" class="table table-bordered table-hover table-bordered"
-                                style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th class="text-center">Judul</th>
-                                        <th class="text-center">Deskripsi</th>
-                                        <th class="text-center">Gambar</th>
-                                        <th class="text-center">Bidang Pengembangan</th>
-                                        <th class="text-center">Status</th>
-                                        <th class="text-center">Hasil</th>
-                                        <th class="text-center" style="width: 15%">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($inovasi as $item)
+                        <div class="card-body">
+                            <div class="float-left">
+                                <a href="{{ URL::to('guru/inovasi/tambah') }}" class="btn btn-primary mb-3"> Tambah</a>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="example" class="table table-bordered table-hover table-bordered"
+                                    style="width:100%">
+                                    <thead>
                                         <tr>
-                                            <td align="right">{{ $loop->iteration }}</td>
-                                            <td align="center">{{ $item->judul }}</td>
-                                            <td align="center">{!! Str::words(strip_tags($item->deskripsi), 10) !!}</td>
-                                            <td align="center"> <img src="{{ URL::to('/') }}/{{ $item->image }}"
-                                                    style="width: 80px" class="img-fluid img-thumbnail" alt=""></td>
-                                            <td class="text-left">
-                                                @foreach ($item->inovasibidangpengembangan as $item_inovasi)
-                                                    <li>{{ $item_inovasi->bidangpengembangan->nama }}</li>
-                                                @endforeach
-                                            </td>
-                                            <td align="center">
-                                                @switch($item->status)
-                                                    @case(0)
-                                                        <span class="badge badge-warning">Draft</span>
-                                                    @break
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Judul</th>
+                                            <th class="text-center">Deskripsi</th>
+                                            <th class="text-center">Gambar</th>
+                                            <th class="text-center">Bidang Pengembangan</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Hasil</th>
+                                            <th class="text-center" style="width: 15%">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($inovasi as $item)
+                                            <tr>
+                                                <td align="right">{{ $loop->iteration }}</td>
+                                                <td align="center">{{ $item->judul }}</td>
+                                                <td align="center">{!! Str::words(strip_tags($item->deskripsi), 10) !!}</td>
+                                                <td align="center"> <img src="{{ URL::to('/') }}/{{ $item->image }}"
+                                                        style="width: 80px" class="img-fluid img-thumbnail" alt="">
+                                                </td>
+                                                <td class="text-left">
+                                                    @foreach ($item->inovasibidangpengembangan as $item_inovasi)
+                                                        <li>{{ $item_inovasi->bidangpengembangan->nama }}</li>
+                                                    @endforeach
+                                                </td>
+                                                <td align="center">
+                                                    @switch($item->status)
+                                                        @case(0)
+                                                            <span class="badge badge-warning">Draft</span>
+                                                        @break
 
-                                                    @case(1)
-                                                        <span class="badge badge-success">Publish</span>
-                                                    @break
+                                                        @case(1)
+                                                            <span class="badge badge-success">Publish</span>
+                                                        @break
 
-                                                    @default
-                                                        <span class="badge badge-danger">Tidak Diketahui</span>
-                                                @endswitch
-                                            </td>
-                                            <td align="center">
-                                                @if ($item->nilai == null)
-                                                    <span class="badge badge-warning">Belum dinilai
-                                                    </span>
-                                                    <br>
-                                                @else
-                                                    @if ($item->nilai->status == 0)
-                                                        <span class="badge badge-info">Memo :
-                                                            {{ $item->nilai->memo }}</span>
+                                                        @default
+                                                            <span class="badge badge-danger">Tidak Diketahui</span>
+                                                    @endswitch
+                                                </td>
+                                                <td align="center">
+                                                    @if ($item->nilai == null)
+                                                        <span class="badge badge-warning">Belum dinilai
+                                                        </span>
                                                         <br>
-                                                        <br>
-                                                        <span class="badge badge-danger">Telah ditolak oleh :
-                                                            {{ $item->nilai->owner->nama }} <br> Pada :
-                                                            {{ $item->nilai->created_at }}</span>
                                                     @else
-                                                        <span class="badge badge-success">Telah disetujui oleh :
-                                                            {{ $item->nilai->owner->nama }} <br> Pada :
-                                                            {{ $item->nilai->created_at }}</span>
-                                                        <br>
+                                                        @if ($item->nilai->status == 0)
+                                                            <span class="badge badge-info">Memo :
+                                                                {{ $item->nilai->memo }}</span>
+                                                            <br>
+                                                            <br>
+                                                            <span class="badge badge-danger">Telah ditolak oleh :
+                                                                {{ $item->nilai->owner->nama }} <br> Pada :
+                                                                {{ $item->nilai->created_at }}</span>
+                                                        @else
+                                                            <span class="badge badge-success">Telah disetujui oleh :
+                                                                {{ $item->nilai->owner->nama }} <br> Pada :
+                                                                {{ $item->nilai->created_at }}</span>
+                                                            <br>
+                                                        @endif
                                                     @endif
-                                                @endif
-                                            </td>
-                                            <td align="center">
-                                                <div class="btn-group" role="group" aria-label="Basic example">
-                                                    <a href="javascript:void(0)" class="btn btn-info m-1" title="Lihat Data"
-                                                        data-toggle="modal" data-target="#modal{{ $item->id }}"><i
-                                                            class="far fa-eye"></i></a>
-                                                    @php
-                                                        $encryptUrl = Crypt::encrypt($item->id);
-                                                        if ($item->nilai != null) {
-                                                            if ($item->nilai->status == 1) {
-                                                                $disabled = 'disabled';
+                                                </td>
+                                                <td align="center">
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <a href="javascript:void(0)" class="btn btn-info m-1"
+                                                            title="Lihat Data" data-toggle="modal"
+                                                            data-target="#modal{{ $item->id }}"><i
+                                                                class="far fa-eye"></i></a>
+                                                        @php
+                                                            $encryptUrl = Crypt::encrypt($item->id);
+                                                            if ($item->nilai != null) {
+                                                                if ($item->nilai->status == 1) {
+                                                                    $disabled = 'disabled';
+                                                                } else {
+                                                                    $disabled = '';
+                                                                }
                                                             } else {
                                                                 $disabled = '';
                                                             }
-                                                        } else {
-                                                            $disabled = '';
-                                                        }
 
-                                                    @endphp
-                                                    <a href="{{ URL::to('guru/inovasi/edit') . '/' . $encryptUrl }}"
-                                                        class="btn btn-primary m-1 {{ $disabled }}"
-                                                        title="Edit Data"><i class="fas fa-edit"></i></a>
-                                                    <form action="{{ URL::to('guru/inovasi/hapus') }}" method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="id" id="id"
-                                                            value="{{ $encryptUrl }}">
-                                                        <button type="submit" class="btn btn-danger m-1 hapus-btn"
-                                                            {{ $disabled }} title="Hapus Data"><i
-                                                                class="fas fa-trash-alt"></i></button>
-                                                    </form>
-                                            </td>
-                        </div>
+                                                        @endphp
+                                                        <a href="{{ URL::to('guru/inovasi/edit') . '/' . $encryptUrl }}"
+                                                            class="btn btn-primary m-1 {{ $disabled }}"
+                                                            title="Edit Data"><i class="fas fa-edit"></i></a>
+                                                        <form action="{{ URL::to('guru/inovasi/hapus') }}" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="id" id="id"
+                                                                value="{{ $encryptUrl }}">
+                                                            <button type="submit" class="btn btn-danger m-1 hapus-btn"
+                                                                {{ $disabled }} title="Hapus Data"><i
+                                                                    class="fas fa-trash-alt"></i></button>
+                                                        </form>
+                                                </td>
+                            </div>
 
-                        </tr>
-                        @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th class="text-center">No</th>
-                                <th class="text-center">Judul</th>
-                                <th class="text-center">Deskripsi</th>
-                                <th class="text-center">Gambar</th>
-                                <th class="text-center">Bidang Pengembangan</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Hasil</th>
-                                <th class="text-center" style="width: 10%">Aksi</th>
                             </tr>
-                        </tfoot>
-                        </table>
+                            @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th class="text-center">No</th>
+                                    <th class="text-center">Judul</th>
+                                    <th class="text-center">Deskripsi</th>
+                                    <th class="text-center">Gambar</th>
+                                    <th class="text-center">Bidang Pengembangan</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Hasil</th>
+                                    <th class="text-center" style="width: 10%">Aksi</th>
+                                </tr>
+                            </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -184,9 +188,9 @@
                                 <td valign="top">{!! $item->deskripsi !!}</td>
                             </tr>
                             <tr>
-                                <td style="width: 15%" valign="top">Video : </td>                                
+                                <td style="width: 15%" valign="top">Video : </td>
                                 @if ($item->video !== null)
-                                    @if (str_contains($item->video, 'www.youtube.com/watch?'))                                    
+                                    @if (str_contains($item->video, 'www.youtube.com/watch?'))
                                         @php
                                             $link = explode('=', $item->video);
                                             if ($link > 1) {
@@ -201,7 +205,7 @@
                                                 allowfullscreen></iframe>
                                         </td>
                                     @else
-                                    <td><strong>Link Video Salah</strong></td>
+                                        <td><strong>Link Video Salah</strong></td>
                                     @endif
                                 @endif
                             </tr>

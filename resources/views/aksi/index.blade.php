@@ -19,7 +19,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="float-right">
+                       <div class="card-body">
+                        <div class="float-left">
                             <a href="{{ URL::to('guru/aksi-nyata/tambah') }}" class="btn btn-primary mb-3"> Tambah</a>
                         </div>
                         <div class="table-responsive">
@@ -111,24 +112,24 @@
                                                                 class="fas fa-trash-alt"></i></button>
                                                     </form>
                                             </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th class="text-center">Judul</th>
+                                        <th class="text-center">Deskripsi</th>
+                                        <th class="text-center">Gambar</th>
+                                        <th class="text-center">Bidang Pengembangan</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center">Hasil</th>
+                                        <th class="text-center" style="width: 10%">Aksi</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
-
-                        </tr>
-                        @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th class="text-center">No</th>
-                                <th class="text-center">Judul</th>
-                                <th class="text-center">Deskripsi</th>
-                                <th class="text-center">Gambar</th>
-                                <th class="text-center">Bidang Pengembangan</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Hasil</th>
-                                <th class="text-center" style="width: 10%">Aksi</th>
-                            </tr>
-                        </tfoot>
-                        </table>
+                       </div>
                     </div>
                 </div>
             </div>
@@ -167,9 +168,9 @@
                                 <td valign="top">{!! $item->deskripsi !!}</td>
                             </tr>
                             <tr>
-                                <td style="width: 15%" valign="top">Video : </td>                                
+                                <td style="width: 15%" valign="top">Video : </td>
                                 @if ($item->video !== null)
-                                    @if (str_contains($item->video, 'www.youtube.com/watch?'))                                    
+                                    @if (str_contains($item->video, 'www.youtube.com/watch?'))
                                         @php
                                             $link = explode('=', $item->video);
                                             if ($link > 1) {
@@ -184,7 +185,7 @@
                                                 allowfullscreen></iframe>
                                         </td>
                                     @else
-                                    <td><strong>Link Video Salah</strong></td>
+                                        <td><strong>Link Video Salah</strong></td>
                                     @endif
                                 @endif
                             </tr>
