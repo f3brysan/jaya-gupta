@@ -260,6 +260,40 @@
             });
         });
 
+        $(document).on("click", ".login-as", function () {
+            var dataId = $(this).data('id');
+            var dataName = $(this).data('name');
+            swal({
+                title: 'Login As',
+                text: 'Masuk sebagai '+ dataName+' ?',
+                icon: 'info',
+                buttons: true,
+                dangerMode: true,
+            }).then((isConfirm) => {
+                if (isConfirm) {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ URL::to('master/user/loginas') }}/" + dataId,
+                        success: function(data) {                            
+                            iziToast.success({
+                                title: 'Berhasil !',
+                                message: "Login sebgagai " + dataName +
+                                    " berhasil.",
+                                position: 'topRight'
+                            });
+                            window.location.replace("{{ URL::to('/') }}");
+                        }
+                    });
+                } else {
+                    iziToast.info({
+                        title: 'Info',
+                        message: 'Tidak ada yang terjadi.',
+                        position: 'topRight'
+                    });
+                }
+            });
+        });
+
         $(document).on('click', ".delete", function() {
             var dataId = $(this).data('id');
             var dataName = $(this).data('name');

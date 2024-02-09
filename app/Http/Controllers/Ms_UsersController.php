@@ -10,6 +10,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Crypt;
 
@@ -26,8 +27,9 @@ class Ms_UsersController extends Controller
                 return DataTables::of($user)
                     ->addColumn('aksi', function ($user) {
                         $result = '<div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                <button type="button" data-id="' . $user->id . '" data-name="' . $user->bio->nama . '" class="btn btn-info edit"><i class="fa fa-wrench"></i></button>
-                <button type="button" data-id="' . $user->id . '" data-name="' . $user->bio->nama . '" class="btn btn-danger delete"><i class="fa fa-trash"></i></button>                
+                <button type="button" title="Ubah Peran" data-id="' . $user->id . '" data-name="' . $user->bio->nama . '" class="btn btn-info edit"><i class="fa fa-wrench"></i></button>
+                <button type="button" title="Hapus" data-id="' . $user->id . '" data-name="' . $user->bio->nama . '" class="btn btn-danger delete"><i class="fa fa-trash"></i></button>   
+                <button type="button" title="Login As" data-id="' . $user->id . '" data-name="' . $user->bio->nama . '" class="btn btn-primary login-as"><i class="fa fa-arrow-right"></i></button>                  
               </div>';
                         return $result;
                     })
@@ -145,6 +147,25 @@ class Ms_UsersController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json($e->getMessage());
+        }
+    }
+
+    public function loginas(Request $request, $id)
+    {
+        
+        $getUser = User::where('id', $id)->first();
+        // dd($getUser);
+
+        // jika ada, maka arahkan ke dashboard
+        if ($getUser) {
+            Auth::logout();
+            Auth::loginUsingId($getUser->id);
+            $request->session()->regenerate();
+
+            return response()->json(true);
+        } else {
+            Auth::logout();
+            return response()->json(false);
         }
     }
 }
