@@ -15,7 +15,7 @@ class Biodata extends Model
         
     ];   
     public $incrementing = false;
-    // protected $keyType = 'uuid';
+    protected $keyType = 'uuid';
 
     public function user()
     {
