@@ -19,25 +19,28 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="float-right">
-                            <a href="javascript:void(0)" class="btn btn-primary mb-3" id="add-btn"> Tambah</a>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="example" class="table table-bordered table-hover table-bordered"
-                                style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th class="text-center">Nama Pengguna</th>
-                                        <th class="text-center">Email</th>
-                                        <th class="text-center">Peran</th>
-                                        <th class="text-center">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
+                        <div class="col-md-12">
+                            <div class="float-left mt-2">
+                                <a href="javascript:void(0)" class="btn btn-primary mb-3" id="add-btn"> Tambah</a>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="example" class="table table-bordered table-hover table-bordered"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">NUPTK</th>
+                                            <th class="text-center">Nama Pengguna</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Peran</th>
+                                            <th class="text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>                        
                     </div>
                 </div>
             </div>
@@ -106,13 +109,13 @@
                         </div>
                         <div class="form-group">
                             <div class="control-label">Password</div>
-                            <input type="text" id="password" name="password" class="form-control" value="123456" readonly>
+                            <input type="text" id="password" name="password" class="form-control" value="12345678" readonly>
                         </div>
                         <div class="form-group">
                             <div class="control-label">Peran</div>
                             <select class="js-example-basic-multiple2 form-control" id="newroles" name="newroles[]"
                                 multiple="multiple" style="width: 100%" required>
-                                @foreach ($roles_add as $item)
+                                @foreach ($rolesToAdd as $item)
                                     <option value="{{ $item->name }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
@@ -122,7 +125,7 @@
                             <code style="font-size: 8pt">*Untuk Kepala Sekolah, Operator, dan Tendik. Harap memilih asal sekolah.</code>
                             <select name="asal_satuan_sekolah" id="asal_satuan_sekolah" class="form-control js-example-basic-single" style="width: 100%">
                                 <option value="">Pilih</option>
-                                @foreach ($sekolah as $item)
+                                @foreach ($schools as $item)
                                     <option value="{{ $item->npsn }}">{{ $item->nama }}</option>
                                 @endforeach
                             </select>
@@ -159,6 +162,10 @@
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
                         className: 'text-right'
+                    },
+                    {
+                        data: 'nuptk',
+                        name: 'nuptk',
                     },
                     {
                         data: 'nama',

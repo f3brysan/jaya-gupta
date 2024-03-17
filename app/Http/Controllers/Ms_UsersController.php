@@ -20,7 +20,7 @@ class Ms_UsersController extends Controller
     {
         try {
             // Fetch users with their roles and bio information
-            $users = User::with('roles', 'bio')->get();
+            $users = User::with('roles', 'bio')->orderBy('name')->get();
 
             // Fetch roles excluding 'tamu'
             $roles = Role::where('name', '!=', 'tamu')->get();
@@ -38,7 +38,7 @@ class Ms_UsersController extends Controller
                         // Generate action buttons for each user
                         return '<div class="btn-group" role="group" aria-label="Basic mixed styles example">
                             <button type="button" title="Ubah Peran" data-id="' . $user->id . '" data-name="' . $user->bio->nama . '" class="btn btn-info edit"><i class="fa fa-wrench"></i></button>
-                            <button type="button" title="Hapus" data-id="' . $user->id . '" data-name="' . $user->bio->nama . '" class="btn btn-danger delete"><i class="fa fa-trash"></i></button>   
+                            
                             <button type="button" title="Login As" data-id="' . $user->id . '" data-name="' . $user->bio->nama . '" class="btn btn-primary login-as"><i class="fa fa-arrow-right"></i></button>                  
                         </div>';
                     })
