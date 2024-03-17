@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +15,7 @@ class Biodata extends Model
         
     ];   
     public $incrementing = false;
-    protected $keyType = 'uuid';
+    // protected $keyType = 'uuid';
 
     public function user()
     {
