@@ -23,6 +23,8 @@
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/bootstrap/css/bootstrap.min.css">
+    
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ URL::to('/') }}/assets/modules/fontawesome/css/all.min.css">
 
     <!-- CSS Libraries -->
