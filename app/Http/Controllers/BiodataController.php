@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use App\Models\Ms_BidangPengembangan;
+use App\Models\Ms_JenjangPendidikanDikti;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\UserBidangPengembangan;
 use Illuminate\Support\Facades\Session;
@@ -27,14 +28,15 @@ class BiodataController extends Controller
     public function show()
     {
         $id = auth()->user()->id;
-        $data['biodata'] = Biodata::where('id',$id)->first();        
+        $data['get'] = Biodata::where('id',$id)->first();        
         $data['roles'] = auth()->user()->getRoleNames();
         $data['prov'] = Province::all();
         $data['kab']= Regency::all();
-        // $data['matpel'] = Ms_MataPelajaran::orderBy('nama', 'ASC')->get();
         $data['pangkat'] = Ms_Pangkat::where('is_aktif', true)->orderBy('gol', 'DESC')->get();
         $data['asal_satuan'] = Ms_DataSekolah::orderBy('npsn','ASC')->get();        
         $data['bidang_pengembangan'] = UserBidangPengembangan::where('bio_id', $id)->with('bidangpengembangan')->get();
+        $data['jenjang'] = Ms_JenjangPendidikanDikti::all();
+        $data['mapel'] = Ms_MataPelajaran::all();
         $user_bp = $data['bidang_pengembangan']->pluck('bidang_pengembangan_id');
 
         if (count($user_bp)>0) {
@@ -49,10 +51,20 @@ class BiodataController extends Controller
 
     public function store(Request $request)
     {    
+        $id = Crypt::decrypt($request->id);        
+        $nama = $request->gelardepan . ' ' . $request->nama_lengkap . ' ' . $request->gelar_blkg;
+        DB::beginTransaction();
+        
+        $user = User::where('id', $id)->update([
+            'name' => $nama,
+            'email' => $request->email,
+            'nuptk' => $request->nuptk
+        ]);
+
         if ($request->file('image')) {
             $path =$request->file('image')->store('/images/profile', ['disk' =>   'my_files']);
         }else{
-            $check = Biodata::where('id', $request->id)->first();
+            $check = Biodata::where('id', $id)->first();
             if ($check) {
                 $path = $check->profile_picture;
             } else {
@@ -60,29 +72,117 @@ class BiodataController extends Controller
             }                    
         }
 
-        $nama = $request->gelar_depan . ' ' . $request->nama_lengkap . ' ' . $request->gelar_blkg;     
-        // dd($nama);   
-        $update = Biodata::where('id', $request->id)->update([
+        $bio = Biodata::where('id', $id)->update([
             'nama' => $nama,
             'nama_lengkap' => $request->nama_lengkap,
             'gelar_depan' => $request->gelar_depan,
             'gelar_belakang' => $request->gelar_blkg,
-            'nip' => $request->nip,                       
-            'gender' => $request->gender,            
-            'tanggallahir' => $request->tanggallahir,            
+            'nuptk' => $request->nuptk,
+            'tempatlahir' => $request->tempatlahir,
+            'tanggallahir' => $request->tgllahir,
+            'provdom' => $request->provdom,
+            'kabdom' => $request->kabdom,
+            'kecdom' => $request->kecdom,
+            'keldom' => $request->keldom,
+            'alamatdom' => $request->desadom,
+            'kodepos' => $request->kodepos,
+            'telepon' => $request->telepon,
             'wa' => $request->wa,
+            'nip' => $request->nip,
+            'golongan' => $request->golongan,
+            'status_kepegawaian' => $request->status_kepegawaian,
+            'pendidikan_terakhir' => $request->jenjang,
+            'mengajar' => $request->mengajar,
+            'prodi' => $request->jurusan,
+            'sertifikasi' => $request->sertifikasi,
+            'tugas_tambahan' => $request->tugas_tambahan,
+            'sk_cpns' => $request->sk_cpns,
+            'tgl_cpns' => $request->tgl_cpns,
+            'sk_pengangkatan' => $request->sk_pengangkatan,
+            'tmt_pengangkatan' => $request->tmt_pengangkatan,
+            'sumber_gaji' => $request->sumber_gaji,
+            'nm_ibu' => $request->nm_ibu,
+            'status_perkawinan' => $request->status_perkawinan,
+            'nm_pasangan' => $request->nm_pasangan,
+            'nip_pasangan' => $request->nip_pasangan,
+            'pekerjaan_pasangan' => $request->pekerjaan_pasangan,
+            'tmt_pns' => $request->tmt_pns,
+            'npwp' => $request->npwp,
+            'bank' => $request->bank,
+            'norek_bank' => $request->norek_bank,
+            'nama_norek' => $request->nama_norek,
+            'nik' => $request->nik,
+            'no_kk' => $request->no_kk,
+            'is_penggerak' => $request->is_penggerak,
+            'jam_tgs_tambahan' => $request->jam_tgs_tambahan,
+            'jjm' => $request->jjm,
+            'total_jjm' => $request->jjm + $request->jam_tgs_tambahan,
+            'siswa' => $request->siswa,
+            'status_sekolah' => $request->status_sekolah,
+            'gender' => $request->gender,
+            'asal_satuan_pendidikan' => $request->asal_satuan,
+            'lembaga_pengangkatan' => $request->lembaga_pengangkatan,
             'profile_picture' => $path
         ]);
 
-        $send = Http::withHeaders([
+        $check = Http::withHeaders([
             'client_secret' => 'haloguru_secretkey',
-        ])->patch('http://103.242.124.108:3033/sync-users/'.$request->id, [                                        
-                    'nama' => $nama                                                                                                                    
-                ]);
+        ])->get('http://103.242.124.108:3033/sync-users/'.$id);     
 
-        // return $send;
+        if ($check['message'] == 'User not found') {
+            $asal_sekolah = Ms_DataSekolah::where('npsn', auth()->user()->bio->asal_satuan_pendidikan)->first();
+            $password = '12345678';
+            $date = strtotime($request->tgllahir);
+                    $password = date('d', $date) . date("m", $date) . date("Y", $date);
+            $send = Http::withHeaders([
+                'client_secret' => 'haloguru_secretkey',
+            ])->post('http://103.242.124.108:3033/sync-users', [
+                        'id' => $id,
+                        'email' => $request->email,
+                        'nama' => $nama,
+                        'password' => $password,
+                        'roleId' => 'gtk',
+                        'foto' => null,
+                        'biografi' => null,
+                        'firebase_token' => null,
+                        'gtk' => [
+                            'nip_nuptk' => $request->nuptk,
+                            'mata_pelajaran' => null,
+                            'media_pembelajaran' => [                                
+                            ],
+                            'pangkat' => $request->status_kepegawaian,
+                            'golongan' => $request->golongan,
+                            'jabatan' => null,
+                            'unit_kerja' => $asal_sekolah->nama,
+                            'riwayat_pendidikan' => $request->jurusan,
+                        ]
+                    ]);
+        } else {
+            $send = Http::withHeaders([
+                'client_secret' => 'haloguru_secretkey',
+            ])->patch('http://103.242.124.108:3033/sync-users/'.$id, [                    
+                        'email' => $request->email,
+                        'nama' => $nama,                                                           
+                        'biografi' => null,                    
+                        'gtk' => [
+                            'nip_nuptk' => $request->nuptk,
+                            'mata_pelajaran' => null,
+                            'media_pembelajaran' => [],
+                            'pangkat' => $request->status_kepegawaian,
+                            'golongan' => $request->golongan,
+                            'jabatan' => null,                        
+                            'riwayat_pendidikan' => $request->jurusan
+                        ]
+                    ]);
+        }
 
-        return redirect('/biodata')->with('success', 'Perubahan berhasil disimpan.');
+        if ($send['message'] == 'success') {
+            DB::commit();
+            return redirect('/biodata')->with('success', 'Perubahan berhasil disimpan.');
+        } else {
+            DB::rollBack();
+            return redirect('/biodata')->with('error', 'Data gagal disimpan. '.$send['message']);
+        }
     }
 
     public function show_password()
@@ -95,12 +195,7 @@ class BiodataController extends Controller
     }
 
     public function store_password(Request $request)
-    {
-        // dd($request->all());
-        // $request->validate([
-        //     'old_password' => 'required',
-        //     'new_password' => 'required|min:8|confirmed',
-        // ]);
+    {        
         $id = auth()->user()->id;
         $user = auth()->user();
 
@@ -151,9 +246,7 @@ class BiodataController extends Controller
                 $get_user_bidang_pengembangan = UserBidangPengembangan::where('bio_id', $bio_id)->get();                
                 foreach ($get_user_bidang_pengembangan as $bp) {                    
                     array_push($temp, $bp->bidang_pengembangan_id);
-                }             
-                
-                // dd($temp);
+                }                                             
 
                 $send = Http::withHeaders([
                     'client_secret' => 'haloguru_secretkey',
@@ -162,9 +255,7 @@ class BiodataController extends Controller
                                 "media_pembelajaran" => $temp
                         ]
                     ]);
-            }
-
-            // return $send;
+            }           
 
             if($send['message'] == "success"){
                 DB::commit();
