@@ -23,6 +23,10 @@
                             <div class="float-left mt-2">
                                 <a href="javascript:void(0)" class="btn btn-primary mb-3" id="add-btn"> Tambah</a>
                             </div>
+                            <div class="float-left mt-2">
+                                <a href="javascript:void(0)" class="btn btn-primary mb-3 ml-2" id="sync-halo-guru"> Sync
+                                    Halo Guru</a>
+                            </div>
                             <div class="table-responsive">
                                 <table id="example" class="table table-bordered table-hover table-bordered"
                                     style="width:100%">
@@ -40,7 +44,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
             </div>
@@ -81,8 +85,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="tambah-modal" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
+    <div class="modal fade" id="tambah-modal" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -92,7 +95,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{URL::to('master/user/store')}}" method="POST">
+                    <form action="{{ URL::to('master/user/store') }}" method="POST">
                         @csrf
                         <input type="hidden" id="id" name="id">
                         <div class="form-group">
@@ -109,7 +112,8 @@
                         </div>
                         <div class="form-group">
                             <div class="control-label">Password</div>
-                            <input type="text" id="password" name="password" class="form-control" value="12345678" readonly>
+                            <input type="text" id="password" name="password" class="form-control" value="12345678"
+                                readonly>
                         </div>
                         <div class="form-group">
                             <div class="control-label">Peran</div>
@@ -122,8 +126,10 @@
                         </div>
                         <div class="form-group">
                             <div class="control-label">Asal Sekolah </div>
-                            <code style="font-size: 8pt">*Untuk Kepala Sekolah, Operator, dan Tendik. Harap memilih asal sekolah.</code>
-                            <select name="asal_satuan_sekolah" id="asal_satuan_sekolah" class="form-control js-example-basic-single" style="width: 100%">
+                            <code style="font-size: 8pt">*Untuk Kepala Sekolah, Operator, dan Tendik. Harap memilih asal
+                                sekolah.</code>
+                            <select name="asal_satuan_sekolah" id="asal_satuan_sekolah"
+                                class="form-control js-example-basic-single" style="width: 100%">
                                 <option value="">Pilih</option>
                                 @foreach ($schools as $item)
                                     <option value="{{ $item->npsn }}">{{ $item->nama }}</option>
@@ -144,7 +150,8 @@
 @push('js-custom')
     <!-- JS Libraies -->
     <script src="{{ URL::to('/') }}/assets/modules/datatables/datatables.min.js"></script>
-    <script src="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ URL::to('/') }}/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js">
+    </script>
     <script src="{{ URL::to('/') }}/assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
     <script src="{{ URL::to('/') }}/assets/modules/jquery-ui/jquery-ui.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -201,6 +208,35 @@
                 });
                 $('.js-example-basic-single').select2();
             });
+        });
+
+        $("#sync-halo-guru").click(function() {
+            var txt_button = `<i
+                        class="fa fa-circle-o-notch fa-spin"></i> Proses Sinkron. Harap Tunggu sebentar . . .`;
+            $("#sync-halo-guru").html(txt_button);
+            $('#sync-halo-guru').prop('disabled', true);
+            $("#sync-halo-guru").removeClass("btn-primary btn-glow");
+            $("#sync-halo-guru").addClass("btn-secondary");
+
+            iziToast.info({
+                title: 'Informasi',
+                message: 'Sedang melakukan proses sinkronasi dengan Halo Guru.',
+                position: 'topRight'
+            });
+
+            $.get("{{ URL::to('master/sync-halo-guru') }}",
+                function(data) {
+                    iziToast.success({
+                        title: 'Berhasil',
+                        message: 'Ada ' + data.insert + " baru, dan " +data.update+ " diperbarui.",
+                        position: 'topRight'
+                    });
+                    $("#sync-halo-guru").removeClass("btn-secondary");
+                    $("#sync-halo-guru").addClass("btn-primary btn-glow");
+                    var txt_button = `Sync Halo Guru`;
+                    $("#sync-halo-guru").html(txt_button);
+                    $('#sync-halo-guru').prop('disabled', false);
+                });
         });
 
         $("#add-btn").click(function() {
@@ -267,12 +303,12 @@
             });
         });
 
-        $(document).on("click", ".login-as", function () {
+        $(document).on("click", ".login-as", function() {
             var dataId = $(this).data('id');
             var dataName = $(this).data('name');
             swal({
                 title: 'Login As',
-                text: 'Masuk sebagai '+ dataName+' ?',
+                text: 'Masuk sebagai ' + dataName + ' ?',
                 icon: 'info',
                 buttons: true,
                 dangerMode: true,
@@ -281,7 +317,7 @@
                     $.ajax({
                         type: "POST",
                         url: "{{ URL::to('master/user/loginas') }}/" + dataId,
-                        success: function(data) {                            
+                        success: function(data) {
                             iziToast.success({
                                 title: 'Berhasil !',
                                 message: "Login sebgagai " + dataName +
@@ -307,7 +343,7 @@
             console.log(dataId);
             swal({
                 title: 'Apakah Anda Yakin?',
-                text: 'User '+ dataName+' akan dihapus',
+                text: 'User ' + dataName + ' akan dihapus',
                 icon: 'warning',
                 buttons: true,
                 dangerMode: true,

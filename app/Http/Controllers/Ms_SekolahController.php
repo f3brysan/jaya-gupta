@@ -136,7 +136,7 @@ class Ms_SekolahController extends Controller
         
         $record = $request->all();
         unset($record['_token']);
-        // dd($record);
+        
         DB::beginTransaction();
         $update = Ms_DataSekolah::where('npsn', $request->npsn)->update($record);
         $npsn_enkripsi = Crypt::encrypt($request->npsn);

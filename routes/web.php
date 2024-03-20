@@ -98,6 +98,7 @@ Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
     Route::post('master/user/store', [Ms_UsersController::class, 'user_store']);
     Route::delete('master/user/delete/{id}', [Ms_UsersController::class, 'destroy']);
     Route::POST('master/user/loginas/{id}', [Ms_UsersController::class, 'loginas']);
+    Route::get('master/sync-halo-guru', [Ms_UsersController::class, 'syncHaloGuru']);
 
     Route::get('rekap/data-pensiun', [RekapPensiunController::class, 'index']);
     Route::get('rekap/data-pensiun/negeri/{thn}/{bp}', [RekapPensiunController::class, 'show_pendidikan']);
@@ -181,6 +182,8 @@ Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function
     Route::get('admin/data-rombel/detail/{npsn}', [RombelController::class, 'detail_admin']);
     
     Route::get('admin/data-pengawas', [DataPengawasController::class, 'index_admin']);
+    Route::get('admin/data-pengawas/tambah', [DataPengawasController::class, 'create']);
+    Route::post('admin/data-pengawas/store', [DataPengawasController::class, 'store']);
 });
 
 Route::get('ajax/getkabupaten/{id}', [IndoController::class, 'getkabupaten']);
