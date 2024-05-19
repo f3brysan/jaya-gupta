@@ -30,7 +30,7 @@ class APIController extends Controller
     }
 
     public function getBidangKompetensi()
-    {
+    {        
         $getData = Ms_BidangPengembangan::all();
 
         return response()->json(['output' => $getData]);
@@ -55,32 +55,37 @@ class APIController extends Controller
 
     public function get_praktik_baik()
     {
-        $getData = Inovasi::with('nilai.owner', 'owner', 'inovasibidangpengembangan.bidangpengembangan')->has('nilai')->where('status', 1)->whereHas('nilai', function ($q) {
-            $q->where('status', 1);
-        })->get();
-
-        $data = array();
-        foreach ($getData as $item) {
-            $data[$item->id]['id'] = $item->id;
-            $data[$item->id]['judul'] = $item->judul;
-            $data[$item->id]['deskripsi'] = $item->deskripsi;
-            $data[$item->id]['video'] = $item->video;
-            $data[$item->id]['owner'] = $item->owner->nama;
-            // $data[$item->id]['bidang_pengembangan'] = $item->inovasibidangpengembangan;
-            $i = 0;
-            foreach ($item->inovasibidangpengembangan as $bp) {
-                $data[$item->id]['bidang_pengembangan'][$i++] = $bp->bidangpengembangan->nama;
+        try {
+            $getData = Inovasi::with('nilai.owner', 'owner', 'inovasibidangpengembangan.bidangpengembangan')->has('nilai')->where('status', 1)->whereHas('nilai', function ($q) {
+                $q->where('status', 1);
+            })->get();
+    
+            $data = array();
+            foreach ($getData as $item) {
+                $data[$item->id]['id'] = $item->id;
+                $data[$item->id]['judul'] = $item->judul;
+                $data[$item->id]['deskripsi'] = $item->deskripsi;
+                $data[$item->id]['video'] = $item->video;
+                $data[$item->id]['owner'] = $item->owner->nama ?? '';
+                // $data[$item->id]['bidang_pengembangan'] = $item->inovasibidangpengembangan;
+                $i = 0;
+                foreach ($item->inovasibidangpengembangan as $bp) {
+                    $data[$item->id]['bidang_pengembangan'][$i++] = $bp->bidangpengembangan->nama;
+                }
+    
+                $data[$item->id]['dikurasi_pada'] = $item->nilai->created_at;
+                $data[$item->id]['dikurasi_oleh'] = $item->nilai->owner->nama ?? '';
+                $data[$item->id]['link_sumber'] = $item->link;
+                $data[$item->id]['dokumen_pendukung'] = $item->document == NULL ? NULL : URL::to('/').'/'.$item->document;
+                $data[$item->id]['slug'] = URL::to('/').'/api/praktik-baik/detail/'.$item->slug;
+                $data[$item->id]['image'] = $item->image == NULL ? NULL : URL::to('/').'/'.$item->image;
+                $data[$item->id]['jenis'] = $item->jenis == 1 ? 'Inovasi Praktik Baik' : 'Aksi Nyata Praktik Baik';
             }
-            $data[$item->id]['dikurasi_pada'] = $item->nilai->created_at;
-            $data[$item->id]['dikurasi_oleh'] = $item->nilai->owner->nama;
-            $data[$item->id]['link_sumber'] = $item->link;
-            $data[$item->id]['dokumen_pendukung'] = $item->document == NULL ? NULL : URL::to('/').'/'.$item->document;
-            $data[$item->id]['slug'] = URL::to('/').'/api/praktik-baik/detail/'.$item->slug;
-            $data[$item->id]['image'] = $item->image == NULL ? NULL : URL::to('/').'/'.$item->image;
-            $data[$item->id]['jenis'] = $item->jenis == 1 ? 'Inovasi Praktik Baik' : 'Aksi Nyata Praktik Baik';
+    
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), $e->getCode());
         }
-
-        return response()->json($data);
     }
 
     public function detail_praktik_baik($slug)
