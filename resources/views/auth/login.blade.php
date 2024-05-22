@@ -124,8 +124,7 @@
                         {{-- <div class="mt-5 text-muted text-center">
                             Belum Memiliki Akun? <a href="auth-register.html">Daftar</a>
                         </div> --}}
-                        <div class="simple-footer">
-                            Copyright &copy; 2023
+                        <div class="simple-footer">                            
                         </div>
                     </div>
                 </div>
