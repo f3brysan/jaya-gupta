@@ -19,9 +19,9 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="col-md-12">
-                            <div class="float-left">
+                            <div class="mt-4 float-left">
                                 {{-- <a href="{{ Url::to('data-guru/tambah') }}" class="btn btn-primary mt-2 mb-3"> Tambah</a> --}}
-                                <a href="{{ URL::to('data-guru/export-template') }}" class="btn btn-primary mb-3"
+                                <a href="{{ URL::to('/') }}/assets/template/template_excel_data_guru.xlsx" target="_blank" class="btn btn-primary mb-3"
                                     onclick="unduhExcel()"><i class="fa fa-download"></i> Unduh Template Excel</a>
                                 <a href="javascript:void(0)" class="btn btn-info mb-3" onclick="importExcel()"><i
                                         class="fa fa-upload"></i> Unggah Data Excel</a>
