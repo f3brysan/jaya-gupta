@@ -28,7 +28,7 @@
                             Aksi Nyata Praktik Baik</span></a></li>
             @endrole
 
-            @role(['kepalasekolah'])
+            @role(['kepalasekolah','operator'])
                 <li class="menu-header">Sekolah dan GTK</li>
                 <li><a class="nav-link"
                         href="{{ URL::to('data-sekolah/show-detail/' . Crypt::encrypt(auth()->user()->bio->asal_satuan_pendidikan)) }}"><i

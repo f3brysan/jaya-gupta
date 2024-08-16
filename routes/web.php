@@ -120,7 +120,7 @@ Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
     Route::get('rekap/data-guru-penggerak', [RekapGuruPenggerak::class, 'index']);
 });
 
-Route::middleware(['auth:web', 'role:superadmin|kepalasekolah'])->group(function () {
+Route::middleware(['auth:web', 'role:superadmin|kepalasekolah|operator'])->group(function () {
     Route::get('data-sekolah', [Ms_SekolahController::class, 'index']);
     Route::get('data-sekolah/show/{id_level_wil}/{kode_wil}', [Ms_SekolahController::class, 'sekolah_kec']);
     Route::get('data-sekolah/show-detail/{npsn}', [Ms_SekolahController::class, 'detil_sekolah']);
