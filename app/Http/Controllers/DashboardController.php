@@ -20,6 +20,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        
         if (auth()->user()->hasRole('guru')) {
             $data['all'] = Inovasi::where('bio_id', auth()->user()->id)->count();
             $data['tolak'] = Inovasi::with('nilai.owner', 'owner')
