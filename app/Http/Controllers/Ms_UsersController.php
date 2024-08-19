@@ -188,18 +188,14 @@ class Ms_UsersController extends Controller
                 }
             }
 
-            // Commit transaction if successful
-            if ($insertHaloGuru) {
+            // Commit transaction if successful            
                 DB::commit();
-                return redirect('master/user')->with('success', 'Data berhasil disimpan.');
-            } else {
-                // Roll back transaction if unsuccessful
-                DB::rollBack();
-                return redirect('master/user')->with('error', 'Data gagal disimpan.');
-            }
+                return redirect('master/user')->with('success', 'Data berhasil disimpan.');                                       
         } catch (\Exception $e) {
             // Return error message if an exception occurs
-            return $e->getMessage();
+             // Roll back transaction if unsuccessful
+             DB::rollBack();
+             return redirect('master/user')->with('error', 'Data gagal disimpan. ('.$e->getMessage().')');
         }
     }
 
