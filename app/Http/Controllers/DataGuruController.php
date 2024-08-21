@@ -403,8 +403,7 @@ class DataGuruController extends Controller
                             'lembaga_pengangkatan' => $row[26],
                         ];
 
-                        // create biodata
-                        dd($insertData);
+                        // create biodata                        
                         $createBio = Biodata::create($insertData);
 
                         // get the asal sekolah

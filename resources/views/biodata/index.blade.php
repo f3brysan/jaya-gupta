@@ -145,8 +145,8 @@
                                                             <option value="">-- Pilih Jenjang --</option>
                                                             @foreach ($jenjang as $item)
                                                                 <option value="{{ $item->kode }}"
-                                                                    {{ $get->pendidikan_terakhir == $item->nama ? 'selected' : '' }}>
-                                                                    {{ $item->nama }}</option>
+                                                                    {{ $get->pendidikan_terakhir == $item->kode ? 'selected' : '' }}>
+                                                                    {{ $item->kode }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
