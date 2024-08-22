@@ -40,7 +40,7 @@ class RombelController extends Controller
             $kelas[$item->nama_rombel]['wali_kelas'] = $item->wali_kelas;
             $kelas[$item->nama_rombel]['ruangan'] = $item->ruangan;
             $kelas[$item->nama_rombel]['kurikulum'] = $item->kurikulum;
-            $kelas[$item->nama_rombel]['nm_wali'] = $item->walikelas->nama;
+            $kelas[$item->nama_rombel]['nm_wali'] = $item->walikelas->nama ?? 'Belum diseting';
             $kelas[$item->nama_rombel]['L'] = 0;
             $kelas[$item->nama_rombel]['P'] = 0;
             $kelas[$item->nama_rombel]['total'] = 0;
