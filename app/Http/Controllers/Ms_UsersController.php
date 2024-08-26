@@ -189,13 +189,13 @@ class Ms_UsersController extends Controller
             }
 
             // Commit transaction if successful            
-                DB::commit();
-                return redirect('master/user')->with('success', 'Data berhasil disimpan.');                                       
+            DB::commit();
+            return redirect('master/user')->with('success', 'Data berhasil disimpan.');
         } catch (\Exception $e) {
             // Return error message if an exception occurs
-             // Roll back transaction if unsuccessful
-             DB::rollBack();
-             return redirect('master/user')->with('error', 'Data gagal disimpan. ('.$e->getMessage().')');
+            // Roll back transaction if unsuccessful
+            DB::rollBack();
+            return redirect('master/user')->with('error', 'Data gagal disimpan. (' . $e->getMessage() . ')');
         }
     }
 
@@ -253,100 +253,112 @@ class Ms_UsersController extends Controller
         try {
             // Retrieve all users with the role of 'guru' and their associated bio
             $guruUsers = User::with('bio')->role('guru')->get();
-        
+
             // Initialize variables to track the total number of successful syncs
             $insertedUserCount = 0;
             $updatedUserCount = 0;
-        
+
             // Iterate through each guru user
             foreach ($guruUsers as $guru) {
                 // Check if the user exists in the external system
                 $check = Http::withHeaders([
                     'client_secret' => 'haloguru_secretkey',
                 ])->get('http://103.242.124.108:3033/sync-users/' . $guru->id);
-        
+
                 // If the user is not found in the external system, sync the user
                 if ($check['message'] == "User not found") {
                     // Retrieve the school name of the guru
                     $asalSekolah = Ms_DataSekolah::where('npsn', $guru->bio->asal_satuan_pendidikan)->first();
-                    $password = '12345678';
-        
+
+                    if (empty($guru->bio->tanggallahir)) {
+                        $password = '12345678';
+                    } else {
+                        $date = strtotime($guru->bio->tanggallahir);
+                        $password = date('d', $date) . date("m", $date) . date("Y", $date);
+                    }
+                    
+                    if (empty($guru->nuptk)) {
+                        $nuptk = mt_rand(1000000000000000, 9999999999999999);
+                    } else {
+                        $nuptk = $guru->nuptk;
+                    }                    
+
                     // Send a request to sync the user
                     $insert = Http::withHeaders([
                         'client_secret' => 'haloguru_secretkey',
                     ])->post('http://103.242.124.108:3033/sync-users', [
-                        'id' => $guru->id,
-                        'email' => $guru->email,
-                        'nama' => $guru->name,
-                        'password' => $password,
-                        'roleId' => 'gtk',
-                        'foto' => null,
-                        'biografi' => null,
-                        'firebase_token' => null,
-                        'gtk' => [
-                            'nip_nuptk' => $guru->nuptk,
-                            'mata_pelajaran' => null,
-                            'media_pembelajaran' => [],
-                            'pangkat' => null,
-                            'golongan' => null,
-                            'jabatan' => null,
-                            'unit_kerja' => $asalSekolah->nama ?? 'Unidentified',
-                            'riwayat_pendidikan' => null,
-                        ]
-                    ]);
-        
+                                'id' => $guru->id,
+                                'email' => $guru->email,
+                                'nama' => $guru->name,
+                                'password' => $password,
+                                'roleId' => 'gtk',
+                                'foto' => null,
+                                'biografi' => null,
+                                'firebase_token' => null,
+                                'gtk' => [
+                                    'nip_nuptk' => $nuptk,
+                                    'mata_pelajaran' => null,
+                                    'media_pembelajaran' => [],
+                                    'pangkat' => null,
+                                    'golongan' => null,
+                                    'jabatan' => null,
+                                    'unit_kerja' => $asalSekolah->nama ?? 'Unidentified',
+                                    'riwayat_pendidikan' => null,
+                                ]
+                            ]);
+                    dd($insert['message']);
                     // Increment syncTotal if sync was successful
                     if ($insert['message'] == 'success') {
                         $insertedUserCount++;
                     }
                 }
-        
+
                 // If the user is found in the external system, update the user data
                 if ($check['message'] == "success") {
                     $arrayUserBidangPengembangan = [];
                     $userBidangPengembangans = UserBidangPengembangan::where('bio_id', $guru->id)->get();
-                    
+
                     // Retrieve user's areas of development
                     if ($userBidangPengembangans->count() > 0) {
                         foreach ($userBidangPengembangans as $bp) {
                             $arrayUserBidangPengembangan[] = $bp->bidang_pengembangan_id;
                         }
                     }
-        
+
                     // Update user data in the external system
                     $patch = Http::withHeaders([
                         'client_secret' => 'haloguru_secretkey',
                     ])->patch('http://103.242.124.108:3033/sync-users/' . $guru->id, [
-                        'email' => $guru->email,
-                        'nama' => $guru->name,
-                        'biografi' => null,
-                        'gtk' => [
-                            'nip_nuptk' => $guru->nuptk,
-                            'mata_pelajaran' => null,
-                            'media_pembelajaran' => $arrayUserBidangPengembangan,
-                            'pangkat' => $guru->bio->status_kepegawaian,
-                            'golongan' => $guru->bio->golongan,
-                            'jabatan' => null,
-                            'riwayat_pendidikan' => $guru->bio->jurusan
-                        ]
-                    ]);
-        
+                                'email' => $guru->email,
+                                'nama' => $guru->name,
+                                'biografi' => null,
+                                'gtk' => [
+                                    'nip_nuptk' => $guru->nuptk,
+                                    'mata_pelajaran' => null,
+                                    'media_pembelajaran' => $arrayUserBidangPengembangan,
+                                    'pangkat' => $guru->bio->status_kepegawaian,
+                                    'golongan' => $guru->bio->golongan,
+                                    'jabatan' => null,
+                                    'riwayat_pendidikan' => $guru->bio->jurusan
+                                ]
+                            ]);
+
                     // Increment update count if the update was successful
                     if ($patch['message'] == 'success') {
                         $updatedUserCount++;
                     }
                 }
             }
-        
+
             // Prepare result for response
             $result['insert'] = $insertedUserCount;
             $result['update'] = $updatedUserCount;
-        
+
             return response()->json($result);
         } catch (\Exception $e) {
             // Handle exceptions
             return response()->json($e->getMessage());
         }
-        
+
     }
 }
