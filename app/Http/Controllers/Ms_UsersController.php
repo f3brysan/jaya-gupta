@@ -263,25 +263,26 @@ class Ms_UsersController extends Controller
                 // Check if the user exists in the external system
                 $check = Http::withHeaders([
                     'client_secret' => 'haloguru_secretkey',
-                ])->get('http://103.242.124.108:3033/sync-users/' . $guru->id);                
+                ])->get('http://103.242.124.108:3033/sync-users/' . $guru->id);
                 // If the user is not found in the external system, sync the user
                 if ($check['message'] == "User not found") {
                     // Retrieve the school name of the guru
                     $asalSekolah = Ms_DataSekolah::where('npsn', $guru->bio->asal_satuan_pendidikan)->first();
-                    
+
                     if (empty($guru->bio->tanggallahir)) {
                         $password = '12345678';
                     } else {
                         $date = strtotime($guru->bio->tanggallahir);
                         $password = date('d', $date) . date("m", $date) . date("Y", $date);
                     }
-                    
+
+                    $arrNUPTK = Biodata::whereNotNull('nuptk')->pluck('nuptk');                    
+
                     if (empty($guru->nuptk)) {
-                        $nuptk = (string) mt_rand(1000000000000000, 9999999999999999);
+                        $nuptk = $this->generateUniqueRandomNumber($arrNUPTK, 1000000000000000, 9999999999999999);
                     } else {
                         $nuptk = $guru->nuptk;
-                    }                    
-
+                    }                                                            
                     // Send a request to sync the user
                     $insert = Http::withHeaders([
                         'client_secret' => 'haloguru_secretkey',
@@ -359,5 +360,14 @@ class Ms_UsersController extends Controller
             return response()->json($e->getMessage());
         }
 
+    }
+
+    function generateUniqueRandomNumber($arr, $lower_bound, $upper_bound)
+    {
+        do {
+            $random_number = rand($lower_bound, $upper_bound);
+        } while (in_array($random_number, $arr));
+
+        return $random_number;
     }
 }
