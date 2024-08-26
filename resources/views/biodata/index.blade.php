@@ -85,7 +85,7 @@
                                                             <option value="">Pilih</option>
                                                             <option value="L" {{ $get->gender == 'L' ? 'selected' : '' }}>Laki - Laki
                                                             </option>
-                                                            <option value="P" {{ $get->gender == 'P' ? 'selected' : '' }}>Perempuan
+                                                            <option value="W" {{ $get->gender == 'W' ? 'selected' : '' }}>Perempuan
                                                             </option>
                                                         </select>
                                                     </div>
