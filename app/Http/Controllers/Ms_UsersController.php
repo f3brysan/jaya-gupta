@@ -276,13 +276,18 @@ class Ms_UsersController extends Controller
                         $password = date('d', $date) . date("m", $date) . date("Y", $date);
                     }
 
-                    $arrNUPTK = Biodata::whereNotNull('nuptk')->pluck('nuptk');                    
+                    $getGTKNUPTK = Biodata::whereNotNull('nuptk')->pluck('nuptk');                    
+                    $arrNUPTK = [];
+                    foreach ($getGTKNUPTK as $value) {
+                        array_push($arrNUPTK, $value);
+                    }                    
 
                     if (empty($guru->nuptk)) {
-                        $nuptk = $this->generateUniqueRandomNumber($arrNUPTK, 1000000000000000, 9999999999999999);
+                        $nuptk = (string) $this->generateUniqueRandomNumber($arrNUPTK, 1000000000000001, 9999999999999999);
                     } else {
                         $nuptk = $guru->nuptk;
-                    }                                                            
+                    }                                
+                                        
                     // Send a request to sync the user
                     $insert = Http::withHeaders([
                         'client_secret' => 'haloguru_secretkey',
