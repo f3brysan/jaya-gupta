@@ -34,16 +34,16 @@ class RombelController extends Controller
         $hitung_siswa = DB::select($sql_count);
         
         foreach ($rombel as $item) {
-            $kelas[$item->id]['id'] = $item->id;
-            $kelas[$item->id]['nama_rombel'] = $item->nama_rombel;
-            $kelas[$item->id]['tingkat_kelas'] = $item->tingkat_kelas;
-            $kelas[$item->id]['wali_kelas'] = $item->wali_kelas;
-            $kelas[$item->id]['ruangan'] = $item->ruangan;
-            $kelas[$item->id]['kurikulum'] = $item->kurikulum;
-            $kelas[$item->id]['nm_wali'] = $item->walikelas->nama ?? 'Belum diseting';
-            $kelas[$item->id]['L'] = 0;
-            $kelas[$item->id]['P'] = 0;
-            $kelas[$item->id]['total'] = 0;
+            $kelas[$item->nama_rombel]['id'] = $item->id;
+            $kelas[$item->nama_rombel]['nama_rombel'] = $item->nama_rombel;
+            $kelas[$item->nama_rombel]['tingkat_kelas'] = $item->tingkat_kelas;
+            $kelas[$item->nama_rombel]['wali_kelas'] = $item->wali_kelas;
+            $kelas[$item->nama_rombel]['ruangan'] = $item->ruangan;
+            $kelas[$item->nama_rombel]['kurikulum'] = $item->kurikulum;
+            $kelas[$item->nama_rombel]['nm_wali'] = $item->walikelas->nama ?? 'Belum diseting';
+            $kelas[$item->nama_rombel]['L'] = 0;
+            $kelas[$item->nama_rombel]['P'] = 0;
+            $kelas[$item->nama_rombel]['total'] = 0;
 
             foreach ($hitung_siswa as $htg) {
                 if ($htg->rombel == $item->nama_rombel) {
