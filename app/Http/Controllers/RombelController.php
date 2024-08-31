@@ -32,18 +32,18 @@ class RombelController extends Controller
 
         // dd($sql_count);
         $hitung_siswa = DB::select($sql_count);
-
+        
         foreach ($rombel as $item) {
-            $kelas[$item->nama_rombel]['id'] = $item->id;
-            $kelas[$item->nama_rombel]['nama_rombel'] = $item->nama_rombel;
-            $kelas[$item->nama_rombel]['tingkat_kelas'] = $item->tingkat_kelas;
-            $kelas[$item->nama_rombel]['wali_kelas'] = $item->wali_kelas;
-            $kelas[$item->nama_rombel]['ruangan'] = $item->ruangan;
-            $kelas[$item->nama_rombel]['kurikulum'] = $item->kurikulum;
-            $kelas[$item->nama_rombel]['nm_wali'] = $item->walikelas->nama ?? 'Belum diseting';
-            $kelas[$item->nama_rombel]['L'] = 0;
-            $kelas[$item->nama_rombel]['P'] = 0;
-            $kelas[$item->nama_rombel]['total'] = 0;
+            $kelas[$item->id]['id'] = $item->id;
+            $kelas[$item->id]['nama_rombel'] = $item->nama_rombel;
+            $kelas[$item->id]['tingkat_kelas'] = $item->tingkat_kelas;
+            $kelas[$item->id]['wali_kelas'] = $item->wali_kelas;
+            $kelas[$item->id]['ruangan'] = $item->ruangan;
+            $kelas[$item->id]['kurikulum'] = $item->kurikulum;
+            $kelas[$item->id]['nm_wali'] = $item->walikelas->nama ?? 'Belum diseting';
+            $kelas[$item->id]['L'] = 0;
+            $kelas[$item->id]['P'] = 0;
+            $kelas[$item->id]['total'] = 0;
 
             foreach ($hitung_siswa as $htg) {
                 if ($htg->rombel == $item->nama_rombel) {
@@ -63,6 +63,8 @@ class RombelController extends Controller
     public function create()
     {
         $npsn = auth()->user()->bio->asal_satuan_pendidikan;
+        $rombelFromPesertaDidik = DB::table('tr_pesertadidik')->where('sekolah_npsn', $npsn)->select('rombel')->groupBy('rombel')->get();
+        
         $bioguru = User::with('bio', 'roles');
         $guru = $bioguru->whereHas('bio', function ($q) use ($npsn) {
             $q->where('asal_satuan_pendidikan', $npsn);
@@ -70,7 +72,7 @@ class RombelController extends Controller
             ->role('guru')
             ->get();
 
-        return view('data-rombel.create', compact('guru'));
+        return view('data-rombel.create', compact('guru', 'rombelFromPesertaDidik'));
     }
 
     public function store(Request $request)
@@ -100,7 +102,8 @@ class RombelController extends Controller
             ->role('guru')
             ->get();
         $rombel = Ms_Rombel::where('id', $id)->first();
-        return view('data-rombel.edit', compact('guru', 'rombel'));
+        $rombelFromPesertaDidik = DB::table('tr_pesertadidik')->where('sekolah_npsn', $npsn)->select('rombel')->groupBy('rombel')->get();
+        return view('data-rombel.edit', compact('guru', 'rombel', 'rombelFromPesertaDidik'));
     }
 
     public function destroy(Request $request)

@@ -26,7 +26,12 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Nama Rombel <code>*</code></label>
-                                        <input type="text" class="form-control" name="nama_rombel" value="{{ $rombel->nama_rombel }}">
+                                        <select name="nama_rombel" class="form-select form-control" id="">
+                                            <option value="">Pilih Rombel</option>
+                                            @foreach ($rombelFromPesertaDidik as $item)
+                                            <option value="{{ $item->rombel }}" {{ $item->rombel == $rombel->nama_rombel ? 'selected' : '' }}>{{ Str::upper($item->rombel) }}</option>
+                                            @endforeach
+                                        </select>      
                                     </div>
                                 </div>
                                 <div class="form-group">
