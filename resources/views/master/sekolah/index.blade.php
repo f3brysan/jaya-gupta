@@ -25,100 +25,102 @@
                         </button>
                     </div>
                     <div class="card">
-                        <div class="table-responsive">
-                            <table id="example" class="table table-bordered table-hover table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" rowspan="2">No</th>
-                                        <th class="text-center" rowspan="2" style="width: 250px !important">Wilayah</th>
-                                        <th class="text-center" rowspan="1">Total</th>
-                                        <th class="text-center" rowspan="1">TK</th>                                        
-                                        <th class="text-center" rowspan="1">SD</th>
-                                        <th class="text-center" rowspan="1">SMP</th>                                        
-                                    </tr>
-                                    <tr>
-                                        <th>Jml</th>                                                                        
-                                        <th>Jml</th>                                                                        
-                                        <th>Jml</th>                                                                        
-                                        <th>Jml</th>                                                                                                                                                                                 
-                                    </tr>
-                                </thead>
-                                <tbody>            
-                                    @php
-                                    $tk_n = 0;
-                                    $tk_s = 0;
-                                    $tk = 0;
-                                    $kb_n = 0;
-                                    $kb_s = 0;
-                                    $kb = 0;
-                                    $tpa_n = 0;
-                                    $tpa_s = 0;
-                                    $tpa = 0;
-                                    $sps_n = 0;
-                                    $sps_s = 0;
-                                    $sps = 0;
-                                    $pkbm_n = 0;
-                                    $pkbm_s = 0;
-                                    $pkbm = 0;
-                                    $skb_n = 0;
-                                    $skb_s = 0;
-                                    $skb = 0;
-                                    $sd_n = 0;
-                                    $sd_s = 0;
-                                    $sd = 0;
-                                    $smp_n = 0;
-                                    $smp_s = 0;
-                                    $smp = 0;
-                                    $sma_n = 0;
-                                    $sma_s = 0;
-                                    $sma = 0;
-                                    $smk_n = 0;
-                                    $smk_s = 0;
-                                    $smk = 0;
-                                    $slb_n = 0;
-                                    $slb_s = 0;
-                                    $slb = 0;
-                                    $sekolah_n = 0;
-                                    $sekolah_s = 0;
-                                    $sekolah = 0;
-                                @endphp                        
-                                    @foreach ($getData as $item)
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="example" class="table table-bordered table-hover table-bordered" style="width: 100%">
+                                    <thead>
                                         <tr>
-                                            <td class="text-right">{{ $loop->iteration }}</td>
-                                            <td>
-                                                @php
-                                                    $kode_wil = trim($item['kode_wil']);
-                                                    $kode_wil = Crypt::encrypt($kode_wil);
-                                                @endphp
-                                                <a href="{{ URL::to('data-sekolah/show/' . $item['id_level_wilayah'] . '/' . $kode_wil) }}"
-                                                    target="_blank">{{ $item['nama'] }}</a>
-                                            </td>
-                                            <td class="text-right">{{ $item['total'] }} @php
-                                                $sekolah += $item['total'];
-                                            @endphp</td>                                            
-                                            <td class="text-right">{{ $item['TK'] }} @php
-                                                $tk += $item['TK'];
-                                            @endphp</td>                                                                                        
-                                            <td class="text-right">{{ $item['SD'] }} @php
-                                                $sd += $item['SD'];
-                                            @endphp</td>                                           
-                                            <td class="text-right">{{ $item['SMP'] }} @php
-                                                $smp += $item['SMP'];
-                                            @endphp</td>                                                                                                                             
+                                            <th class="text-center" rowspan="2">No</th>
+                                            <th class="text-center" rowspan="2" style="width: 250px !important">Wilayah</th>
+                                            <th class="text-center" rowspan="1">Total</th>
+                                            <th class="text-center" rowspan="1">TK</th>                                        
+                                            <th class="text-center" rowspan="1">SD</th>
+                                            <th class="text-center" rowspan="1">SMP</th>                                        
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th class="text-center" colspan="2">Total</th>
-                                        <td class="text-right">{{ $sekolah }}</td>                                        
-                                        <td class="text-right">{{ $tk }}</td>                                                                                                             
-                                        <td class="text-right">{{ $sd }}</td>                                       
-                                        <td class="text-right">{{ $smp }}</td>                                                                                                                   
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
+                                        <tr>
+                                            <th>Jml</th>                                                                        
+                                            <th>Jml</th>                                                                        
+                                            <th>Jml</th>                                                                        
+                                            <th>Jml</th>                                                                                                                                                                                 
+                                        </tr>
+                                    </thead>
+                                    <tbody>            
+                                        @php
+                                        $tk_n = 0;
+                                        $tk_s = 0;
+                                        $tk = 0;
+                                        $kb_n = 0;
+                                        $kb_s = 0;
+                                        $kb = 0;
+                                        $tpa_n = 0;
+                                        $tpa_s = 0;
+                                        $tpa = 0;
+                                        $sps_n = 0;
+                                        $sps_s = 0;
+                                        $sps = 0;
+                                        $pkbm_n = 0;
+                                        $pkbm_s = 0;
+                                        $pkbm = 0;
+                                        $skb_n = 0;
+                                        $skb_s = 0;
+                                        $skb = 0;
+                                        $sd_n = 0;
+                                        $sd_s = 0;
+                                        $sd = 0;
+                                        $smp_n = 0;
+                                        $smp_s = 0;
+                                        $smp = 0;
+                                        $sma_n = 0;
+                                        $sma_s = 0;
+                                        $sma = 0;
+                                        $smk_n = 0;
+                                        $smk_s = 0;
+                                        $smk = 0;
+                                        $slb_n = 0;
+                                        $slb_s = 0;
+                                        $slb = 0;
+                                        $sekolah_n = 0;
+                                        $sekolah_s = 0;
+                                        $sekolah = 0;
+                                    @endphp                        
+                                        @foreach ($getData as $item)
+                                            <tr>
+                                                <td class="text-right">{{ $loop->iteration }}</td>
+                                                <td>
+                                                    @php
+                                                        $kode_wil = trim($item['kode_wil']);
+                                                        $kode_wil = Crypt::encrypt($kode_wil);
+                                                    @endphp
+                                                    <a href="{{ URL::to('data-sekolah/show/' . $item['id_level_wilayah'] . '/' . $kode_wil) }}"
+                                                        target="_blank">{{ $item['nama'] }}</a>
+                                                </td>
+                                                <td class="text-right">{{ $item['total'] }} @php
+                                                    $sekolah += $item['total'];
+                                                @endphp</td>                                            
+                                                <td class="text-right">{{ $item['TK'] }} @php
+                                                    $tk += $item['TK'];
+                                                @endphp</td>                                                                                        
+                                                <td class="text-right">{{ $item['SD'] }} @php
+                                                    $sd += $item['SD'];
+                                                @endphp</td>                                           
+                                                <td class="text-right">{{ $item['SMP'] }} @php
+                                                    $smp += $item['SMP'];
+                                                @endphp</td>                                                                                                                             
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th class="text-center" colspan="2">Total</th>
+                                            <td class="text-right">{{ $sekolah }}</td>                                        
+                                            <td class="text-right">{{ $tk }}</td>                                                                                                             
+                                            <td class="text-right">{{ $sd }}</td>                                       
+                                            <td class="text-right">{{ $smp }}</td>                                                                                                                   
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>                        
                     </div>
                 </div>
             </div>
