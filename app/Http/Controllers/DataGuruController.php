@@ -438,14 +438,14 @@ class DataGuruController extends Controller
                     }
 
                 }
-            }            
+            }
 
             DB::commit();
             return redirect('data-guru')->with('success', 'Data berhasil disimpan.');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect('data-guru')->with('error', 'Data gagal disimpan. ('.$e->getMessage().')');
+            return redirect('data-guru')->with('error', 'Data gagal disimpan. (' . $e->getMessage() . ')');
         }
     }
 
@@ -495,7 +495,6 @@ class DataGuruController extends Controller
             }
         }
 
-        // dd($data);
 
         $id_guru = User::with('bio')->whereHas('bio', function ($q) use ($arrnpsn) {
             $q->whereIn('asal_satuan_pendidikan', $arrnpsn);
@@ -505,7 +504,6 @@ class DataGuruController extends Controller
 
         foreach ($id_guru as $id) {
             $arnpsn[$id->id] = "'$id->id'";
-            // dd($arnpsn);
             $list = implode(",", $arnpsn);
         }
 
@@ -527,6 +525,8 @@ class DataGuruController extends Controller
         foreach ($query as $q) {
             $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan . '_l'] += $q->laki;
             $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan . '_p'] += $q->perempuan;
+            $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan] += $q->perempuan;
+            $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan] += $q->laki;
             $data[trim($q->kode_wilayah_induk_kecamatan)]['total_l'] += $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan . '_l'];
             $data[trim($q->kode_wilayah_induk_kecamatan)]['total_p'] += $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan . '_p'];
             $data[trim($q->kode_wilayah_induk_kecamatan)]['total'] += $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan . '_p'] + $data[trim($q->kode_wilayah_induk_kecamatan)][$q->bentuk_pendidikan . '_l'];
