@@ -52,7 +52,7 @@ class DashboardController extends Controller
 
         $getData = Inovasi::with('nilai.owner', 'owner', 'inovasibidangpengembangan.bidangpengembangan')->has('nilai')->where('status', 1)->whereHas('nilai', function ($q) {
             $q->where('status', 1);
-        })->get();
+        })->orderBy('updated_at', 'DESC')->get();
 
         // get data RAW
         $bid_pengembangan = Ms_BidangPengembangan::get();
