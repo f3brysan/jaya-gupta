@@ -28,7 +28,7 @@
                             Aksi Nyata Praktik Baik</span></a></li>
             @endrole
 
-            @role(['kepalasekolah','operator'])
+            @role(['kepalasekolah', 'operator'])
                 <li class="menu-header">Sekolah dan GTK</li>
                 <li><a class="nav-link"
                         href="{{ URL::to('data-sekolah/show-detail/' . Crypt::encrypt(auth()->user()->bio->asal_satuan_pendidikan)) }}"><i
@@ -50,7 +50,7 @@
                             Rombongan Belajar</span></a></li>
             @endrole
 
-            @role(['superadmin'])
+            @role(['superadmin', 'pimpinan'])
                 <li class="menu-header">SI GTK</li>
                 {{-- <li><a class="nav-link" href="{{ URL::to('data-guru') }}"><i class="fas fa-list"></i> <span>Profil
                     Guru/Admin</span></a></li> --}}
@@ -90,10 +90,9 @@
                                     class="badge badge-danger float-right"><span class="fa fa-wrench"></span></i></a>
                         </li>
                     </ul>
-                </li>
-                {{-- <li><a class="nav-link" href="{{ URL::to('data-sekolah') }}"><i class="fas fa-list"></i> <span>Data
-                    Tendik</span></a></li>     --}}
-
+                </li>                
+            @endrole
+            @role('superadmin')
                 <li class="menu-header">Data Master</li>
                 <li class="dropdown">
                     <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-list"></i>
