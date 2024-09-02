@@ -258,7 +258,7 @@ class DataTendikController extends Controller
 
     public function index_admin()
     {
-        $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->get("bentuk_pendidikan");
+        $bentuk_pendidikan = Ms_DataSekolah::groupBy("bentuk_pendidikan")->whereIn('bentuk_pendidikan', ['TK', 'SD', 'SMP'])->get("bentuk_pendidikan");
         $arrnpsn = Ms_DataSekolah::get()->pluck('npsn');
 
         $data = array();
@@ -301,6 +301,7 @@ class DataTendikController extends Controller
            LEFT JOIN ms_sekolah as s on s.npsn = u.asal_satuan_pendidikan
             WHERE
            u.id IN ($list)       
+           AND s.bentuk_pendidikan IN ('TK','SD','SMP')   
            GROUP BY s.kode_wilayah_induk_kecamatan, s.bentuk_pendidikan";
             $query = DB::select($sql_count);
 
