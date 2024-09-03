@@ -303,7 +303,7 @@ class DataGuruController extends Controller
 
 
             // membuat nama file unik
-            $nama_file = date("Y_m_d") . '_' . $file->getClientOriginalName();
+            $nama_file = date("YmdHis") . '_' . $file->getClientOriginalName();
 
             // upload ke folder file_siswa di dalam folder public
             $file->move('unggahan_excel', $nama_file);
@@ -342,7 +342,7 @@ class DataGuruController extends Controller
                         'email' => $row[20],
                         'name' => $nama,
                         'password' => bcrypt($password),
-                        'nuptk' => $row[2]
+                        'nuptk' => preg_replace('/\s+/', '', $row[2])
                     ]);
 
                     // assign role to the user
@@ -357,7 +357,7 @@ class DataGuruController extends Controller
                             'nama_lengkap' => $row[1],
                             'gelar_depan' => $row[9],
                             'gelar_belakang' => $row[10],
-                            'nuptk' => $row[2],
+                            'nuptk' => preg_replace('/\s+/', '', $row[2]),
                             'tempatlahir' => $row[4],
                             'tanggallahir' => $row[5],
                             'kecdom' => $row[16],
@@ -366,7 +366,7 @@ class DataGuruController extends Controller
                             'kodepos' => $row[17],
                             'telepon' => $row[18],
                             'wa' => $row[19],
-                            'nip' => $row[6],
+                            'nip' => preg_replace('/\s+/', '', $row[6]),
                             'golongan' => $row[27],
                             'status_kepegawaian' => $row[7],
                             'pendidikan_terakhir' => $row[11],
@@ -405,7 +405,7 @@ class DataGuruController extends Controller
 
                         // create biodata                        
                         $createBio = Biodata::create($insertData);
-
+                        
                         // get the asal sekolah
                         $asal_sekolah = Ms_DataSekolah::where('npsn', auth()->user()->bio->asal_satuan_pendidikan)->first();
 
@@ -443,9 +443,9 @@ class DataGuruController extends Controller
             DB::commit();
             return redirect('data-guru')->with('success', 'Data berhasil disimpan.');
 
-        } catch (\Exception $e) {
+        } catch (\Exception $e) {            
             DB::rollBack();
-            return redirect('data-guru')->with('error', 'Data gagal disimpan. (' . $e->getMessage() . ')');
+            return redirect('data-guru')->with('success', 'Data gagal disimpan. (' . $e->getMessage() . ')');
         }
     }
 

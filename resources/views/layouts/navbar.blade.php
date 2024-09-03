@@ -68,8 +68,8 @@
                 <li><a class="nav-link" href="{{ URL::to('admin/data-gtk-nonaktif') }}"><i class="fas fa-list"></i>
                         <span>Data
                             GTK Non Aktif</span></a></li>
-                <li><a class="nav-link" href="{{ URL::to('admin/data-pengawas') }}"><i class="fas fa-list"></i> <span>Data
-                            Pengawas</span></a></li>
+                {{-- <li><a class="nav-link" href="{{ URL::to('admin/data-pengawas') }}"><i class="fas fa-list"></i> <span>Data
+                            Pengawas</span></a></li> --}}
                 <li class="dropdown">
                     <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-list"></i>
                         <span>Rekapitulasi</span></a>

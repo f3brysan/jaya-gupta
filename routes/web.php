@@ -79,7 +79,7 @@ Route::middleware(['auth:web', 'role:superadmin|kurator'])->group(function () {
     Route::post('kurator/nilai', [StatusInovasiController::class, 'nilai']);
 });
 
-Route::middleware(['auth:web', 'role:superadmin'])->group(function () {
+Route::middleware(['auth:web', 'role:superadmin|pimpinan'])->group(function () {
     Route::get('master/satuan-pendidikan', [Ms_SatuanPendidikanController::class, 'index']);
 
     Route::get('master/bidang-pengembangan', [Ms_BidangPengembanganController::class, 'index']);
