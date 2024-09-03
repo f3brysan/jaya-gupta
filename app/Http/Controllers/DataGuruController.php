@@ -364,9 +364,9 @@ class DataGuruController extends Controller
                             'keldom' => $row[15],
                             'alamatdom' => $row[14],
                             'kodepos' => $row[17],
-                            'telepon' => $row[18],
+                            'telepon' => $row[18] == "-" ? NULL : $row[18],
                             'wa' => $row[19],
-                            'nip' => preg_replace('/\s+/', '', $row[6]),
+                            'nip' => $row[6] ? preg_replace('/\s+/', '', $row[6]) : NULL,
                             'golongan' => $row[27],
                             'status_kepegawaian' => $row[7],
                             'pendidikan_terakhir' => $row[11],
@@ -382,7 +382,7 @@ class DataGuruController extends Controller
                             'nm_ibu' => $row[29],
                             'status_perkawinan' => $row[30],
                             'nm_pasangan' => $row[31],
-                            'nip_pasangan' => $row[32],
+                            'nip_pasangan' => $row[32] == "-" ? NULL : $row[32],
                             'pekerjaan_pasangan' => $row[33],
                             'tmt_pns' => $row[34],
                             'npwp' => $row[35],
@@ -405,7 +405,7 @@ class DataGuruController extends Controller
 
                         // create biodata                        
                         $createBio = Biodata::create($insertData);
-                        
+
                         // get the asal sekolah
                         $asal_sekolah = Ms_DataSekolah::where('npsn', auth()->user()->bio->asal_satuan_pendidikan)->first();
 
@@ -443,9 +443,10 @@ class DataGuruController extends Controller
             DB::commit();
             return redirect('data-guru')->with('success', 'Data berhasil disimpan.');
 
-        } catch (\Exception $e) {            
+        } catch (\Exception $e) {
+            dd($e->getMessage());
             DB::rollBack();
-            return redirect('data-guru')->with('success', 'Data gagal disimpan. (' . $e->getMessage() . ')');
+            return redirect('data-guru')->with('error', 'Data gagal disimpan. (' . $e->getMessage() . ')');
         }
     }
 
