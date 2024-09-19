@@ -69,8 +69,8 @@
                 <div class="row">
                     <div
                         class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
-                        <img src="https://www.pendidikan.denpasarkota.go.id/public/uploads/header_192106040650_.png"
-                            width="100%" alt="logo" class="myimage img-fluid">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Lambang_Kota_Denpasar_%281%29.png/631px-Lambang_Kota_Denpasar_%281%29.png"
+                            width="50%" alt="logo" class="myimage img-fluid mx-auto d-block">
                         <div class="login-brand">
 
                             <h1 style="color: black">JAYA GUPTA</h1>
@@ -81,12 +81,11 @@
                                 <h4>Login</h4>
                             </div>
                             <div class="card-body">
-
-                                {{-- @if (session()->has('LoginError'))
+                                @if (session()->has('LoginError'))
                                     <div class="alert alert-danger d-flex justify-content-center" role="alert">
                                         {{ session('LoginError') }}
                                     </div>
-                                @endif --}}
+                                @endif
                                 <form method="POST" action="/login" class="needs-validation" novalidate="">
                                     @csrf
                                     <div class="form-group">
@@ -100,44 +99,45 @@
                                             </div>
                                         @enderror
 
-                                    <div class="form-group">
-                                        <div class="d-block">
-                                            <label for="password" class="control-label">Password</label>
-                                        </div>
-                                        <input id="password" type="password"
-                                            class="form-control @error('password') is-invalid @enderror" name="password"
-                                            tabindex="2" required>
-                                        @error('password')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
+                                        <div class="form-group">
+                                            <div class="d-block">
+                                                <label for="password" class="control-label">Password</label>
                                             </div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="d-block">
-                                            <label for="password" class="control-label">Captcha</label>
+                                            <input id="password" type="password"
+                                                class="form-control @error('password') is-invalid @enderror"
+                                                name="password" tabindex="2" required>
+                                            @error('password')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
                                         </div>
-                                        <div class="captcha mb-3">
-                                            <span>{!! captcha_img() !!}</span>
-                                            <button type="button" class="btn btn-light" class="reload" id="reload">
-                                                &#x21bb;
+                                        <div class="form-group">
+                                            <div class="d-block">
+                                                <label for="password" class="control-label">Captcha</label>
+                                            </div>
+                                            <div class="captcha mb-3">
+                                                <span>{!! captcha_img() !!}</span>
+                                                <button type="button" class="btn btn-light" class="reload"
+                                                    id="reload">
+                                                    &#x21bb;
+                                                </button>
+                                            </div>
+                                            <input class="form-control @error('captcha') is-invalid @enderror"
+                                                type="text" name="captcha" id="captcha" required=""
+                                                placeholder="Ketikan Captcha">
+                                            @error('capctha')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary btn-lg btn-block"
+                                                tabindex="4">
+                                                Login
                                             </button>
                                         </div>
-                                        <input class="form-control @error('captcha') is-invalid @enderror"
-                                            type="text" name="captcha" id="captcha" required=""
-                                            placeholder="Ketikan Captcha">
-                                        @error('capctha')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-lg btn-block"
-                                            tabindex="4">
-                                            Login
-                                        </button>
-                                    </div>
                                 </form>
                             </div>
                         </div>
