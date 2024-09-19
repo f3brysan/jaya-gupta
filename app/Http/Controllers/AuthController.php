@@ -47,7 +47,7 @@ class AuthController extends Controller
 
     public function reloadCaptcha()
     {
-        return response()->json(['captcha'=> captcha_img()]);
+        return response()->json(['captcha'=> captcha_img('math')]);
     }
 
     public function logout(Request $request)

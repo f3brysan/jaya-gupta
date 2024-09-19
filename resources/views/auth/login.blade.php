@@ -117,7 +117,7 @@
                                                 <label for="password" class="control-label">Captcha</label>
                                             </div>
                                             <div class="captcha mb-3">
-                                                <span>{!! captcha_img() !!}</span>
+                                                <span>{!! captcha_img('math') !!}</span>
                                                 <button type="button" class="btn btn-light" class="reload"
                                                     id="reload">
                                                     &#x21bb;
