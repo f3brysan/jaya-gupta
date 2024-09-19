@@ -42,6 +42,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('login', [AuthController::class, 'login'])->name('login');
+Route::get('reload-captcha', [AuthController::class, 'reloadCaptcha']);
 Route::post('login', [AuthController::class, 'auth']);
 Route::post('logout', [AuthController::class, 'logout']);
 

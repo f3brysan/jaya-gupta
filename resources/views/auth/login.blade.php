@@ -91,30 +91,50 @@
                                     @csrf
                                     <div class="form-group">
                                         <label for="email">Email</label>
-                                        <input id="email" type="email" class="form-control" name="email"
+                                        <input id="email" type="email"
+                                            class="form-control  @error('email') is-invalid @enderror" name="email"
                                             tabindex="1" required autofocus>
-                                        <div class="invalid-feedback">
-                                            Mohon diisi email Anda !
-                                        </div>
-                                    </div>
+                                        @error('email')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
 
                                     <div class="form-group">
                                         <div class="d-block">
                                             <label for="password" class="control-label">Password</label>
-                                            {{-- <div class="float-right">
-                                                <a href="auth-forgot-password.html" class="text-small">
-                                                    Forgot Password?
-                                                </a>
-                                            </div> --}}
                                         </div>
-                                        <input id="password" type="password" class="form-control" name="password"
+                                        <input id="password" type="password"
+                                            class="form-control @error('password') is-invalid @enderror" name="password"
                                             tabindex="2" required>
-                                        <div class="invalid-feedback">
-                                            Mohon diisi password Anda !
-                                        </div>
+                                        @error('password')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                                        <div class="d-block">
+                                            <label for="password" class="control-label">Captcha</label>
+                                        </div>
+                                        <div class="captcha mb-3">
+                                            <span>{!! captcha_img() !!}</span>
+                                            <button type="button" class="btn btn-light" class="reload" id="reload">
+                                                &#x21bb;
+                                            </button>
+                                        </div>
+                                        <input class="form-control @error('captcha') is-invalid @enderror"
+                                            type="text" name="captcha" id="captcha" required=""
+                                            placeholder="Ketikan Captcha">
+                                        @error('capctha')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-lg btn-block"
+                                            tabindex="4">
                                             Login
                                         </button>
                                     </div>
@@ -124,7 +144,7 @@
                         {{-- <div class="mt-5 text-muted text-center">
                             Belum Memiliki Akun? <a href="auth-register.html">Daftar</a>
                         </div> --}}
-                        <div class="simple-footer">                            
+                        <div class="simple-footer">
                         </div>
                     </div>
                 </div>
@@ -148,6 +168,17 @@
     <!-- Template JS File -->
     <script src="{{ URL::to('/') }}/assets/js/scripts.js"></script>
     <script src="{{ URL::to('/') }}/assets/js/custom.js"></script>
+    <script type="text/javascript">
+        $('#reload').click(function() {
+            $.ajax({
+                type: 'GET',
+                url: 'reload-captcha',
+                success: function(data) {
+                    $(".captcha span").html(data.captcha);
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
